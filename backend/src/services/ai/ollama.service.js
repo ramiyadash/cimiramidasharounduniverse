@@ -1,4 +1,4 @@
-const { OLLAMA_BASE_URL, OLLAMA_MODEL } = require("../config/ollama.config");
+const { OLLAMA_BASE_URL, OLLAMA_MODEL } = require("../../config/ollama.config");
 
 exports.generate = async (prompt) => {
   const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {

@@ -2,7 +2,7 @@ const travelAiService = require("../services/travel-ai.service");
 
 exports.sendMessage = async (req, res, next) => {
   try {
-    const { message } = req.body;
+    const { message, conversationId = "default" } = req.body;
 
     if (!message || !message.trim()) {
       return res.status(400).json({
@@ -10,10 +10,16 @@ exports.sendMessage = async (req, res, next) => {
       });
     }
 
-    const reply = await travelAiService.generateTravelResponse(message);
-
-    res.json({ reply });
-  } catch (error) {
+    const reply = await travelAiService.generateTravelResponse({
+        conversationId,
+        message
+      });
+  
+      res.json({
+        conversationId,
+        reply
+      });
+    }catch (error) {
     next(error);
   }
 };

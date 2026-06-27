@@ -1,0 +1,53 @@
+:host {
+    display: block;
+    min-height: 100vh;
+  }
+  
+  .sidebar {
+    min-height: 100vh;
+    padding: 28px 20px;
+    border-right: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.82);
+  }
+  
+  .brand {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+  
+  nav {
+    display: grid;
+    gap: 10px;
+  
+    a {
+      padding: 14px 16px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  
+    .active {
+      background: #eaf2ff;
+      color: #2563eb;
+    }
+  }
+  
+  .sidebar-note {
+    margin-top: 280px;
+    padding: 18px;
+    border-radius: 22px;
+    background: white;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  
+    p {
+      margin: 10px 0 0;
+      line-height: 1.4;
+    }
+  
+    strong {
+      color: #2563eb;
+    }
+  }

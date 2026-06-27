@@ -1,0 +1,52 @@
+.planning-card {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 26px;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+  }
+  
+  .welcome {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #eaf2ff;
+    font-size: 34px;
+  }
+  
+  .section-label {
+    margin: 0 0 8px;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  
+  .composer {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+  
+    input {
+      flex: 1;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 14px 18px;
+    }
+  
+    button {
+      width: 46px;
+      border: none;
+      border-radius: 50%;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+  }

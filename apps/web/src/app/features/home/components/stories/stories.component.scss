@@ -1,0 +1,78 @@
+.stories-card {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 26px;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    a {
+      color: #2563eb;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+  
+  .section-label {
+    margin: 0 0 8px;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  
+  .story-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  
+    article {
+      display: grid;
+      gap: 6px;
+    }
+  
+    strong {
+      font-size: 15px;
+    }
+  
+    small {
+      color: #64748b;
+      font-weight: 600;
+    }
+  
+    p {
+      margin: 0;
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+  }
+  
+  .story-img {
+    height: 112px;
+    border-radius: 18px;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .peru {
+    background-image: url("https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=600&q=80");
+  }
+  
+  .india {
+    background-image: url("https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=600&q=80");
+  }
+  
+  .guatemala {
+    background-image: url("https://images.unsplash.com/photo-1583608564076-b7d7d0d1a23b?auto=format&fit=crop&w=600&q=80");
+  }
+  
+  @media (max-width: 900px) {
+    .story-list {
+      grid-template-columns: 1fr;
+    }
+  }
