@@ -6,11 +6,12 @@ import { JourneyGridComponent } from './features/home/components/journey-grid/jo
 import { ContinuePlanningComponent } from './features/home/components/continue-planning/continue-planning.component';
 import { PlanningSessionComponent } from './features/home/components/planning-session/planning-session.component';
 import { StoriesComponent } from './features/home/components/stories/stories.component';
+import { HomePageComponent } from './features/home/pages/home-page/home-page.component';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, HeroComponent, SidebarComponent, JourneyGridComponent, 
-    ContinuePlanningComponent, PlanningSessionComponent, StoriesComponent],
+    ContinuePlanningComponent, PlanningSessionComponent, StoriesComponent, HomePageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

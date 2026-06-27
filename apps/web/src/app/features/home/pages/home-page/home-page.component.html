@@ -1,0 +1,27 @@
+<div class="app-layout">
+
+    <app-sidebar></app-sidebar>
+  
+    <main class="main-content">
+  
+      <app-hero></app-hero>
+  
+      <app-journey-grid
+        (journeySelected)="onJourneySelected($event)"
+        ></app-journey-grid>
+  
+      <app-continue-planning></app-continue-planning>
+  
+      <section class="lower-grid">
+  
+        <app-planning-session
+         [journey]="selectedJourney"
+        ></app-planning-session>
+  
+        <app-stories></app-stories>
+  
+      </section>
+  
+    </main>
+  
+  </div>

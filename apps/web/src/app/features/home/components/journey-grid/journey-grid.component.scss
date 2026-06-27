@@ -66,3 +66,14 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
+
+  .journey-card.selected {
+    border-color: #2563eb;
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 30px 70px rgba(37, 99, 235, 0.24);
+  }
+  
+  .journey-card.selected .icon {
+    background: #2563eb;
+    color: white;
+  }

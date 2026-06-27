@@ -1,9 +1,10 @@
 .planning-card {
     padding: 24px;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(148, 163, 184, 0.28);
+    background: var(--journey-bg);
+    border: 1px solid color-mix(in srgb, var(--journey-accent) 30%, white);
     border-radius: 26px;
     box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+    transition: 0.25s ease;
   }
   
   .welcome {
@@ -18,13 +19,16 @@
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: #eaf2ff;
+    background: var(--journey-accent);
+    color: white;
     font-size: 34px;
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--journey-accent) 28%, transparent);
+    transition: 0.25s ease;
   }
   
   .section-label {
     margin: 0 0 8px;
-    color: #2563eb;
+    color: var(--journey-accent);
     font-size: 13px;
     font-weight: 800;
   }
@@ -42,11 +46,12 @@
     }
   
     button {
-      width: 46px;
-      border: none;
-      border-radius: 50%;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
+        width: 46px;
+        border: none;
+        border-radius: 50%;
+        background: var(--journey-accent);
+        color: white;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
   }

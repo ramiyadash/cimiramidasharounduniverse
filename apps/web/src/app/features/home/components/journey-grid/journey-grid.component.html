@@ -1,25 +1,18 @@
 <section class="journey-grid">
-    <button class="journey-card weekend">
-      <span class="icon">✈️</span>
-      <strong>Weekend Escape</strong>
-      <small>Recharge in just 2–3 days</small>
-    </button>
-  
-    <button class="journey-card family">
-      <span class="icon">👨‍👩‍👧</span>
-      <strong>Family Vacation</strong>
-      <small>Easy, practical, kid-friendly</small>
-    </button>
-  
-    <button class="journey-card adventure">
-      <span class="icon">🥾</span>
-      <strong>Adventure Journey</strong>
-      <small>Nature, hiking, unforgettable views</small>
-    </button>
-  
-    <button class="journey-card food">
-      <span class="icon">🍜</span>
-      <strong>Food & Culture</strong>
-      <small>Local flavors and stories</small>
-    </button>
+    @for (journey of journeys; track journey.type) {
+        <button
+        class="journey-card"
+        [class.weekend]="journey.type === 'weekend'"
+        [class.family]="journey.type === 'family'"
+        [class.adventure]="journey.type === 'adventure'"
+        [class.food]="journey.type === 'food'"
+        [class.selected]="selectedType === journey.type"
+        type="button"
+        (click)="selectJourney(journey)"
+      >
+        <span class="icon">{{ journey.icon }}</span>
+        <strong>{{ journey.title }}</strong>
+        <small>{{ journey.description }}</small>
+      </button>
+    }
   </section>

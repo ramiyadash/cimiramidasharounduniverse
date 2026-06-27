@@ -1,16 +1,19 @@
-<section class="planning-card">
+<section
+  class="planning-card"
+  [style.--journey-accent]="journey.accentColor"
+  [style.--journey-bg]="journey.selectedBackground">
     <div class="welcome">
-      <div class="avatar">🌍</div>
+      <div class="avatar">{{ journey.icon }}</div>
   
       <div>
         <p class="section-label">Planning Session</p>
-        <h2>Hi Ramiya! 👋</h2>
-        <p>Let’s create something unforgettable.</p>
+        <h2>{{ journey.planningTitle }}</h2>
+        <p>{{ journey.planningMessage }}</p>
       </div>
     </div>
   
     <div class="composer">
-      <input placeholder="Tell me about your dream trip..." />
+      <input [placeholder]="journey.inputPlaceholder" />
       <button>➤</button>
     </div>
   </section>

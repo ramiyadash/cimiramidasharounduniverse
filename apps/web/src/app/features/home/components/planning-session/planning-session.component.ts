@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { JourneyTheme } from '../../../../shared/models/journey-theme.model';
 
 @Component({
   selector: 'app-planning-session',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './planning-session.component.scss'
 })
 export class PlanningSessionComponent {
-
+  @Input() journey!: JourneyTheme;
 }
