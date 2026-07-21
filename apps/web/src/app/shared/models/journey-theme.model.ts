@@ -11,6 +11,10 @@ export interface JourneyTheme {
   planningTitle: string;
   planningMessage: string;
   inputPlaceholder: string;
+
+  heroTitle: string;
+  heroHighlight: string;
+  heroSubtitle: string;
 }
 
 export const JOURNEY_THEMES: JourneyTheme[] = [
@@ -23,8 +27,15 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
     softBackground: '#eef7ff',
     selectedBackground: 'linear-gradient(135deg, #dbeafe, #ffffff)',
     planningTitle: 'Weekend Escape',
-    planningMessage: 'Great choice! Let’s find a quick getaway that feels refreshing without too much planning.',
-    inputPlaceholder: 'Where would you like to escape this weekend?'
+    planningMessage:
+      'Great choice! Let’s find a quick getaway that feels refreshing without too much planning.',
+    inputPlaceholder:
+      'Where would you like to escape this weekend?',
+
+    heroTitle: 'Ready for your next',
+    heroHighlight: 'escape?',
+    heroSubtitle:
+      'Turn a free weekend into a refreshing journey filled with discovery, rest, and memorable moments.'
   },
   {
     type: 'family',
@@ -35,8 +46,15 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
     softBackground: '#fff2e8',
     selectedBackground: 'linear-gradient(135deg, #ffedd5, #ffffff)',
     planningTitle: 'Family Vacation',
-    planningMessage: 'Wonderful! Let’s plan something comfortable, fun, and realistic for everyone.',
-    inputPlaceholder: 'Who is traveling, and how many days do you have?'
+    planningMessage:
+      'Wonderful! Let’s plan something comfortable, fun, and realistic for everyone.',
+    inputPlaceholder:
+      'Who is traveling, and how many days do you have?',
+
+    heroTitle: 'Create your next family',
+    heroHighlight: 'memory.',
+    heroSubtitle:
+      'Plan comfortable, joyful journeys that bring everyone together without making the experience feel overwhelming.'
   },
   {
     type: 'adventure',
@@ -47,8 +65,15 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
     softBackground: '#effdf4',
     selectedBackground: 'linear-gradient(135deg, #dcfce7, #ffffff)',
     planningTitle: 'Adventure Journey',
-    planningMessage: 'Love it. Let’s build a trip around nature, movement, and memorable views.',
-    inputPlaceholder: 'Tell me about your dream adventure...'
+    planningMessage:
+      'Love it. Let’s build a trip around nature, movement, and memorable views.',
+    inputPlaceholder:
+      'Tell me about your dream adventure...',
+
+    heroTitle: 'Where will your next',
+    heroHighlight: 'adventure begin?',
+    heroSubtitle:
+      'Discover trails, landscapes, and unforgettable places that make you feel fully alive.'
   },
   {
     type: 'food',
@@ -59,7 +84,14 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
     softBackground: '#fff1f2',
     selectedBackground: 'linear-gradient(135deg, #fee2e2, #ffffff)',
     planningTitle: 'Food & Culture',
-    planningMessage: 'Perfect. Let’s explore a place through food, neighborhoods, culture, and local stories.',
-    inputPlaceholder: 'Which cuisine or country excites you?'
+    planningMessage:
+      'Perfect. Let’s explore a place through food, neighborhoods, culture, and local stories.',
+    inputPlaceholder:
+      'Which cuisine or country excites you?',
+
+    heroTitle: 'Which flavors will tell your next',
+    heroHighlight: 'story?',
+    heroSubtitle:
+      'Explore destinations through local food, neighborhoods, traditions, and the people behind every dish.'
   }
 ];

@@ -1,20 +1,32 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { JourneyTheme, JOURNEY_THEMES } from '../../../../shared/models/journey-theme.model';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
+
+import {
+  JourneyTheme,
+  JOURNEY_THEMES
+} from '../../../../shared/models/journey-theme.model';
 
 @Component({
   selector: 'app-journey-grid',
+  standalone: true,
   imports: [],
   templateUrl: './journey-grid.component.html',
   styleUrl: './journey-grid.component.scss'
 })
 export class JourneyGridComponent {
-  @Output() journeySelected = new EventEmitter<JourneyTheme>();
+  @Input()
+  selectedJourney: JourneyTheme | null = null;
 
-  journeys = JOURNEY_THEMES;
-  selectedType: string | null = null;
+  @Output()
+  readonly journeySelected = new EventEmitter<JourneyTheme>();
+
+  readonly journeys: JourneyTheme[] = JOURNEY_THEMES;
 
   selectJourney(journey: JourneyTheme): void {
-    this.selectedType = journey.type;
-    this.journeySelected.emit(journey);
+      this.journeySelected.emit(journey);
   }
 }

@@ -5,6 +5,98 @@
     color: #0f172a;
     background: #f8fafc;
   }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    padding: 16px 20px;
+    margin: -16px -20px 0;
+  
+    border-bottom: 1px solid
+      color-mix(
+        in srgb,
+        var(--header-accent) 18%,
+        rgba(148, 163, 184, 0.16)
+      );
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--header-background) 88%,
+        rgba(255, 255, 255, 0.92)
+      );
+  
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  
+    transition:
+      background 300ms ease,
+      border-color 300ms ease;
+  
+    p {
+      margin: 0;
+  
+      color: var(--header-accent);
+      font-weight: 700;
+  
+      transition: color 300ms ease;
+    }
+  }
+  
+  .top-icons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  
+  .profile-dot {
+    display: grid;
+  
+    width: 38px;
+    height: 38px;
+  
+    place-items: center;
+  
+    border-radius: 50%;
+  
+    background: var(--header-accent);
+    color: white;
+  
+    font-weight: 800;
+  
+    transition:
+      background 300ms ease,
+      transform 200ms ease;
+  }
+  
+  .profile-dot:hover {
+    transform: scale(1.05);
+  }
+  
+  .top-icons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  
+  .profile-dot {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+  
+    border-radius: 50%;
+  
+    background: #2563eb;
+    color: white;
+    font-weight: 800;
+  }
   
   .app-layout {
     display: grid;
@@ -44,4 +136,43 @@
     .lower-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  app-sidebar {
+    position: sticky;
+    top: 0;
+  
+    align-self: start;
+  
+    height: 100vh;
+  }
+
+  .app-layout {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  
+  app-sidebar {
+    position: sticky;
+    top: 0;
+  
+    align-self: start;
+  
+    height: 100vh;
+  }
+  
+  .main-content {
+    min-width: 0;
+    padding: 32px 40px;
+  
+    background:
+      linear-gradient(
+        rgba(255, 255, 255, 0.15),
+        rgba(248, 250, 252, 0.92)
+      ),
+      url("https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1800&q=80");
+  
+    background-size: cover;
+    background-position: top center;
   }

@@ -1,18 +1,21 @@
-<section class="hero">
-    <div class="top-bar">
-      <p>☀️ Good afternoon, Ramiya</p>
-  
-      <div class="top-icons">
-        <span>🔍</span>
-        <span>🔔</span>
-        <span class="profile-dot">R</span>
-      </div>
+<section
+  class="hero"
+  [style.--hero-accent]="journey.accentColor"
+  [style.--hero-background]="journey.softBackground"
+>
+
+  <div class="hero-content">
+    <div class="hero-icon">
+      {{ journey.icon }}
     </div>
-  
-    <h1>Where will your next <span>story</span> begin?</h1>
-  
+
+    <h1>
+      {{ journey.heroTitle }}
+      <span>{{ journey.heroHighlight }}</span>
+    </h1>
+
     <p class="subtitle">
-      Your personal travel planner and story keeper.
-      Dream, plan, travel, and remember meaningful journeys.
+      {{ journey.heroSubtitle }}
     </p>
-  </section>
+  </div>
+</section>

@@ -1,18 +1,33 @@
-<section class="journey-grid">
-    @for (journey of journeys; track journey.type) {
-        <button
-        class="journey-card"
-        [class.weekend]="journey.type === 'weekend'"
-        [class.family]="journey.type === 'family'"
-        [class.adventure]="journey.type === 'adventure'"
-        [class.food]="journey.type === 'food'"
-        [class.selected]="selectedType === journey.type"
-        type="button"
-        (click)="selectJourney(journey)"
+<div class="journey-grid">
+  @for (journey of journeys; track journey.type) {
+      <button
+          type="button"
+          class="journey-card"
+          [class.journey-card--selected]="
+              selectedJourney?.type === journey.type
+          "
+          [style.--journey-accent]="journey.accentColor"
+          [style.--journey-background]="journey.selectedBackground"
+          (click)="selectJourney(journey)"
       >
-        <span class="icon">{{ journey.icon }}</span>
-        <strong>{{ journey.title }}</strong>
-        <small>{{ journey.description }}</small>
+          <span
+              class="journey-card__check"
+              aria-hidden="true"
+          >
+              ✓
+          </span>
+
+          <span class="journey-card__icon">
+              {{ journey.icon }}
+          </span>
+
+          <span class="journey-card__title">
+              {{ journey.title }}
+          </span>
+
+          <span class="journey-card__description">
+              {{ journey.description }}
+          </span>
       </button>
-    }
-  </section>
+  }
+</div>

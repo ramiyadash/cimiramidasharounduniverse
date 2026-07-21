@@ -1,16 +1,34 @@
-<section class="continue-card">
-    <div>
-      <p class="section-label">Continue Planning</p>
-      <h3>Japan 2027</h3>
-      <p>Tokyo • Kyoto • Osaka</p>
+<section
+  class="continue-card"
+  [style.--continue-accent]="journey.accentColor"
+  [style.--continue-background]="journey.softBackground"
+>
+  <div class="continue-card__details">
+    <p class="section-label">
+      {{ journey.icon }} Continue Planning
+    </p>
+
+    <h3>Japan 2027</h3>
+
+    <p class="route">
+      Tokyo • Kyoto • Osaka
+    </p>
+
+    <p class="journey-message">
+      {{ journeyMessage }}
+    </p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress">
+      <span></span>
     </div>
-  
-    <div class="progress-wrap">
-      <div class="progress">
-        <span></span>
-      </div>
-      <small>72%</small>
-    </div>
-  
-    <button>Continue →</button>
-  </section>
+
+    <small>72% planned</small>
+  </div>
+
+  <button type="button">
+    Continue
+    <span aria-hidden="true">→</span>
+  </button>
+</section>

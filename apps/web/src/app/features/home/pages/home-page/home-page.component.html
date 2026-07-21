@@ -3,19 +3,37 @@
     <app-sidebar></app-sidebar>
   
     <main class="main-content">
+      <header
+      class="page-header"
+      [style.--header-accent]="selectedJourney.accentColor"
+      [style.--header-background]="selectedJourney.softBackground"
+     >
+      <p>☀️ Good afternoon, Ramiya</p>
+
+      <div class="top-icons">
+        <span>🔍</span>
+        <span>🔔</span>
+        <span class="profile-dot">R</span>
+      </div>
+    </header>
   
-      <app-hero></app-hero>
+      <app-hero
+      [journey]="selectedJourney"
+      ></app-hero>
   
       <app-journey-grid
-        (journeySelected)="onJourneySelected($event)"
-        ></app-journey-grid>
+      [selectedJourney]="selectedJourney"
+      (journeySelected)="onJourneySelected($event)"
+      ></app-journey-grid>
   
-      <app-continue-planning></app-continue-planning>
+      <app-continue-planning
+      [journey]="selectedJourney"
+      ></app-continue-planning>
   
       <section class="lower-grid">
   
         <app-planning-session
-         [journey]="selectedJourney"
+         [journey]="selectedJourney" 
         ></app-planning-session>
   
         <app-stories></app-stories>
