@@ -176,3 +176,21 @@
     background-size: cover;
     background-position: top center;
   }
+
+  :host {
+    display: block;
+    min-height: 100vh;
+  
+    scroll-behavior: smooth;
+  
+    font-family:
+      Inter,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+  
+    color: #0f172a;
+    background: #f8fafc;
+  }
