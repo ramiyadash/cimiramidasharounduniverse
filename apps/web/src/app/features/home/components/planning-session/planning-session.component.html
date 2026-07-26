@@ -1,19 +1,84 @@
 <section
   class="planning-card"
   [style.--journey-accent]="journey.accentColor"
-  [style.--journey-bg]="journey.selectedBackground">
-    <div class="welcome">
-      <div class="avatar">{{ journey.icon }}</div>
-  
-      <div>
-        <p class="section-label">Planning Session</p>
-        <h2>{{ journey.planningTitle }}</h2>
-        <p>{{ journey.planningMessage }}</p>
+  [style.--journey-bg]="journey.selectedBackground"
+>
+  <div class="welcome">
+    <div class="avatar">{{ journey.icon }}</div>
+
+    <div class="companion-content">
+      <p class="section-label">Travel Companion</p>
+
+      <h2>{{ journey.planningTitle }}</h2>
+
+      <p class="companion-greeting">
+        {{ journey.companionGreeting }}
+      </p>
+
+      <p class="planning-message">
+        {{ journey.planningMessage }}
+      </p>
+    </div>
+  </div>
+
+  @if (!selectedChoice) {
+    <div class="companion-choices">
+      @for (
+        choice of journey.companionChoices;
+        track choice.title
+      ) {
+        <button
+          type="button"
+          class="choice-chip"
+          (click)="selectChoice(choice)"
+        >
+          <span class="choice-icon">
+            {{ choice.icon }}
+          </span>
+
+          <span>{{ choice.title }}</span>
+        </button>
+      }
+    </div>
+  }
+
+  @if (selectedChoice) {
+    <div class="conversation">
+      <div class="user-message">
+        <p class="message-label">You</p>
+
+        <p>
+          <span>{{ selectedChoice.icon }}</span>
+          {{ selectedChoice.title }}
+        </p>
       </div>
+
+      <div class="dash-message">
+        <p class="message-label">Dash</p>
+
+        <p>{{ companionResponse }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="change-choice-button"
+        (click)="resetConversation()"
+      >
+        Choose something else
+      </button>
     </div>
-  
-    <div class="composer">
-      <input [placeholder]="journey.inputPlaceholder" />
-      <button>➤</button>
-    </div>
-  </section>
+  }
+
+  <div class="composer">
+    <input
+      [placeholder]="journey.inputPlaceholder"
+    />
+
+    <button
+      type="button"
+      aria-label="Send message"
+    >
+      ➤
+    </button>
+  </div>
+</section>

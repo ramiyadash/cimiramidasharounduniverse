@@ -1,5 +1,16 @@
 export type JourneyType = 'weekend' | 'family' | 'adventure' | 'food';
 
+export interface CompanionChoice {
+  icon: string;
+  title: string;
+  prompt: string;
+}
+
+export interface CompanionReply {
+  message: string;
+  followUpChoices?: CompanionChoice[];
+}
+
 export interface JourneyTheme {
   type: JourneyType;
   icon: string;
@@ -18,6 +29,8 @@ export interface JourneyTheme {
   heroImage: string;
   heroImageAlt: string;
   heroPrompts: string[];
+  companionGreeting: string;
+  companionChoices: CompanionChoice[];
 }
 
 export const JOURNEY_THEMES: JourneyTheme[] = [
@@ -31,7 +44,7 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
     selectedBackground: 'linear-gradient(135deg, #dbeafe, #ffffff)',
     planningTitle: 'Weekend Escape',
     planningMessage:
-      'Great choice! Let’s find a quick getaway that feels refreshing without too much planning.',
+    "I've already been thinking about a few ideas for you.",
     inputPlaceholder:
       'Where would you like to escape this weekend?',
 
@@ -47,7 +60,33 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
         'A quiet mountain escape',
         'A lively city weekend',
         'Somewhere near the water'
-    ]
+      ],
+      companionGreeting:
+      "Hey Ramiya 👋 Weekend escapes are one of my favorites. What kind of getaway are you in the mood for?",
+    
+    companionChoices: [
+      {
+        icon: '🏔',
+        title: 'Mountains',
+        prompt: 'I would love a peaceful mountain escape.'
+      },
+      {
+        icon: '🌊',
+        title: 'Water',
+        prompt: 'Show me beaches, lakes, or coastal towns.'
+      },
+      {
+        icon: '🏙',
+        title: 'City',
+        prompt: 'Find me a fun city for the weekend.'
+      },
+      {
+        icon: '✨',
+        title: 'Surprise Me',
+        prompt: 'Surprise me with somewhere unexpected.'
+      }
+    ],   
+    
   },
   {
     type: 'family',
@@ -75,7 +114,32 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
         'Kid-friendly beach trip',
         'Easy nature getaway',
         'Family city adventure'
-    ]  
+    ],
+    companionGreeting:
+    "Family trips create some of life's best memories. What sounds fun for everyone?",
+
+    companionChoices: [
+    {
+      icon: '🏖',
+      title: 'Beach',
+      prompt: 'A relaxing family beach vacation.'
+    },
+    {
+      icon: '🌲',
+      title: 'Nature',
+      prompt: 'Somewhere outdoors with easy activities.'
+    },
+    {
+      icon: '🎢',
+      title: 'Theme Parks',
+      prompt: 'Let\'s plan around exciting attractions.'
+    },
+    {
+      icon: '✨',
+      title: 'Surprise Me',
+      prompt: 'Give us something unique.'
+    }
+  ],  
   },
   {
     type: 'adventure',
@@ -87,7 +151,7 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
     selectedBackground: 'linear-gradient(135deg, #dcfce7, #ffffff)',
     planningTitle: 'Adventure Journey',
     planningMessage:
-      'Love it. Let’s build a trip around nature, movement, and memorable views.',
+      'Love it. Let\’s build a trip around nature, movement, and memorable views.',
     inputPlaceholder:
       'Tell me about your dream adventure...',
 
@@ -103,7 +167,32 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
         'Mountain hiking',
         'Wildlife and nature',
         'Road trip adventure'
-    ]  
+    ],
+    companionGreeting:
+  "Adventure starts with one decision. What kind of experience are you chasing?",
+
+companionChoices: [
+  {
+    icon: '🥾',
+    title: 'Hiking',
+    prompt: 'Find amazing hiking destinations.'
+  },
+  {
+    icon: '🏕',
+    title: 'Camping',
+    prompt: 'Let\'s camp somewhere unforgettable.'
+  },
+  {
+    icon: '🚗',
+    title: 'Road Trip',
+    prompt: 'Plan an epic road trip.'
+  },
+  {
+    icon: '✨',
+    title: 'Surprise Me',
+    prompt: 'Take me somewhere adventurous.'
+  }
+], 
   },
   {
     type: 'food',
@@ -131,6 +220,31 @@ export const JOURNEY_THEMES: JourneyTheme[] = [
         'Street food journey',
         'Historic neighborhoods',
         'Local markets and cafés'
-    ]    
+    ],
+    companionGreeting:
+  "Every destination tells a story through its food. What are you craving today?",
+
+companionChoices: [
+  {
+    icon: '🍜',
+    title: 'Street Food',
+    prompt: 'Find incredible street food.'
+  },
+  {
+    icon: '☕',
+    title: 'Coffee',
+    prompt: 'Show me amazing cafés.'
+  },
+  {
+    icon: '🏛',
+    title: 'History',
+    prompt: 'Blend food with culture and history.'
+  },
+  {
+    icon: '✨',
+    title: 'Surprise Me',
+    prompt: 'Recommend somewhere unexpected.'
+  }
+  ],    
   }
 ];

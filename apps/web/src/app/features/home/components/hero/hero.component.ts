@@ -7,8 +7,7 @@ import {
 } from '@angular/core';
 
 import {
-  JourneyTheme,
-  JOURNEY_THEMES
+  JourneyTheme
 } from '../../../../shared/models/journey-theme.model';
 
 @Component({
@@ -18,11 +17,18 @@ import {
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss'
 })
-export class HeroComponent implements OnChanges, OnDestroy {
-  @Input()
-  journey: JourneyTheme = JOURNEY_THEMES[0];
+export class HeroComponent
+  implements OnChanges, OnDestroy {
 
-  previousJourney: JourneyTheme | null = null;
+  @Input({ required: true })
+  journey!: JourneyTheme;
+
+  @Input()
+  isSticky: boolean = false;
+  
+  previousJourney:
+    JourneyTheme | null = null;
+
   isTransitioning: boolean = false;
 
   private transitionTimer:

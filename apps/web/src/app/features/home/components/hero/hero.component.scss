@@ -1,11 +1,16 @@
 :host {
+  position: sticky;
+  top: 88px;
+  z-index: 5;
+
   display: block;
-}
+
+  outline: 3px solid red;
+} 
 
 .hero {
-  position: relative;
+  min-height: calc(100vh - 112px);
 
-  min-height: clamp(520px, 68vh, 720px);
   margin-top: 28px;
   overflow: hidden;
 
@@ -104,6 +109,10 @@
       rgba(15, 23, 42, 0.08) 40%,
       rgba(15, 23, 42, 0.5) 100%
     );
+
+  transition:
+    background 450ms ease,
+    opacity 450ms ease;
 
   pointer-events: none;
 }
@@ -509,14 +518,59 @@ h1,
   font-size: 0.92rem;
 }
 
-@keyframes hero-image-drift {
-  from {
-    transform: scale(1.01);
-  }
+.hero-panel,
+.journey-badge {
+  transition:
+    opacity 350ms ease,
+    visibility 350ms ease,
+    transform 350ms ease;
+}
 
-  to {
-    transform: scale(1.065);
-  }
+.hero-compact-copy small {
+  color: rgba(255, 255, 255, 0.62);
+
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-compact-copy strong {
+  overflow: hidden;
+
+  color: #ffffff;
+
+  font-size: 1rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero-compact-button:hover {
+  box-shadow:
+    0 16px 34px
+    color-mix(
+      in srgb,
+      var(--hero-accent) 42%,
+      transparent
+    );
+
+  transform: translateY(-2px);
+}
+
+.hero-compact-button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+.hero-compact-button span:last-child {
+  font-size: 1.1rem;
+
+  transition: transform 220ms ease;
+}
+
+.hero-compact-button:hover span:last-child {
+  transform: translateX(4px);
 }
 
 @media (max-width: 900px) {
@@ -615,9 +669,15 @@ h1,
 
   .hero-action,
   .hero-action span:last-child,
-  .hero-prompt {
+  .hero-prompt,
+  .hero-panel,
+  .journey-badge,
+  .hero-compact-action,
+  .hero-compact-button,
+  .hero-compact-button span:last-child,
+  .hero-overlay {
     transition: none;
-  } 
+  }
 }
 
 @keyframes hero-image-enter {
@@ -695,3 +755,82 @@ h1,
       scale(1);
   }
 }
+
+//for mobile
+@media (max-width: 768px) {
+  .hero {
+    position: relative;
+    top: auto;
+
+    min-height: 620px;
+  }
+
+  .hero-compact-action {
+    display: none;
+  }
+
+  .hero-panel.is-hidden,
+  .journey-badge.is-hidden {
+    visibility: visible;
+
+    opacity: 1;
+    transform: none;
+
+    pointer-events: auto;
+  }
+}
+
+.hero-panel.is-hidden,
+.journey-badge.is-hidden {
+  visibility: hidden;
+
+  opacity: 0;
+  transform: translateY(-12px);
+
+  pointer-events: none;
+}
+
+.hero-compact-action {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  left: 2rem;
+  z-index: 2;
+
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1rem 1.25rem;
+
+  visibility: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem;
+
+  background: rgba(15, 23, 42, 0.48);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  opacity: 0;
+
+  transform:
+    translateY(-12px)
+    scale(0.98);
+
+  pointer-events: none;
+
+  transition:
+    opacity 300ms ease,
+    visibility 300ms ease,
+    transform 300ms ease;
+}
+
+.hero-compact-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+

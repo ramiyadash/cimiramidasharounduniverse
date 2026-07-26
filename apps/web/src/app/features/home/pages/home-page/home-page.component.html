@@ -1,13 +1,14 @@
 <div class="app-layout">
 
-    <app-sidebar></app-sidebar>
-  
-    <main class="main-content">
-      <header
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+
+    <header
       class="page-header"
       [style.--header-accent]="selectedJourney.accentColor"
       [style.--header-background]="selectedJourney.softBackground"
-     >
+    >
       <p>☀️ Good afternoon, Ramiya</p>
 
       <div class="top-icons">
@@ -16,30 +17,63 @@
         <span class="profile-dot">R</span>
       </div>
     </header>
-  
-      <app-hero
-      [journey]="selectedJourney"
-      ></app-hero>
-  
-      <app-journey-grid
-      [selectedJourney]="selectedJourney"
-      (journeySelected)="onJourneySelected($event)"
-      ></app-journey-grid>
-  
-      <app-continue-planning
-      [journey]="selectedJourney"
-      ></app-continue-planning>
-  
-      <section id="planning-session" class="lower-grid">
-  
-        <app-planning-session
-         [journey]="selectedJourney" 
-        ></app-planning-session>
-  
-        <app-stories></app-stories>
-  
+
+    <div
+      class="compact-hero-region"
+      [class.is-visible]="isHeroSticky"
+    >
+      <div
+        class="compact-hero-bar"
+        [style.--hero-accent]="selectedJourney.accentColor"
+      >
+        <div class="compact-hero-copy">
+          <small>Selected journey</small>
+
+          <strong>
+            {{ selectedJourney.title }}
+          </strong>
+        </div>
+
+        <a
+          class="compact-hero-button"
+          href="#planning-session"
+        >
+          <span>Start planning</span>
+
+          <span aria-hidden="true">
+            →
+          </span>
+        </a>
+      </div>
+    </div>
+
+      <section class="hero-stage">
+        <app-hero
+          [journey]="selectedJourney"
+          [isSticky]="isHeroSticky"
+        ></app-hero>
       </section>
-  
-    </main>
-  
-  </div>
+
+      <app-journey-grid
+        [selectedJourney]="selectedJourney"
+        (journeySelected)="onJourneySelected($event)"
+      ></app-journey-grid>
+
+      <app-continue-planning
+        [journey]="selectedJourney"
+      ></app-continue-planning>
+
+      <section
+        id="planning-session"
+        class="lower-grid"
+      >
+        <app-planning-session
+          [journey]="selectedJourney"
+        ></app-planning-session>
+
+        <app-stories></app-stories>
+      </section>
+
+  </main>
+
+</div>

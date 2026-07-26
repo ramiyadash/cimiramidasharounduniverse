@@ -9,7 +9,10 @@
   >
     @if (previousJourney) {
       <img
-        class="hero-background hero-background-previous"
+        class="
+          hero-background
+          hero-background-previous
+        "
         [class.is-leaving]="isTransitioning"
         [src]="previousJourney.heroImage"
         alt=""
@@ -18,7 +21,10 @@
     }
 
     <img
-      class="hero-background hero-background-current"
+      class="
+        hero-background
+        hero-background-current
+      "
       [class.is-entering]="isTransitioning"
       [src]="journey.heroImage"
       alt=""
@@ -32,63 +38,65 @@
   ></div>
 
   <div
-  class="hero-panel"
-  [class.is-transitioning]="isTransitioning"
->
-  <div class="hero-glass">
-    <div class="hero-eyebrow">
-      <span class="hero-icon">
-        {{ journey.icon }}
-      </span>
+    class="hero-panel"
+    [class.is-transitioning]="isTransitioning"
+    [class.is-hidden]="isSticky"
+  >
+    <div class="hero-glass">
+      <div class="hero-eyebrow">
+        <span class="hero-icon">
+          {{ journey.icon }}
+        </span>
 
-      <span>Your next journey</span>
+        <span>Your next journey</span>
+      </div>
+
+      <h1>
+        {{ journey.heroTitle }}
+
+        <span>
+          {{ journey.heroHighlight }}
+        </span>
+      </h1>
+
+      <p class="hero-subtitle">
+        {{ journey.heroSubtitle }}
+      </p>
+
+      <div
+        class="hero-prompts"
+        aria-label="Journey ideas"
+      >
+        @for (
+          prompt of journey.heroPrompts;
+          track prompt
+        ) {
+          <a
+            class="hero-prompt"
+            href="#planning-session"
+          >
+            {{ prompt }}
+          </a>
+        }
+      </div>
+
+      <a
+        class="hero-action"
+        href="#planning-session"
+      >
+        <span>Start planning</span>
+
+        <span aria-hidden="true">
+          →
+        </span>
+      </a>
     </div>
-
-    <h1>
-      {{ journey.heroTitle }}
-
-      <span>
-        {{ journey.heroHighlight }}
-      </span>
-    </h1>
-
-    <p class="hero-subtitle">
-      {{ journey.heroSubtitle }}
-    </p>
-
-    <div
-      class="hero-prompts"
-      aria-label="Journey ideas"
-    >
-      @for (
-        prompt of journey.heroPrompts;
-        track prompt
-      ) {
-        <a
-          class="hero-prompt"
-          href="#planning-session"
-        >
-          {{ prompt }}
-        </a>
-      }
-    </div>
-
-    <a
-      class="hero-action"
-      href="#planning-session"
-    >
-      <span>Start planning</span>
-
-      <span aria-hidden="true">
-        →
-      </span>
-    </a>
   </div>
-</div>
 
   <div
     class="journey-badge"
     [class.is-transitioning]="isTransitioning"
+    [class.is-hidden]="isSticky"
   >
     <span class="journey-badge-icon">
       {{ journey.icon }}
