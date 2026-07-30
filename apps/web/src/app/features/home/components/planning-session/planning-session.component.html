@@ -4,79 +4,111 @@
   [style.--journey-bg]="journey.selectedBackground"
 >
   <div class="welcome">
-    <div class="avatar">{{ journey.icon }}</div>
+    <div class="avatar">
+      {{ journey.icon }}
+    </div>
 
-    <div class="companion-content">
-      <p class="section-label">Travel Companion</p>
-
-      <h2>{{ journey.planningTitle }}</h2>
-
-      <p class="companion-greeting">
-        {{ journey.companionGreeting }}
+    <div>
+      <p class="section-label">
+        Travel Companion
       </p>
 
-      <p class="planning-message">
+      <h2>
+        {{ journey.planningTitle }}
+      </h2>
+
+      <p>
         {{ journey.planningMessage }}
       </p>
     </div>
   </div>
 
-  @if (!selectedChoice) {
-    <div class="companion-choices">
-      @for (
-        choice of journey.companionChoices;
-        track choice.title
-      ) {
-        <button
-          type="button"
-          class="choice-chip"
-          (click)="selectChoice(choice)"
-        >
-          <span class="choice-icon">
-            {{ choice.icon }}
-          </span>
-
-          <span>{{ choice.title }}</span>
-        </button>
-      }
-    </div>
-  }
-
-  @if (selectedChoice) {
-    <div class="conversation">
-      <div class="user-message">
-        <p class="message-label">You</p>
-
-        <p>
-          <span>{{ selectedChoice.icon }}</span>
-          {{ selectedChoice.title }}
-        </p>
-      </div>
-
-      <div class="dash-message">
-        <p class="message-label">Dash</p>
-
-        <p>{{ companionResponse }}</p>
-      </div>
-
-      <button
-        type="button"
-        class="change-choice-button"
-        (click)="resetConversation()"
+  <div class="conversation">
+    @for (
+      message of conversation;
+      track $index
+    ) {
+      <div
+        class="conversation-message"
+        [class.dash-message]="message.sender === 'dash'"
+        [class.user-message]="message.sender === 'user'"
       >
-        Choose something else
-      </button>
+        <p class="message-label">
+          {{ message.sender === 'dash' ? 'Dash' : 'You' }}
+        </p>
+
+        <div class="message-content">
+          @if (message.icon) {
+            <span class="message-icon">
+              {{ message.icon }}
+            </span>
+          }
+
+          <p>{{ message.text }}</p>
+        </div>
+
+        @if (message.choices?.length) {
+          <div class="companion-choices">
+            @for (
+              choice of message.choices;
+              track choice.title
+            ) {
+              <button
+                type="button"
+                class="choice-chip"
+                (click)="selectChoice(choice)"
+              >
+                <span class="choice-icon">
+                  {{ choice.icon }}
+                </span>
+
+                <span>
+                  {{ choice.title }}
+                </span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+    <!-- TEMPORARY: Shows what Dash has learned -->
+  @if (context) {
+    <div class="context-debug">
+
+      <h4>
+        🧠 Dash's Understanding
+      </h4>
+
+      <pre>
+  {{ context | json }}
+      </pre>
+
     </div>
   }
+
+  <button
+    type="button"
+    class="change-choice-button"
+    (click)="resetConversation()"
+  >
+    Start over
+  </button>
 
   <div class="composer">
     <input
+      type="text"
+      [(ngModel)]="messageInput"
       [placeholder]="journey.inputPlaceholder"
+      (keydown.enter)="sendMessage()"
     />
-
+  
     <button
       type="button"
       aria-label="Send message"
+      [disabled]="!canSendMessage"
+      (click)="sendMessage()"
     >
       ➤
     </button>

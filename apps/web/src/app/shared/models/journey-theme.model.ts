@@ -6,6 +6,13 @@ export interface CompanionChoice {
   prompt: string;
 }
 
+export interface CompanionMessage {
+  sender: 'dash' | 'user';
+  text: string;
+  icon?: string;
+  choices?: CompanionChoice[];
+}
+
 export interface CompanionReply {
   message: string;
   followUpChoices?: CompanionChoice[];
