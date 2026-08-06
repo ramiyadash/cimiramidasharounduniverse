@@ -1,2 +1,2 @@
-# tripmate
-ai chatbot tool to help organize trips
+# Dash Around Universe
+ai companion tool to help organize trips

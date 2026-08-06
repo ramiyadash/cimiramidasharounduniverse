@@ -55,3 +55,174 @@
         transition: 0.2s ease;
       }
   }
+
+  .destination-matches {
+    margin-top: 1.25rem;
+    padding: 1rem;
+  
+    border:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--journey-accent) 24%,
+        transparent
+      );
+  
+    border-radius: 1.1rem;
+  
+    background: rgba(255, 255, 255, 0.62);
+  }
+  
+  .destination-matches-header {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+  
+    margin-bottom: 1rem;
+  }
+  
+  .destination-matches-header h3 {
+    margin: 0.2rem 0 0;
+  
+    font-size: 1.05rem;
+  }
+  
+  .match-count {
+    flex: 0 0 auto;
+  
+    padding: 0.4rem 0.65rem;
+  
+    border-radius: 999px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--journey-accent) 12%,
+        white
+      );
+  
+    color: var(--journey-accent);
+  
+    font-size: 0.75rem;
+    font-weight: 750;
+  }
+  
+  .destination-match-list {
+    display: grid;
+    gap: 0.8rem;
+  }
+  
+  .destination-match-card {
+    position: relative;
+  
+    display: grid;
+    grid-template-columns:
+      auto
+      minmax(0, 1fr);
+  
+    gap: 0.8rem;
+  
+    padding: 0.9rem;
+  
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.9rem;
+  
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  .destination-match-rank {
+    display: grid;
+  
+    width: 34px;
+    height: 34px;
+  
+    place-items: center;
+  
+    border-radius: 0.75rem;
+  
+    background: var(--journey-accent);
+    color: #ffffff;
+  
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+  
+  .destination-match-copy {
+    min-width: 0;
+  }
+  
+  .destination-match-title {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .destination-match-title h4,
+  .destination-match-title p {
+    margin: 0;
+  }
+  
+  .destination-match-title p {
+    margin-top: 0.15rem;
+  
+    color: #64748b;
+    font-size: 0.78rem;
+  }
+  
+  .destination-match-score {
+    color: var(--journey-accent);
+  
+    font-size: 1rem;
+  }
+  
+  .destination-match-description {
+    margin: 0.65rem 0;
+  
+    color: #475569;
+  
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  
+  .destination-match-reasons,
+  .destination-match-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  
+  .destination-match-reasons span,
+  .destination-match-meta span {
+    padding: 0.35rem 0.55rem;
+  
+    border-radius: 999px;
+  
+    background: #f1f5f9;
+    color: #475569;
+  
+    font-size: 0.7rem;
+    font-weight: 650;
+  }
+  
+  .destination-match-meta {
+    margin-top: 0.65rem;
+  }
+
+  .dash-thinking {
+    opacity: 0.78;
+  }
+  
+  .dash-thinking p:last-child {
+    font-style: italic;
+  }
+  
+  .ai-error-message {
+    margin: 0.75rem 0 0;
+  
+    color: #b91c1c;
+  
+    font-size: 0.82rem;
+    font-weight: 650;
+  }

@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.json({
     status: "ok",
-    app: "TripMate AI Backend"
+    app: "Dash Around Universe Backend"
   });
 });
 

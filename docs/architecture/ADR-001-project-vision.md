@@ -26,7 +26,7 @@ Mobile applications (Android and iOS)
 Web application
 Decision
 
-TripMate AI will be developed as a modular, scalable product using modern engineering practices rather than as a prototype.
+DAU will be developed as a modular, scalable product using modern engineering practices rather than as a prototype.
 
 Architecture decisions, project structure, coding standards, and feature evolution will be documented throughout development.
 

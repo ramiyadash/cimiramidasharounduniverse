@@ -1,25 +1,37 @@
-const travelAiService = require("../services/travel-ai.service");
+const travelAiService =
+  require('../services/travel-ai.service');
 
-exports.sendMessage = async (req, res, next) => {
+exports.sendMessage = async function (
+  req,
+  res,
+  next
+) {
   try {
-    const { message, conversationId = "default" } = req.body;
+    const {
+      message,
+      conversationId = 'default'
+    } = req.body;
 
-    if (!message || !message.trim()) {
+    if (
+      typeof message !== 'string' ||
+      !message.trim()
+    ) {
       return res.status(400).json({
-        error: "Message is required"
+        error: 'Message is required'
       });
     }
 
-    const reply = await travelAiService.generateTravelResponse({
+    const reply =
+      await travelAiService.generateTravelResponse({
         conversationId,
-        message
+        message: message.trim()
       });
-  
-      res.json({
-        conversationId,
-        reply
-      });
-    }catch (error) {
-    next(error);
+
+    return res.json({
+      conversationId,
+      reply
+    });
+  } catch (error) {
+    return next(error);
   }
 };

@@ -4,7 +4,7 @@ Date: 2026-06-25
 
 Objective
 
-Successfully run an open-weight Large Language Model locally and integrate it into the TripMate backend.
+Successfully run an open-weight Large Language Model locally and integrate it into the DAU backend.
 
 What We Did
 Installed Ollama

@@ -21,6 +21,30 @@ import {
 } from
 '../../../../shared/models/travel-companion-context.model';
 
+import {
+  DESTINATION_KNOWLEDGE
+} from '../../../../shared/data/destination-knowledge';
+
+import {
+  Destination
+} from '../../../../shared/models/destination.model';
+
+import {
+  DestinationMatch
+} from '../../../../shared/models/destination-match.model';
+
+import {
+  DestinationMatcherService
+} from '../../../../shared/services/destination-matcher.service';
+
+import {
+  finalize
+} from 'rxjs';
+
+import {
+  DashApiService
+} from '../../../../shared/services/dash-api-service';
+
 @Component({
   selector: 'app-planning-session',
   imports: [
@@ -47,6 +71,13 @@ export class PlanningSessionComponent implements OnChanges {
   // Stores the text currently entered in the composer.
   messageInput: string = '';
 
+  isDashThinking: boolean = false;
+
+  aiErrorMessage: string = '';
+
+  private readonly conversationId: string =
+    `dash-${Date.now()}`;
+
   // Prevents an empty message from being submitted.
   get canSendMessage(): boolean {
     return this.messageInput.trim().length > 0;
@@ -61,11 +92,32 @@ export class PlanningSessionComponent implements OnChanges {
   // trip-direction message during one planning session.
   private hasShownTripDirection: boolean = false;
 
+  readonly destinations: Destination[] =
+  DESTINATION_KNOWLEDGE;
+
+  constructor(
+    private readonly destinationMatcher:
+      DestinationMatcherService,
+  
+    private readonly travelChatService:
+      DashApiService
+  ) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['journey']?.currentValue) {
       this.startConversation();
     }
   }
+
+  get topDestinationMatches():
+  DestinationMatch[] {
+  return this.destinationMatcher
+    .rankDestinations(
+      this.destinations,
+      this.context
+    )
+    .slice(0, 3);
+}
 
   /**
    * Starts a fresh conversation whenever the journey changes.
@@ -142,51 +194,77 @@ export class PlanningSessionComponent implements OnChanges {
    * Adds a typed message to the conversation and lets
    * Dash learn from the text using local rules.
    */
-  sendMessage(): void {
-    const message: string =
-      this.messageInput.trim();
-
-    if (!message) {
-      return;
-    }
-
-    // Old chips should no longer remain active after
-    // the traveler begins typing a new response.
-    this.removePreviousChoices();
-
-    this.conversation.push({
-      sender: 'user',
-      text: message
-    });
-
-    // Learn from the typed sentence before responding.
-    const learnedDetails: string[] =
-      this.learnFromMessage(message);
-
-    this.messageInput = '';
-
-    this.conversation.push({
-      sender: 'dash',
-      text: this.buildTypedMessageReply(
-        learnedDetails
-      ),
-      icon: this.journey.icon
-    });
+    sendMessage(): void {
+      const message: string =
+        this.messageInput.trim();
     
-    // NEW:
-    // Once enough preferences are known, Dash connects
-    // them into a possible trip direction.
-    const tripDirection: string | null =
-      this.getTripDirection();
+      if (
+        !message ||
+        this.isDashThinking
+      ) {
+        return;
+      }
     
-    if (tripDirection) {
+      this.removePreviousChoices();
+    
       this.conversation.push({
-        sender: 'dash',
-        text: tripDirection,
-        icon: this.journey.icon
+        sender: 'user',
+        text: message
       });
+    
+      // Keep Dash's existing local learning.
+      const learnedDetails: string[] =
+        this.learnFromMessage(message);
+    
+      this.messageInput = '';
+      this.aiErrorMessage = '';
+      this.isDashThinking = true;
+    
+      this.travelChatService
+        .sendMessage({
+          conversationId:
+            this.conversationId,
+          message
+        })
+        .pipe(
+          finalize((): void => {
+            this.isDashThinking = false;
+          })
+        )
+        .subscribe({
+          next: (
+            response
+          ): void => {
+            this.conversation.push({
+              sender: 'dash',
+              text: response.reply,
+              icon: this.journey.icon
+            });
+          },
+    
+          error: (
+            error: unknown
+          ): void => {
+            console.error(
+              'Dash AI request failed:',
+              error
+            );
+    
+            this.aiErrorMessage =
+              'Dash could not reach the AI service. Please try again.';
+    
+            // Local fallback keeps the companion usable.
+            this.conversation.push({
+              sender: 'dash',
+              text:
+                this.buildTypedMessageReply(
+                  learnedDetails
+                ),
+              icon: this.journey.icon
+            });
+          }
+        });
     }
-  }
     /**
    * Extracts simple travel preferences from typed text.
    *
@@ -1368,6 +1446,13 @@ private learnBudgetFromMessage(
       case 'City':
         this.context.destinationStyle = 'city';
         break;
+
+      case 'Nightlife':
+          this.addUnique(
+            this.context.activities,
+            'nightlife'
+          );
+          break;  
   
       // NEW: Family journey choices
       case 'Beach':
@@ -1432,6 +1517,27 @@ private learnBudgetFromMessage(
       case 'Surprise Me':
         this.context.destinationStyle = 'surprise';
         break;
+
+      case 'Live Music':
+          this.addUnique(
+            this.context.activities,
+            'live music'
+          );
+          break;
+        
+      case 'Museums':
+          this.addUnique(
+            this.context.activities,
+            'museums'
+          );
+          break;
+        
+      case 'Shopping':
+          this.addUnique(
+            this.context.activities,
+            'shopping'
+          );
+          break;  
     }
   }
 
