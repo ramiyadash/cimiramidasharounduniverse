@@ -1,0 +1,267 @@
+:host {
+    display: block;
+  }
+  
+  .profile-page {
+    width:
+      min(
+        1500px,
+        calc(100% - 2rem)
+      );
+  
+    margin: 0 auto;
+    padding:
+      1.5rem
+      0
+      3rem;
+  }
+  
+  .profile-introduction {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  
+    margin-bottom: 1rem;
+    padding:
+      1.25rem
+      1.5rem;
+  
+    border: 1px solid
+      rgba(37, 99, 235, 0.14);
+  
+    border-radius: 1.5rem;
+  
+    background:
+      linear-gradient(
+        135deg,
+        rgba(239, 246, 255, 0.96),
+        rgba(255, 255, 255, 0.94)
+      );
+  
+    box-shadow:
+      0 18px 45px
+        rgba(15, 23, 42, 0.08);
+  }
+  
+  .profile-avatar {
+    display: grid;
+    flex: 0 0 auto;
+  
+    width: 64px;
+    height: 64px;
+  
+    place-items: center;
+  
+    border: 3px solid
+      rgba(255, 255, 255, 0.88);
+  
+    border-radius: 50%;
+  
+    background:
+      linear-gradient(
+        145deg,
+        #1d5deb,
+        #5688ff
+      );
+  
+    box-shadow:
+      0 10px 25px
+        rgba(37, 99, 235, 0.25);
+  
+    color: #ffffff;
+  
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+  
+  .profile-identity {
+    min-width: 0;
+  }
+  
+  .profile-eyebrow {
+    margin: 0 0 0.2rem;
+  
+    color: #2563eb;
+  
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  
+  .profile-identity h1 {
+    margin: 0;
+  
+    color: #101a33;
+  
+    font-size:
+      clamp(
+        1.6rem,
+        3vw,
+        2.35rem
+      );
+  
+    letter-spacing: -0.04em;
+  }
+  
+  .profile-identity > p:last-child {
+    margin:
+      0.35rem
+      0
+      0;
+  
+    color: #60708d;
+  
+    line-height: 1.5;
+  }
+  
+  .profile-settings {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+  
+    margin-left: auto;
+    padding:
+      0.7rem
+      1rem;
+  
+    border: 1px solid
+      rgba(37, 99, 235, 0.2);
+  
+    border-radius: 999px;
+  
+    background: #ffffff;
+  
+    color: #235ee7;
+  
+    cursor: pointer;
+  
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 800;
+  
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+  
+  .profile-settings:hover {
+    transform: translateY(-1px);
+  
+    box-shadow:
+      0 8px 18px
+        rgba(37, 99, 235, 0.12);
+  }
+  
+  .profile-tabs {
+    display: flex;
+    gap: 0.55rem;
+  
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    padding: 0.15rem;
+  }
+  
+  .profile-tab {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+  
+    min-width: max-content;
+    padding:
+      0.7rem
+      1rem;
+  
+    border: 1px solid
+      rgba(148, 163, 184, 0.22);
+  
+    border-radius: 999px;
+  
+    background:
+      rgba(255, 255, 255, 0.82);
+  
+    color: #62708a;
+  
+    cursor: pointer;
+  
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 750;
+  
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+  
+  .profile-tab:hover {
+    border-color:
+      rgba(37, 99, 235, 0.28);
+  
+    color: #2563eb;
+    transform: translateY(-1px);
+  }
+  
+  .profile-tab.is-active {
+    border-color:
+      rgba(37, 99, 235, 0.34);
+  
+    background:
+      linear-gradient(
+        135deg,
+        #e7efff,
+        #f5f8ff
+      );
+  
+    box-shadow:
+      0 7px 18px
+        rgba(37, 99, 235, 0.1);
+  
+    color: #1f5ee8;
+  }
+  
+  @media (
+    max-width: 700px
+  ) {
+    .profile-page {
+      width:
+        min(
+          100% - 1rem,
+          1500px
+        );
+  
+      padding-top: 0.75rem;
+    }
+  
+    .profile-introduction {
+      align-items: flex-start;
+      padding: 1rem;
+    }
+  
+    .profile-avatar {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .profile-settings {
+      width: 42px;
+      height: 42px;
+      margin-left: auto;
+      padding: 0;
+  
+      justify-content: center;
+    }
+  
+    .profile-settings {
+      font-size: 0;
+    }
+  
+    .profile-settings span {
+      font-size: 1rem;
+    }
+  
+    .profile-identity > p:last-child {
+      display: none;
+    }
+  }
