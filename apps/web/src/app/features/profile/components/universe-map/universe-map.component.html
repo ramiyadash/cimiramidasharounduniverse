@@ -2,7 +2,7 @@
     <header class="universe-header">
       <div>
         <p class="universe-eyebrow">
-          🌎 My Universe
+          My Universe ✨
         </p>
   
         <h1>
@@ -10,9 +10,8 @@
         </h1>
   
         <p class="universe-description">
-          Every destination becomes part of
-          your story—and every dream adds a
-          new horizon.
+          Everywhere you have been,
+          plan to go, and dream about.
         </p>
       </div>
   
@@ -49,61 +48,191 @@
       </div>
     </header>
   
-    <nav
-      class="universe-filters"
-      aria-label="Filter universe destinations">
-  
-      <button
-        type="button"
-        [class.is-active]="
-          activeFilter === 'all'
-        "
-        (click)="setFilter('all')">
-        All places
-      </button>
-  
-      <button
-        type="button"
-        class="filter-visited"
-        [class.is-active]="
-          activeFilter === 'visited'
-        "
-        (click)="setFilter('visited')">
-        <span class="filter-dot"></span>
-        Visited
-      </button>
-  
-      <button
-        type="button"
-        class="filter-planned"
-        [class.is-active]="
-          activeFilter === 'planned'
-        "
-        (click)="setFilter('planned')">
-        <span class="filter-dot"></span>
-        Planned
-      </button>
-  
-      <button
-        type="button"
-        class="filter-dreaming"
-        [class.is-active]="
-          activeFilter === 'dreaming'
-        "
-        (click)="setFilter('dreaming')">
-        <span class="filter-dot"></span>
-        Dreaming
-      </button>
-    </nav>
-  
-    <div class="universe-stage">
+    <div class="universe-toolbar">
       <div
-        #mapContainer
-        class="universe-map"
-        aria-label="Interactive map of journeys">
+        class="universe-view-switch"
+        aria-label="Universe view">
+  
+        <button
+          type="button"
+          [class.is-active]="
+            viewMode === 'map'
+          "
+          (click)="setViewMode('map')">
+          🗺 Map
+        </button>
+  
+        <button
+          type="button"
+          [class.is-active]="
+            viewMode === 'list'
+          "
+          (click)="setViewMode('list')">
+          ☰ List
+        </button>
       </div>
   
-      <div class="universe-map-shade"></div>
+      <nav
+        class="universe-filters"
+        aria-label="Filter destinations">
+  
+        <button
+          type="button"
+          [class.is-active]="
+            activeFilter === 'all'
+          "
+          (click)="setFilter('all')">
+          All places
+        </button>
+  
+        <button
+          type="button"
+          class="filter-visited"
+          [class.is-active]="
+            activeFilter === 'visited'
+          "
+          (click)="setFilter('visited')">
+  
+          <span class="filter-dot"></span>
+          Visited
+        </button>
+  
+        <button
+          type="button"
+          class="filter-planned"
+          [class.is-active]="
+            activeFilter === 'planned'
+          "
+          (click)="setFilter('planned')">
+  
+          <span class="filter-dot"></span>
+          Planned
+        </button>
+  
+        <button
+          type="button"
+          class="filter-dreaming"
+          [class.is-active]="
+            activeFilter === 'dreaming'
+          "
+          (click)="setFilter('dreaming')">
+  
+          <span class="filter-dot"></span>
+          Dreaming
+        </button>
+      </nav>
+  
+      <button
+        type="button"
+        class="universe-add-place">
+        <span aria-hidden="true">
+          ＋
+        </span>
+  
+        Add a place
+      </button>
+    </div>
+  
+    <div class="universe-explorer">
+      <section
+        class="universe-stage"
+        [class.is-list-view]="
+          viewMode === 'list'
+        ">
+  
+        <div
+          #mapContainer
+          class="universe-map"
+          [class.is-hidden]="
+            viewMode === 'list'
+          "
+          aria-label="Interactive journey map">
+        </div>
+  
+        @if (
+          viewMode === 'list'
+        ) {
+          <div class="universe-list-view">
+            @for (
+              place of visiblePlaces;
+              track place.id
+            ) {
+              <button
+                type="button"
+                class="universe-list-card"
+                [class.is-selected]="
+                  selectedPlace?.id === place.id
+                "
+                (click)="selectPlace(place)">
+  
+                <span class="universe-list-flag">
+                  {{ place.emoji }}
+                </span>
+  
+                <span class="universe-list-content">
+                  <strong>
+                    {{ place.country }}
+                  </strong>
+  
+                  <small>
+                    {{ place.locations }}
+                  </small>
+  
+                  <span class="universe-list-date">
+                    {{ place.date }}
+                  </span>
+                </span>
+  
+                <span
+                  [class]="
+                    'universe-list-dot ' +
+                    'universe-list-dot--' +
+                    place.status
+                  ">
+                </span>
+              </button>
+            }
+          </div>
+        }
+  
+        @if (
+          viewMode === 'map'
+        ) {
+          <div class="universe-place-list">
+            @for (
+              place of visiblePlaces;
+              track place.id
+            ) {
+              <button
+                type="button"
+                class="universe-place-chip"
+                [class.is-selected]="
+                  selectedPlace?.id === place.id
+                "
+                (click)="selectPlace(place)">
+  
+                <span>
+                  {{ place.emoji }}
+                </span>
+  
+                <span>
+                  <strong>
+                    {{ place.country }}
+                  </strong>
+  
+                  <small>
+                    {{
+                      statusLabel(
+                        place.status
+                      )
+                    }}
+                  </small>
+                </span>
+              </button>
+            }
+          </div>
+        }
+      </section>
   
       @if (selectedPlace) {
         <article class="universe-place-card">
@@ -115,114 +244,195 @@
             ×
           </button>
   
-          <div class="universe-country">
-            {{ selectedPlace.emoji }}
-          </div>
-  
-          <span
-            class="universe-status"
+          <div
             [class]="
-              'universe-status ' +
-              'universe-status--' +
+              'universe-place-visual ' +
+              'universe-place-visual--' +
               selectedPlace.status
             ">
-            {{
-              statusLabel(
+  
+            <span>
+              {{ selectedPlace.emoji }}
+            </span>
+          </div>
+  
+          <div class="universe-place-body">
+            <span
+              [class]="
+                'universe-status ' +
+                'universe-status--' +
                 selectedPlace.status
-              )
-            }}
+              ">
+  
+              <span class="universe-status-dot"></span>
+  
+              {{
+                statusLabel(
+                  selectedPlace.status
+                )
+              }}
+            </span>
+  
+            <h2>
+              {{ selectedPlace.country }}
+            </h2>
+  
+            <p class="universe-region">
+              {{ selectedPlace.region }}
+            </p>
+  
+            <p class="universe-description-text">
+              {{ selectedPlace.description }}
+            </p>
+  
+            <p class="universe-locations">
+              {{ selectedPlace.locations }}
+            </p>
+  
+            <div class="universe-card-stats">
+              <div>
+                <strong>
+                  {{ selectedPlace.journeys }}
+                </strong>
+  
+                <span>
+                  Journeys
+                </span>
+              </div>
+  
+              <div>
+                <strong>
+                  {{ selectedPlace.photos }}
+                </strong>
+  
+                <span>
+                  Photos
+                </span>
+              </div>
+  
+              <div>
+                <strong>
+                  {{ selectedPlace.stories }}
+                </strong>
+  
+                <span>
+                  Stories
+                </span>
+              </div>
+            </div>
+  
+            <div class="universe-visit-date">
+              <span>
+                Journey date
+              </span>
+  
+              <strong>
+                {{ selectedPlace.date }}
+              </strong>
+            </div>
+  
+            @if (
+              selectedPlace.status === 'visited'
+            ) {
+              <button
+                type="button"
+                class="universe-primary-action">
+                View memories
+              </button>
+  
+              <button
+                type="button"
+                class="universe-secondary-action">
+                Plan a return trip
+              </button>
+            }
+  
+            @if (
+              selectedPlace.status === 'planned'
+            ) {
+              <button
+                type="button"
+                class="universe-primary-action">
+                Continue planning
+              </button>
+            }
+  
+            @if (
+              selectedPlace.status === 'dreaming'
+            ) {
+              <button
+                type="button"
+                class="universe-primary-action">
+                Start planning
+              </button>
+            }
+          </div>
+        </article>
+      } @else {
+        <aside class="universe-empty-card">
+          <span class="universe-empty-icon">
+            ✨
           </span>
   
           <h2>
-            {{ selectedPlace.country }}
+            Explore your universe
           </h2>
   
-          <p class="universe-date">
-            {{ selectedPlace.date }}
+          <p>
+            Select a destination to see its
+            journeys, stories, and memories.
           </p>
-  
-          <p class="universe-locations">
-            {{ selectedPlace.locations }}
-          </p>
-  
-          <div class="universe-card-stats">
-            <span>
-              <strong>
-                {{ selectedPlace.journeys }}
-              </strong>
-              journeys
-            </span>
-  
-            <span>
-              <strong>
-                {{ selectedPlace.stories }}
-              </strong>
-              stories
-            </span>
-          </div>
-  
-          @if (
-            selectedPlace.status === 'visited'
-          ) {
-            <button
-              type="button"
-              class="universe-primary-action">
-              Explore memories
-              <span>→</span>
-            </button>
-          }
-  
-          @if (
-            selectedPlace.status === 'planned'
-          ) {
-            <button
-              type="button"
-              class="universe-primary-action">
-              Continue planning
-              <span>→</span>
-            </button>
-          }
-  
-          @if (
-            selectedPlace.status === 'dreaming'
-          ) {
-            <button
-              type="button"
-              class="universe-primary-action">
-              Start a journey
-              <span>→</span>
-            </button>
-          }
-        </article>
+        </aside>
       }
-  
-      <div class="universe-place-list">
-        @for (
-          place of visiblePlaces;
-          track place.id
-        ) {
-          <button
-            type="button"
-            class="universe-place-chip"
-            [class.is-selected]="
-              selectedPlace?.id === place.id
-            "
-            (click)="selectPlace(place)">
-            <span>
-              {{ place.emoji }}
-            </span>
-  
-            <span>
-              <strong>
-                {{ place.country }}
-              </strong>
-  
-              <small>
-                {{ statusLabel(place.status) }}
-              </small>
-            </span>
-          </button>
-        }
-      </div>
     </div>
+  
+    <section class="universe-numbers">
+      <div>
+        <span>🌍</span>
+  
+        <strong>
+          {{ visitedCount }}
+        </strong>
+  
+        <small>
+          Countries visited
+        </small>
+      </div>
+  
+      <div>
+        <span>🗺</span>
+  
+        <strong>
+          {{ places.length }}
+        </strong>
+  
+        <small>
+          Destinations
+        </small>
+      </div>
+  
+      <div>
+        <span>✈️</span>
+  
+        <strong>
+          {{ plannedCount }}
+        </strong>
+  
+        <small>
+          Planned journeys
+        </small>
+      </div>
+  
+      <div>
+        <span>📷</span>
+  
+        <strong>
+          {{ totalPhotos }}
+        </strong>
+  
+        <small>
+          Travel photos
+        </small>
+      </div>
+    </section>
   </section>

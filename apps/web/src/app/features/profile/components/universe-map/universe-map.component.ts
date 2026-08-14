@@ -23,33 +23,40 @@ type UniverseFilter =
   | UniverseStatus
   | 'all';
 
+type UniverseView =
+  | 'map'
+  | 'list';
+
 interface UniversePlace {
   id: string;
   country: string;
+  region: string;
   locations: string;
   date: string;
+  description: string;
   status: UniverseStatus;
   coordinates: [number, number];
   emoji: string;
   journeys: number;
+  photos: number;
   stories: number;
 }
 
 @Component({
   selector: 'app-universe-map',
+
   imports: [],
+
   templateUrl:
     './universe-map.component.html',
+
   styleUrl:
     './universe-map.component.scss',
 
   /**
-   * MapLibre creates its marker elements dynamically.
-   * Disabling style encapsulation allows this component's
-   * marker styles to reach those generated elements.
-   *
-   * All classes are prefixed with "universe-" to prevent
-   * them from affecting other application components.
+   * MapLibre creates marker elements dynamically.
+   * Disabling encapsulation lets this component style
+   * those generated elements.
    */
   encapsulation:
     ViewEncapsulation.None
@@ -73,21 +80,27 @@ export class UniverseMapComponent
   activeFilter: UniverseFilter =
     'all';
 
+  viewMode: UniverseView =
+    'map';
+
   selectedPlace?: UniversePlace;
 
   /**
-   * Temporary local data for our first visual milestone.
+   * Temporary development data.
    *
-   * Later, this will come from Journey, Story and
-   * TravelerProfile records in MongoDB.
+   * This will eventually come from MongoDB journeys,
+   * stories and the traveler profile.
    */
   readonly places: UniversePlace[] = [
     {
       id: 'peru-2025',
       country: 'Peru',
+      region: 'South America',
       locations:
         'Cusco · Machu Picchu · Lima',
       date: 'July 2025',
+      description:
+        'Ancient cities, mountain landscapes and unforgettable discoveries across Peru.',
       status: 'visited',
       coordinates: [
         -75.0152,
@@ -95,14 +108,18 @@ export class UniverseMapComponent
       ],
       emoji: '🇵🇪',
       journeys: 1,
+      photos: 87,
       stories: 3
     },
     {
       id: 'india-2026',
       country: 'India',
+      region: 'Asia',
       locations:
         'Mumbai · Andaman · Bhubaneswar · Meghalaya',
       date: 'Apr–May 2026',
+      description:
+        'A journey filled with culture, food, coastlines and remarkable landscapes.',
       status: 'visited',
       coordinates: [
         78.9629,
@@ -110,14 +127,18 @@ export class UniverseMapComponent
       ],
       emoji: '🇮🇳',
       journeys: 1,
+      photos: 134,
       stories: 5
     },
     {
       id: 'guatemala-2026',
       country: 'Guatemala',
+      region: 'Central America',
       locations:
         'Antigua · Lake Atitlán · Tikal',
       date: 'July 2026',
+      description:
+        'Colorful towns, volcanic lakes and the ancient stories of the Maya world.',
       status: 'visited',
       coordinates: [
         -90.2308,
@@ -125,14 +146,18 @@ export class UniverseMapComponent
       ],
       emoji: '🇬🇹',
       journeys: 1,
+      photos: 62,
       stories: 3
     },
     {
       id: 'japan-2027',
       country: 'Japan',
+      region: 'Asia',
       locations:
         'Tokyo · Kyoto · Osaka',
-      date: '2027',
+      date: 'Planned for 2027',
+      description:
+        'A future journey through modern cities, historic neighborhoods and local flavors.',
       status: 'planned',
       coordinates: [
         138.2529,
@@ -140,14 +165,18 @@ export class UniverseMapComponent
       ],
       emoji: '🇯🇵',
       journeys: 1,
+      photos: 0,
       stories: 0
     },
     {
       id: 'iceland-dream',
       country: 'Iceland',
+      region: 'Europe',
       locations:
         'Reykjavík · South Coast',
       date: 'Someday',
+      description:
+        'A dream of waterfalls, glaciers, northern lights and dramatic open landscapes.',
       status: 'dreaming',
       coordinates: [
         -19.0208,
@@ -155,13 +184,17 @@ export class UniverseMapComponent
       ],
       emoji: '🇮🇸',
       journeys: 0,
+      photos: 0,
       stories: 0
     }
   ];
 
   constructor(
     private readonly zone: NgZone
-  ) {}
+  ) {
+    this.selectedPlace =
+      this.places[0];
+  }
 
   ngAfterViewInit(): void {
     this.createMap();
@@ -193,6 +226,17 @@ export class UniverseMapComponent
     ).length;
   }
 
+  get totalPhotos(): number {
+    return this.places.reduce(
+      (
+        total: number,
+        place: UniversePlace
+      ): number =>
+        total + place.photos,
+      0
+    );
+  }
+
   get visiblePlaces(): UniversePlace[] {
     if (this.activeFilter === 'all') {
       return this.places;
@@ -201,26 +245,39 @@ export class UniverseMapComponent
     return this.places.filter(
       place =>
         place.status ===
-        this.activeFilter
+          this.activeFilter
     );
+  }
+
+  setViewMode(
+    viewMode: UniverseView
+  ): void {
+    this.viewMode = viewMode;
+
+    /**
+     * MapLibre needs to recalculate its canvas after
+     * becoming visible again.
+     */
+    if (viewMode === 'map') {
+      setTimeout(
+        () => {
+          this.map?.resize();
+        },
+        0
+      );
+    }
   }
 
   setFilter(
     filter: UniverseFilter
   ): void {
     this.activeFilter = filter;
-    this.selectedPlace = undefined;
+
+    this.selectedPlace =
+      this.visiblePlaces[0];
 
     this.updateMarkerVisibility();
-
-    this.map?.flyTo({
-      center: [
-        10,
-        18
-      ],
-      zoom: 1.25,
-      duration: 900
-    });
+    this.resetMapView();
   }
 
   selectPlace(
@@ -231,23 +288,18 @@ export class UniverseMapComponent
     this.map?.flyTo({
       center:
         place.coordinates,
-      zoom: 3.4,
-      duration: 1200,
+
+      zoom: 3.5,
+
+      duration: 1100,
+
       essential: true
     });
   }
 
   closePlace(): void {
     this.selectedPlace = undefined;
-
-    this.map?.flyTo({
-      center: [
-        10,
-        18
-      ],
-      zoom: 1.25,
-      duration: 900
-    });
+    this.resetMapView();
   }
 
   statusLabel(
@@ -258,7 +310,7 @@ export class UniverseMapComponent
         return 'Visited';
 
       case 'planned':
-        return 'Planning';
+        return 'Planned';
 
       case 'dreaming':
         return 'Dreaming';
@@ -270,67 +322,50 @@ export class UniverseMapComponent
       new MapLibreMap({
         container:
           this.mapContainer.nativeElement,
-  
-        /**
-         * OpenFreeMap provides a full vector map based
-         * on OpenStreetMap data without requiring an
-         * application API key.
-         */
+
         style:
           'https://tiles.openfreemap.org/styles/liberty',
-  
+
         center: [
-          5,
-          18
+          10,
+          20
         ],
-  
-        zoom: 1.8,
-  
-        minZoom: 0.8,
-  
+
+        zoom: 0.9,
+
+        minZoom: 0.5,
+
         maxZoom: 8,
-  
+
+        /**
+         * Prevents repeated copies of the world from
+         * appearing when the user pans horizontally.
+         */
+        renderWorldCopies: false,
+
         attributionControl: false
       });
-  
+
     this.map.addControl(
       new NavigationControl({
         showCompass: false,
         showZoom: true
       }),
-      'top-right'
+      'top-left'
     );
 
-    this.addMarkers();
-  
-    /**
-     * The OpenFreeMap style is a normal flat map.
-     * Once its style loads, switch its projection
-     * into the interactive globe used by My Universe.
-     */
     this.map.on(
-      'style.load',
+      'load',
       () => {
-        this.map?.setProjection({
-          type: 'globe'
-        });
-    
         /**
-         * DOM markers do not depend on the vector tiles
-         * finishing their download. Add them as soon as
-         * the map style is ready.
+         * Wait until the map canvas and style are ready
+         * before attaching the destination markers.
          */
-        if (this.markers.size === 0) {
-          this.addMarkers();
-        }
+        this.addMarkers();
+        this.resetMapView(0);
       }
     );
-  
-    /**
-     * Keep this during development. If a tile,
-     * style or worker fails, the exact reason will
-     * appear in the browser console.
-     */
+
     this.map.on(
       'error',
       event => {
@@ -338,6 +373,27 @@ export class UniverseMapComponent
           'Universe map error:',
           event.error
         );
+      }
+    );
+  }
+
+  private resetMapView(
+    duration = 900
+  ): void {
+    this.map?.fitBounds(
+      [
+        [
+          -170,
+          -55
+        ],
+        [
+          180,
+          75
+        ]
+      ],
+      {
+        padding: 45,
+        duration
       }
     );
   }
@@ -376,38 +432,41 @@ export class UniverseMapComponent
   ): HTMLButtonElement {
     const markerElement =
       document.createElement('button');
-
+  
     markerElement.type = 'button';
-
+  
     markerElement.className =
       `universe-marker ` +
       `universe-marker--${place.status}`;
-
+  
+    markerElement.title =
+      `${place.country} — ` +
+      `${this.statusLabel(place.status)}`;
+  
     markerElement.setAttribute(
       'aria-label',
-      `${place.country}: ` +
-      `${this.statusLabel(place.status)}`
+      markerElement.title
     );
-
+  
     markerElement.innerHTML = `
       <span
         class="universe-marker__pulse">
       </span>
-
+  
       <span
-        class="universe-marker__core">
-        ${place.emoji}
+        class="universe-marker__pin">
+  
+        <span
+          class="universe-marker__emoji">
+          ${place.emoji}
+        </span>
+  
       </span>
     `;
-
+  
     markerElement.addEventListener(
       'click',
       () => {
-        /**
-         * The marker is created outside Angular's
-         * template, so explicitly return to Angular's
-         * zone before updating the selected card.
-         */
         this.zone.run(
           () => {
             this.selectPlace(place);
@@ -415,7 +474,7 @@ export class UniverseMapComponent
         );
       }
     );
-
+  
     return markerElement;
   }
 
