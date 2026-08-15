@@ -30,6 +30,51 @@
   </a>
 </nav>
 
+@if (currentUser(); as user) {
+  <section class="sidebar-account">
+    @if (
+      user.avatarUrl &&
+      failedAvatarUrl() !== user.avatarUrl
+    ) {
+      <img
+        class="sidebar-avatar"
+        [src]="user.avatarUrl"
+        alt=""
+        aria-hidden="true"
+        (error)="handleAvatarError(user.avatarUrl)">
+    } @else {
+      <span
+        class="sidebar-avatar-fallback"
+        aria-hidden="true">
+        {{
+          user.displayName
+            .charAt(0)
+            .toUpperCase()
+        }}
+      </span>
+    }
+
+    <div class="sidebar-account-details">
+      <strong>
+        {{ user.displayName }}
+      </strong>
+
+      <small>
+        {{ user.email }}
+      </small>
+    </div>
+
+    <button
+      type="button"
+      class="sidebar-logout"
+      aria-label="Sign out"
+      title="Sign out"
+      (click)="logout()">
+      ↪
+    </button>
+  </section>
+}
+
 <div class="sidebar-note">
   <span>✨</span>
 

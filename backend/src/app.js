@@ -1,18 +1,97 @@
-const express = require("express");
-const cors = require("cors");
+const express =
+  require('express');
 
-const healthRoutes = require("./routes/health.routes");
-const chatRoutes = require("./routes/chat.routes");
-const errorMiddleware = require("./middleware/error.middleware");
+const cors =
+  require('cors');
 
-const app = express();
+const cookieParser =
+  require('cookie-parser');
 
-app.use(cors());
-app.use(express.json());
+const healthRoutes =
+  require('./routes/health.routes');
 
-app.use("/api/health", healthRoutes);
-app.use("/api/chat", chatRoutes);
+const chatRoutes =
+  require('./routes/chat.routes');
 
-app.use(errorMiddleware);
+const authRoutes =
+  require('./routes/auth.routes');
 
-module.exports = app;
+const errorMiddleware =
+  require('./middleware/error.middleware');
+
+const app =
+  express();
+
+const allowedOrigins =
+  (
+    process.env.CLIENT_ORIGINS ||
+    'http://localhost:4200'
+  )
+    .split(',')
+    .map(
+      origin =>
+        origin.trim()
+    );
+
+app.use(
+  cors({
+    credentials: true,
+
+    origin(
+      origin,
+      callback
+    ) {
+      /**
+       * Requests such as curl do not include
+       * an Origin header.
+       */
+      if (
+        !origin ||
+        allowedOrigins.includes(
+          origin
+        )
+      ) {
+        return callback(
+          null,
+          true
+        );
+      }
+
+      return callback(
+        new Error(
+          `Origin ${origin} is not allowed.`
+        )
+      );
+    }
+  })
+);
+
+app.use(
+  express.json()
+);
+
+app.use(
+  cookieParser()
+);
+
+app.use(
+  '/api/health',
+  healthRoutes
+);
+
+app.use(
+  '/api/chat',
+  chatRoutes
+);
+
+app.use(
+  '/api/auth',
+  authRoutes
+);
+
+app.use(
+  errorMiddleware
+);
+
+module.exports =
+  app;

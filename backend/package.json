@@ -10,5 +10,14 @@
   "keywords": [],
   "author": "RRD",
   "license": "ISC",
-  "description": "ai chat tool to organize trips"
+  "description": "ai chat tool to organize trips",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "google-auth-library": "^11.0.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.2"
+  }
 }

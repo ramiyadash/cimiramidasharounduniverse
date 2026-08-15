@@ -1,0 +1,44 @@
+<main class="login-page">
+    <section class="login-card">
+      <div class="login-logo">
+        🌎
+      </div>
+  
+      <p class="login-eyebrow">
+        DASH AROUND UNIVERSE
+      </p>
+  
+      <h1>
+        Your journey begins here
+      </h1>
+  
+      <p class="login-description">
+        Plan meaningful escapes, preserve your
+        stories and watch your universe grow.
+      </p>
+  
+      <div
+        #googleButton
+        class="google-button">
+      </div>
+  
+      @if (isSigningIn()) {
+        <p class="login-status">
+          Opening your universe…
+        </p>
+      }
+  
+      @if (errorMessage()) {
+        <p
+          class="login-error"
+          role="alert">
+          {{ errorMessage() }}
+        </p>
+      }
+  
+      <p class="login-privacy">
+        By continuing, you agree to securely
+        create your Dash Around Universe profile.
+      </p>
+    </section>
+  </main>
