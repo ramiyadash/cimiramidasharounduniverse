@@ -1,0 +1,184 @@
+[
+    {
+      "name": "St. Augustine",
+      "slug": "st-augustine-fl",
+      "country": "United States",
+      "countryCode": "US",
+      "region": "Florida",
+      "locations": [
+        "Historic District",
+        "St. Augustine Beach",
+        "Anastasia Island"
+      ],
+      "summary": "Historic streets, Atlantic beaches and local flavors along Florida's northeast coast.",
+      "description": "Explore centuries of history, walkable streets, coastal scenery, local restaurants and relaxed beach experiences in St. Augustine.",
+      "emoji": "🏰",
+      "coordinates": {
+        "longitude": -81.3124,
+        "latitude": 29.9012
+      },
+      "discovery": {
+        "terrains": [
+          "water",
+          "coast",
+          "beach"
+        ],
+        "activities": [
+          "history",
+          "food",
+          "walking",
+          "beach",
+          "nightlife"
+        ],
+        "weather": [
+          "warm"
+        ],
+        "travelStyles": [
+          "weekend",
+          "family",
+          "food"
+        ],
+        "budgetRange": {
+          "min": null,
+          "max": null,
+          "currency": "USD"
+        },
+        "durationDays": {
+          "min": 2,
+          "max": 4
+        },
+        "bestMonths": []
+      },
+      "media": {
+        "heroImageUrl": null,
+        "heroImageAlt": "Historic St. Augustine near Florida's Atlantic coast",
+        "attribution": null
+      },
+      "source": "curated",
+      "featured": true,
+      "status": "active",
+      "lastVerifiedAt": "2026-08-29T00:00:00.000Z"
+    },
+    {
+      "name": "Asheville",
+      "slug": "asheville-nc",
+      "country": "United States",
+      "countryCode": "US",
+      "region": "North Carolina",
+      "locations": [
+        "Downtown Asheville",
+        "Blue Ridge Parkway",
+        "Pisgah National Forest"
+      ],
+      "summary": "Mountain landscapes, outdoor adventure, creative neighborhoods and a celebrated food scene.",
+      "description": "Discover mountain views, hiking, waterfalls, local art, craft traditions and inventive food throughout Asheville and the surrounding Blue Ridge Mountains.",
+      "emoji": "⛰️",
+      "coordinates": {
+        "longitude": -82.5515,
+        "latitude": 35.5951
+      },
+      "discovery": {
+        "terrains": [
+          "mountains",
+          "forest",
+          "waterfalls"
+        ],
+        "activities": [
+          "hiking",
+          "food",
+          "art",
+          "nature",
+          "adventure"
+        ],
+        "weather": [
+          "mild",
+          "cool"
+        ],
+        "travelStyles": [
+          "weekend",
+          "adventure",
+          "food"
+        ],
+        "budgetRange": {
+          "min": null,
+          "max": null,
+          "currency": "USD"
+        },
+        "durationDays": {
+          "min": 2,
+          "max": 5
+        },
+        "bestMonths": []
+      },
+      "media": {
+        "heroImageUrl": null,
+        "heroImageAlt": "Blue Ridge Mountain scenery surrounding Asheville",
+        "attribution": null
+      },
+      "source": "curated",
+      "featured": true,
+      "status": "active",
+      "lastVerifiedAt": "2026-08-29T00:00:00.000Z"
+    },
+    {
+      "name": "Savannah",
+      "slug": "savannah-ga",
+      "country": "United States",
+      "countryCode": "US",
+      "region": "Georgia",
+      "locations": [
+        "Historic District",
+        "River Street",
+        "Forsyth Park"
+      ],
+      "summary": "Tree-lined squares, preserved architecture, coastal culture and distinctive Southern food.",
+      "description": "Wander through Savannah's historic squares, explore museums and architecture, enjoy its riverfront and experience a rich local arts and food culture.",
+      "emoji": "🌳",
+      "coordinates": {
+        "longitude": -81.0998,
+        "latitude": 32.0809
+      },
+      "discovery": {
+        "terrains": [
+          "coast",
+          "city",
+          "parks"
+        ],
+        "activities": [
+          "history",
+          "food",
+          "walking",
+          "art",
+          "nightlife"
+        ],
+        "weather": [
+          "warm",
+          "mild"
+        ],
+        "travelStyles": [
+          "weekend",
+          "family",
+          "food"
+        ],
+        "budgetRange": {
+          "min": null,
+          "max": null,
+          "currency": "USD"
+        },
+        "durationDays": {
+          "min": 2,
+          "max": 4
+        },
+        "bestMonths": []
+      },
+      "media": {
+        "heroImageUrl": null,
+        "heroImageAlt": "A tree-lined historic square in Savannah",
+        "attribution": null
+      },
+      "source": "curated",
+      "featured": false,
+      "status": "active",
+      "lastVerifiedAt": "2026-08-29T00:00:00.000Z"
+    }
+  ]

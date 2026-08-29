@@ -49,6 +49,21 @@ import {
             module.ProfilePageComponent
         )
     },
+    {
+      path: 'discover',
+    
+      canActivate: [
+        authGuard
+      ],
+    
+      loadComponent: () =>
+        import(
+          './features/discover/pages/discover-page/discover-page.component'
+        ).then(
+          module =>
+            module.DiscoverPageComponent
+        )
+    },
   
     {
       path: '**',

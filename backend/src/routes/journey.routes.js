@@ -1,8 +1,13 @@
 const express =
   require('express');
 
+const requireAuth =
+  require('../middleware/auth.middleware');
+
 const {
-  getUniverseJourneys
+  createJourney,
+  getUniverseJourneys,
+  updateJourney
 } =
   require('../controllers/journey.controller');
 
@@ -10,11 +15,28 @@ const router =
   express.Router();
 
 /**
- * Returns map-ready journey data for a traveler.
+ * Creates a journey for the authenticated user.
+ */
+router.post(
+  '/',
+  requireAuth,
+  createJourney
+);
+
+/**
+ * Returns only the authenticated user's journeys.
  */
 router.get(
-  '/universe/:userId',
+  '/universe',
+  requireAuth,
   getUniverseJourneys
 );
 
-module.exports = router;
+router.patch(
+    '/:journeyId',
+    requireAuth,
+    updateJourney
+  );
+
+module.exports =
+  router;

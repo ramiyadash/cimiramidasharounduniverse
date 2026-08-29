@@ -1,0 +1,419 @@
+:host {
+    display: block;
+  }
+  
+  .dna-shell {
+    overflow: hidden;
+  
+    border: 1px solid
+      rgba(111, 78, 190, 0.16);
+  
+    border-radius: 1.75rem;
+  
+    background:
+      rgba(255, 255, 255, 0.92);
+  
+    box-shadow:
+      0 22px 55px
+        rgba(35, 27, 75, 0.09);
+  }
+  
+  .dna-header {
+    display: grid;
+    grid-template-columns:
+      auto minmax(0, 1fr) auto;
+    gap: 1.1rem;
+    align-items: center;
+  
+    padding:
+      1.6rem
+      1.8rem;
+  
+    background:
+      radial-gradient(
+        circle at 85% 10%,
+        rgba(255, 255, 255, 0.7),
+        transparent 28%
+      ),
+      linear-gradient(
+        135deg,
+        #eee8ff,
+        #f5f2ff 50%,
+        #e7f5ff
+      );
+  
+    p {
+      margin: 0 0 0.2rem;
+  
+      color: #7254bd;
+  
+      font-size: 0.68rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  
+    h2 {
+      margin: 0;
+  
+      color: #241944;
+      font-size:
+        clamp(
+          1.5rem,
+          3vw,
+          2.25rem
+        );
+  
+      letter-spacing: -0.04em;
+    }
+  
+    > div > span {
+      display: block;
+  
+      max-width: 650px;
+      margin-top: 0.4rem;
+  
+      color: #756d8c;
+      line-height: 1.5;
+    }
+  }
+  
+  .dna-symbol {
+    display: grid;
+  
+    width: 58px;
+    height: 58px;
+  
+    place-items: center;
+  
+    border-radius: 18px;
+  
+    background:
+      rgba(255, 255, 255, 0.7);
+  
+    font-size: 1.8rem;
+  }
+  
+  .dna-strength {
+    min-width: 90px;
+    padding: 0.75rem;
+  
+    text-align: center;
+  
+    border-radius: 1rem;
+  
+    color: #694bb2;
+    background:
+      rgba(255, 255, 255, 0.65);
+  
+    strong,
+    small {
+      display: block;
+    }
+  
+    strong {
+      font-size: 1.4rem;
+    }
+  
+    small {
+      margin-top: 0.1rem;
+      font-size: 0.65rem;
+      font-weight: 750;
+    }
+  }
+  
+  .dna-form {
+    display: grid;
+    gap: 1rem;
+  
+    padding: 1.2rem;
+  }
+  
+  .dna-section {
+    padding: 1.2rem;
+  
+    border: 1px solid
+      rgba(148, 163, 184, 0.2);
+  
+    border-radius: 1.25rem;
+  
+    background: #ffffff;
+  
+    > header {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+  
+      > span {
+        font-size: 1.25rem;
+      }
+  
+      h3 {
+        margin: 0;
+  
+        color: #20314b;
+        font-size: 1rem;
+      }
+  
+      p {
+        margin: 0.2rem 0 0;
+  
+        color: #7a879a;
+        font-size: 0.76rem;
+      }
+    }
+  }
+  
+  .dna-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  
+    margin-top: 1rem;
+  }
+  
+  .dna-option {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+  
+    padding:
+      0.62rem
+      0.8rem;
+  
+    border: 1px solid
+      rgba(148, 163, 184, 0.25);
+  
+    border-radius: 999px;
+  
+    color: #607089;
+  
+    cursor: pointer;
+    background: #f8fafc;
+  
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 750;
+  
+    transition:
+      transform 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease;
+  
+    &:hover {
+      transform: translateY(-1px);
+      border-color:
+        rgba(104, 75, 180, 0.3);
+    }
+  
+    &.is-selected {
+      border-color:
+        rgba(103, 73, 181, 0.38);
+  
+      color: #6749b5;
+  
+      background:
+        linear-gradient(
+          135deg,
+          #eee8ff,
+          #f5f2ff
+        );
+  
+      box-shadow:
+        0 6px 15px
+          rgba(103, 73, 181, 0.1);
+    }
+  }
+  
+  .dna-fields {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  
+    gap: 0.85rem;
+  
+    margin-top: 1rem;
+  
+    label > span {
+      display: block;
+  
+      margin-bottom: 0.4rem;
+  
+      color: #53637b;
+      font-size: 0.72rem;
+      font-weight: 750;
+    }
+  }
+  
+  .dna-money-input,
+  .dna-days-input {
+    display: flex;
+    align-items: center;
+  
+    overflow: hidden;
+  
+    border: 1px solid
+      #d7e0eb;
+  
+    border-radius: 0.8rem;
+  
+    background: #fafcff;
+  
+    > span {
+      padding: 0 0.75rem;
+  
+      color: #78869a;
+      font-size: 0.78rem;
+      font-weight: 750;
+    }
+  
+    input {
+      width: 100%;
+      min-width: 0;
+      padding: 0.72rem;
+  
+      border: 0;
+      outline: 0;
+  
+      color: #25364d;
+      background: transparent;
+  
+      font: inherit;
+    }
+  
+    &:focus-within {
+      border-color: #795bc3;
+  
+      box-shadow:
+        0 0 0 3px
+          rgba(121, 91, 195, 0.1);
+    }
+  }
+  
+  .dna-message {
+    margin: 0;
+    padding: 0.85rem 1rem;
+  
+    border-radius: 1rem;
+  
+    font-size: 0.8rem;
+    font-weight: 750;
+  }
+  
+  .dna-message--error {
+    color: #a43131;
+    background: #fff0f0;
+  }
+  
+  .dna-message--success {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  
+    color: #126b50;
+    background: #e5f8f1;
+  
+    button {
+      border: 0;
+  
+      color: inherit;
+      cursor: pointer;
+      background: transparent;
+  
+      font: inherit;
+      font-weight: 850;
+    }
+  }
+  
+  .dna-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  
+    padding-top: 0.25rem;
+  
+    p {
+      margin: 0;
+  
+      color: #8793a4;
+      font-size: 0.7rem;
+    }
+  
+    > button {
+      min-height: 44px;
+      padding:
+        0
+        1.2rem;
+  
+      border: 0;
+      border-radius: 0.85rem;
+  
+      color: white;
+      cursor: pointer;
+  
+      background:
+        linear-gradient(
+          135deg,
+          #6749b5,
+          #3979e3
+        );
+  
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 850;
+  
+      &:disabled {
+        cursor: wait;
+        opacity: 0.68;
+      }
+    }
+  }
+  
+  .dna-loading {
+    padding: 4rem 1.5rem;
+  
+    text-align: center;
+  
+    color: #756d8c;
+  }
+  
+  @media (
+    max-width: 700px
+  ) {
+    .dna-header {
+      grid-template-columns:
+        auto minmax(0, 1fr);
+  
+      padding: 1.2rem;
+  
+      > div > span {
+        display: none;
+      }
+    }
+  
+    .dna-strength {
+      grid-column:
+        1 / -1;
+  
+      width: 100%;
+    }
+  
+    .dna-fields {
+      grid-template-columns: 1fr;
+    }
+  
+    .dna-actions {
+      align-items: stretch;
+      flex-direction: column;
+  
+      > button {
+        width: 100%;
+      }
+    }
+  }

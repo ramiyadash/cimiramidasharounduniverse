@@ -1,0 +1,346 @@
+<section class="dna-shell">
+    <header class="dna-header">
+      <div class="dna-symbol">
+        🧬
+      </div>
+  
+      <div>
+        <p>
+          Your travel fingerprint
+        </p>
+  
+        <h2>
+          Shape your Traveler DNA
+        </h2>
+  
+        <span>
+          Choose what naturally draws you in.
+          There are no wrong answers—and your
+          preferences can evolve anytime.
+        </span>
+      </div>
+  
+      <div class="dna-strength">
+        <strong>
+          {{ selectedPreferenceCount() }}
+        </strong>
+  
+        <small>
+          preferences
+        </small>
+      </div>
+    </header>
+  
+    @if (isLoading()) {
+      <div class="dna-loading">
+        Discovering your travel patterns…
+      </div>
+    } @else {
+      <form
+        class="dna-form"
+        [formGroup]="form"
+        (ngSubmit)="save()">
+  
+        <section class="dna-section">
+          <header>
+            <span>🌍</span>
+  
+            <div>
+              <h3>
+                Landscapes that call to you
+              </h3>
+  
+              <p>
+                Where do you naturally feel
+                most alive?
+              </p>
+            </div>
+          </header>
+  
+          <div class="dna-options">
+            @for (
+              option of terrainOptions;
+              track option.value
+            ) {
+              <button
+                type="button"
+                class="dna-option"
+                [class.is-selected]="
+                  isSelected(
+                    'preferredTerrains',
+                    option.value
+                  )
+                "
+                (click)="
+                  togglePreference(
+                    'preferredTerrains',
+                    option.value
+                  )
+                ">
+  
+                <span>
+                  {{ option.emoji }}
+                </span>
+  
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </section>
+  
+        <section class="dna-section">
+          <header>
+            <span>✨</span>
+  
+            <div>
+              <h3>
+                Experiences you remember
+              </h3>
+  
+              <p>
+                What makes a journey feel
+                meaningful?
+              </p>
+            </div>
+          </header>
+  
+          <div class="dna-options">
+            @for (
+              option of activityOptions;
+              track option.value
+            ) {
+              <button
+                type="button"
+                class="dna-option"
+                [class.is-selected]="
+                  isSelected(
+                    'preferredActivities',
+                    option.value
+                  )
+                "
+                (click)="
+                  togglePreference(
+                    'preferredActivities',
+                    option.value
+                  )
+                ">
+  
+                <span>
+                  {{ option.emoji }}
+                </span>
+  
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </section>
+  
+        <section class="dna-section">
+          <header>
+            <span>🌤️</span>
+  
+            <div>
+              <h3>
+                Your ideal atmosphere
+              </h3>
+  
+              <p>
+                Which weather helps you enjoy
+                a place most?
+              </p>
+            </div>
+          </header>
+  
+          <div class="dna-options">
+            @for (
+              option of weatherOptions;
+              track option.value
+            ) {
+              <button
+                type="button"
+                class="dna-option"
+                [class.is-selected]="
+                  isSelected(
+                    'preferredWeather',
+                    option.value
+                  )
+                "
+                (click)="
+                  togglePreference(
+                    'preferredWeather',
+                    option.value
+                  )
+                ">
+  
+                <span>
+                  {{ option.emoji }}
+                </span>
+  
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </section>
+  
+        <section class="dna-section">
+          <header>
+            <span>🧳</span>
+  
+            <div>
+              <h3>
+                How you like to journey
+              </h3>
+  
+              <p>
+                Select every travel style that
+                feels like you.
+              </p>
+            </div>
+          </header>
+  
+          <div class="dna-options">
+            @for (
+              option of styleOptions;
+              track option.value
+            ) {
+              <button
+                type="button"
+                class="dna-option"
+                [class.is-selected]="
+                  isSelected(
+                    'preferredTravelStyles',
+                    option.value
+                  )
+                "
+                (click)="
+                  togglePreference(
+                    'preferredTravelStyles',
+                    option.value
+                  )
+                ">
+  
+                <span>
+                  {{ option.emoji }}
+                </span>
+  
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </section>
+  
+        <section class="dna-section dna-practical">
+          <header>
+            <span>🗓️</span>
+  
+            <div>
+              <h3>
+                Your natural travel rhythm
+              </h3>
+  
+              <p>
+                Optional practical preferences help
+                Dash recommend realistic journeys.
+              </p>
+            </div>
+          </header>
+  
+          <div class="dna-fields">
+            <label>
+              <span>
+                Typical minimum budget
+              </span>
+  
+              <div class="dna-money-input">
+                <span>$</span>
+  
+                <input
+                  type="number"
+                  min="0"
+                  max="100000"
+                  placeholder="300"
+                  formControlName="minimumBudget">
+              </div>
+            </label>
+  
+            <label>
+              <span>
+                Typical maximum budget
+              </span>
+  
+              <div class="dna-money-input">
+                <span>$</span>
+  
+                <input
+                  type="number"
+                  min="0"
+                  max="100000"
+                  placeholder="1000"
+                  formControlName="maximumBudget">
+              </div>
+            </label>
+  
+            <label>
+              <span>
+                Typical trip duration
+              </span>
+  
+              <div class="dna-days-input">
+                <input
+                  type="number"
+                  min="1"
+                  max="365"
+                  placeholder="3"
+                  formControlName="typicalTripDurationDays">
+  
+                <span>days</span>
+              </div>
+            </label>
+          </div>
+        </section>
+  
+        @if (errorMessage()) {
+          <p
+            class="dna-message dna-message--error"
+            role="alert">
+            {{ errorMessage() }}
+          </p>
+        }
+  
+        @if (successMessage()) {
+          <div
+            class="dna-message dna-message--success"
+            role="status">
+  
+            <span>
+              {{ successMessage() }}
+            </span>
+  
+            <button
+              type="button"
+              (click)="openDiscover()">
+              See my matches
+            </button>
+          </div>
+        }
+  
+        <footer class="dna-actions">
+          <p>
+            Your preferences are private and used
+            to shape your Dash experience.
+          </p>
+  
+          <button
+            type="submit"
+            [disabled]="isSaving()">
+  
+            @if (isSaving()) {
+              Saving your DNA…
+            } @else {
+              Save Traveler DNA
+            }
+          </button>
+        </footer>
+      </form>
+    }
+  </section>

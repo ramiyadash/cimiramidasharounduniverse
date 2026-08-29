@@ -1,0 +1,411 @@
+<main class="discover-page">
+    <section class="discover-hero">
+      <div class="discover-hero-copy">
+        <p class="discover-eyebrow">
+          Discover your next horizon ✨
+        </p>
+  
+        <h1>
+          Somewhere is waiting
+          for you
+        </h1>
+  
+        <p class="discover-description">
+          Thoughtful destination ideas shaped by
+          the traveler you are becoming.
+        </p>
+      </div>
+  
+      <div
+        class="discover-compass"
+        aria-hidden="true">
+  
+        <span class="discover-compass-ring">
+          <span>
+            🧭
+          </span>
+        </span>
+  
+        <small>
+          Follow your curiosity
+        </small>
+      </div>
+    </section>
+  
+    @if (!personalized()) {
+      <section class="discover-dna-note">
+        <span
+          class="discover-dna-icon"
+          aria-hidden="true">
+          🧬
+        </span>
+  
+        <div>
+          <strong>
+            Your recommendations are just
+            getting started
+          </strong>
+  
+          <p>
+            As your Traveler DNA grows, Dash will
+            understand the places, pace, weather,
+            activities and experiences that feel
+            most like you.
+          </p>
+        </div>
+  
+        <button
+          type="button"
+          (click)="viewUniverse()">
+          Explore profile
+        </button>
+      </section>
+    }
+  
+    <section class="discover-toolbar">
+      <div>
+        <p>
+          Find your feeling
+        </p>
+  
+        <h2>
+          What kind of journey
+          calls to you?
+        </h2>
+      </div>
+  
+      <nav
+        class="discover-filters"
+        aria-label="Discover travel styles">
+  
+        @for (
+          filter of styleFilters;
+          track filter.value
+        ) {
+          <button
+            type="button"
+            [class.is-active]="
+              activeStyle() ===
+              filter.value
+            "
+            (click)="
+              setStyle(filter.value)
+            ">
+  
+            <span aria-hidden="true">
+              {{ filter.emoji }}
+            </span>
+  
+            {{ filter.label }}
+          </button>
+        }
+      </nav>
+    </section>
+  
+    @if (successMessage()) {
+      <div
+        class="discover-message discover-message--success"
+        role="status">
+  
+        <span aria-hidden="true">
+          ✨
+        </span>
+  
+        {{ successMessage() }}
+  
+        <button
+          type="button"
+          (click)="viewUniverse()">
+          View My Universe
+        </button>
+      </div>
+    }
+  
+    @if (errorMessage()) {
+      <div
+        class="discover-message discover-message--error"
+        role="alert">
+  
+        <span aria-hidden="true">
+          ⚠️
+        </span>
+  
+        {{ errorMessage() }}
+      </div>
+    }
+  
+    @if (isLoading()) {
+      <section
+        class="discover-loading"
+        aria-label="Loading destination ideas">
+  
+        @for (
+          item of [1, 2, 3];
+          track item
+        ) {
+          <div class="discover-skeleton">
+            <div></div>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        }
+      </section>
+    } @else if (!destinations().length) {
+      <section class="discover-empty">
+        <span aria-hidden="true">
+          🌙
+        </span>
+  
+        <h2>
+          No destinations found
+        </h2>
+  
+        <p>
+          Try another travel feeling while
+          the Universe gathers more ideas.
+        </p>
+  
+        <button
+          type="button"
+          (click)="setStyle('all')">
+          Show all destinations
+        </button>
+      </section>
+    } @else {
+      <section class="discover-results">
+        <header class="discover-results-header">
+          <div>
+            <p>
+              {{
+                personalized()
+                  ? 'Selected for your Traveler DNA'
+                  : 'Fresh possibilities'
+              }}
+            </p>
+  
+            <h2>
+              Places worth dreaming about
+            </h2>
+          </div>
+  
+          <span>
+            {{ destinations().length }}
+            destinations
+          </span>
+        </header>
+  
+        <div class="discover-grid">
+          @for (
+            destination of destinations();
+            track destination.id
+          ) {
+            <article
+              class="destination-card"
+              [class.is-saved]="
+                destination.isSaved
+              ">
+  
+              <div class="destination-visual">
+                @if (
+                  destination.media
+                    .heroImageUrl
+                ) {
+                  <img
+                    [src]="
+                      destination.media
+                        .heroImageUrl
+                    "
+                    [alt]="
+                      destination.media
+                        .heroImageAlt ||
+                      destination.name
+                    ">
+                } @else {
+                  <div class="destination-visual-fallback">
+                    <span aria-hidden="true">
+                      {{ destination.emoji }}
+                    </span>
+  
+                    <small>
+                      {{ destination.region }}
+                    </small>
+                  </div>
+                }
+  
+                @if (
+                  personalized()
+                ) {
+                  <span class="destination-match">
+                    {{ destination.matchScore }}
+                    match
+                  </span>
+                } @else if (
+                  destination.featured
+                ) {
+                  <span class="destination-featured">
+                    Featured
+                  </span>
+                }
+  
+                @if (
+                  destination.isSaved
+                ) {
+                  <span class="destination-saved">
+                    ✓ In your Universe
+                  </span>
+                }
+              </div>
+  
+              <div class="destination-body">
+                <header>
+                  <div>
+                    <p>
+                      {{ destination.region }}
+                      ·
+                      {{ destination.country }}
+                    </p>
+  
+                    <h3>
+                      {{ destination.name }}
+                    </h3>
+                  </div>
+  
+                  <span
+                    class="destination-emoji"
+                    aria-hidden="true">
+                    {{ destination.emoji }}
+                  </span>
+                </header>
+  
+                <p class="destination-summary">
+                  {{ destination.summary }}
+                </p>
+  
+                <div class="destination-details">
+                  <span>
+                    🗓
+                    {{
+                      durationLabel(
+                        destination
+                      )
+                    }}
+                  </span>
+  
+                  @if (
+                    destination.discovery
+                      .weather.length
+                  ) {
+                    <span>
+                      ☀️
+                      {{
+                        formatTag(
+                          destination
+                            .discovery
+                            .weather[0]
+                        )
+                      }}
+                    </span>
+                  }
+  
+                  @if (
+                    destination.locations.length
+                  ) {
+                    <span>
+                      📍
+                      {{
+                        destination
+                          .locations[0]
+                      }}
+                    </span>
+                  }
+                </div>
+  
+                <div class="destination-tags">
+                  @for (
+                    activity of
+                      destination
+                        .discovery
+                        .activities
+                        .slice(0, 3);
+                    track activity
+                  ) {
+                    <span>
+                      {{
+                        formatTag(
+                          activity
+                        )
+                      }}
+                    </span>
+                  }
+                </div>
+  
+                <section class="destination-reasons">
+                  <strong>
+                    {{
+                      personalized()
+                        ? 'Why it fits you'
+                        : 'Why it may inspire you'
+                    }}
+                  </strong>
+  
+                  <ul>
+                    @for (
+                      reason of
+                        destination
+                          .matchReasons;
+                      track reason
+                    ) {
+                      <li>
+                        <span aria-hidden="true">
+                          ✦
+                        </span>
+  
+                        {{ reason }}
+                      </li>
+                    }
+                  </ul>
+                </section>
+  
+                <button
+                  type="button"
+                  class="destination-action"
+                  [class.is-saved]="
+                    destination.isSaved
+                  "
+                  [disabled]="
+                    isSaving(
+                      destination.id
+                    )
+                  "
+                  (click)="
+                    saveDestination(
+                      destination
+                    )
+                  ">
+  
+                  @if (
+                    isSaving(
+                      destination.id
+                    )
+                  ) {
+                    Adding to your Universe…
+                  } @else if (
+                    destination.isSaved
+                  ) {
+                    View in My Universe
+                  } @else {
+                    <span aria-hidden="true">
+                      ＋
+                    </span>
+  
+                    Save to My Universe
+                  }
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </main>

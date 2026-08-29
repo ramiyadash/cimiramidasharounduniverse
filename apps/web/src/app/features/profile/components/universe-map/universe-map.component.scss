@@ -493,79 +493,6 @@ app-universe-map {
     }
   }
   
-  .universe-marker__core {
-    position: absolute;
-    inset: 6px;
-    z-index: 2;
-  
-    display: grid;
-    place-items: center;
-  
-    border: 3px solid #ffffff;
-    border-radius: 50%;
-  
-    box-shadow:
-      0 5px 14px
-        rgba(17, 47, 64, 0.28);
-  
-    font-size: 1rem;
-  
-    transition:
-      transform 180ms ease;
-  }
-  
-  .universe-marker:hover
-  .universe-marker__core {
-    transform: scale(1.14);
-  }
-  
-  .universe-marker__pulse {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  
-    border-radius: 50%;
-  
-    animation:
-      universe-marker-pulse
-      2.2s
-      ease-out
-      infinite;
-  }
-  
-  .universe-marker--visited
-  .universe-marker__core {
-    background: #2caf76;
-  }
-  
-  .universe-marker--visited
-  .universe-marker__pulse {
-    background:
-      rgba(44, 175, 118, 0.34);
-  }
-  
-  .universe-marker--planned
-  .universe-marker__core {
-    background: #2688ea;
-  }
-  
-  .universe-marker--planned
-  .universe-marker__pulse {
-    background:
-      rgba(38, 136, 234, 0.34);
-  }
-  
-  .universe-marker--dreaming
-  .universe-marker__core {
-    background: #ab4fd1;
-  }
-  
-  .universe-marker--dreaming
-  .universe-marker__pulse {
-    background:
-      rgba(171, 79, 209, 0.34);
-  }
-  
   .universe-place-list {
     position: absolute;
     right: 0.85rem;
@@ -1179,5 +1106,75 @@ app-universe-map {
           2,
           1fr
         );
+    }
+  }
+
+  .universe-add-place:disabled {
+    opacity: 0.62;
+    cursor: default;
+  }
+  
+  .universe-map-pick-hint {
+    position: absolute;
+    top: 0.85rem;
+    left: 50%;
+    z-index: 4;
+  
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+  
+    padding: 0.65rem 0.85rem;
+  
+    border: 1px solid
+      rgba(8, 119, 124, 0.2);
+  
+    border-radius: 999px;
+  
+    background:
+      rgba(255, 255, 255, 0.94);
+  
+    box-shadow:
+      0 8px 22px
+      rgba(22, 54, 72, 0.14);
+  
+    color: #08777c;
+  
+    font-size: 0.72rem;
+    font-weight: 800;
+  
+    pointer-events: none;
+  
+    transform:
+      translateX(-50%);
+  
+    backdrop-filter:
+      blur(10px);
+  }
+
+  .universe-card-edit {
+    position: absolute;
+    top: 0.7rem;
+    right: 3.2rem;
+    z-index: 2;
+  
+    width: 32px;
+    height: 32px;
+  
+    border: 1px solid
+      rgba(52, 77, 91, 0.15);
+  
+    border-radius: 50%;
+  
+    background:
+      rgba(255, 255, 255, 0.92);
+  
+    color: #08777c;
+  
+    cursor: pointer;
+    font-size: 1rem;
+  
+    &:hover {
+      background: #e8f6f6;
     }
   }

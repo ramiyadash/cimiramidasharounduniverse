@@ -275,6 +275,32 @@ universe: {
     }
   );
 
+  /**
+ * A traveler may save a catalog destination to
+ * My Universe only once.
+ *
+ * The partial index ignores journeys that were
+ * created manually and have no destinationId.
+ */
+journeySchema.index(
+  {
+    user: 1,
+
+    'selectedDestination.destinationId':
+      1
+  },
+
+  {
+    unique: true,
+
+    partialFilterExpression: {
+      'selectedDestination.destinationId': {
+        $type: 'string'
+      }
+    }
+  }
+);
+
 module.exports =
   mongoose.model(
     'Journey',

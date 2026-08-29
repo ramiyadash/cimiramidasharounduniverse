@@ -1,0 +1,861 @@
+:host {
+    display: block;
+  }
+  
+  .discover-page {
+    width:
+      min(
+        1500px,
+        calc(100% - 2rem)
+      );
+  
+    margin: 0 auto;
+    padding:
+      1.5rem
+      0
+      4rem;
+  }
+  
+  .discover-hero {
+    position: relative;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  
+    min-height: 245px;
+    overflow: hidden;
+  
+    padding:
+      clamp(1.7rem, 4vw, 3.2rem);
+  
+    border: 1px solid
+      rgba(71, 119, 216, 0.16);
+  
+    border-radius: 2rem;
+  
+    background:
+      radial-gradient(
+        circle at 82% 20%,
+        rgba(255, 255, 255, 0.5),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 12% 100%,
+        rgba(45, 212, 191, 0.24),
+        transparent 36%
+      ),
+      linear-gradient(
+        135deg,
+        #dfeaff,
+        #eef4ff 45%,
+        #dff9f4
+      );
+  
+    box-shadow:
+      0 24px 65px
+        rgba(39, 79, 151, 0.12);
+  }
+  
+  .discover-hero::after {
+    position: absolute;
+    right: -70px;
+    bottom: -110px;
+  
+    width: 300px;
+    height: 300px;
+  
+    border: 1px solid
+      rgba(37, 99, 235, 0.14);
+  
+    border-radius: 50%;
+  
+    content: "";
+  }
+  
+  .discover-hero-copy {
+    position: relative;
+    z-index: 1;
+  
+    max-width: 670px;
+  }
+  
+  .discover-eyebrow {
+    margin: 0 0 0.65rem;
+  
+    color: #2463df;
+  
+    font-size: 0.74rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  
+  .discover-hero h1 {
+    margin: 0;
+  
+    color: #10203c;
+  
+    font-size:
+      clamp(
+        2.3rem,
+        6vw,
+        4.8rem
+      );
+  
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+  
+  .discover-description {
+    max-width: 570px;
+  
+    margin:
+      1.1rem
+      0
+      0;
+  
+    color: #60718d;
+  
+    font-size:
+      clamp(
+        0.95rem,
+        2vw,
+        1.12rem
+      );
+  
+    line-height: 1.65;
+  }
+  
+  .discover-compass {
+    position: relative;
+    z-index: 1;
+  
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+  
+    color: #526888;
+  
+    small {
+      margin-top: 0.7rem;
+  
+      font-size: 0.72rem;
+      font-weight: 750;
+    }
+  }
+  
+  .discover-compass-ring {
+    display: grid;
+  
+    width: 128px;
+    height: 128px;
+  
+    place-items: center;
+  
+    border: 1px solid
+      rgba(37, 99, 235, 0.18);
+  
+    border-radius: 50%;
+  
+    background:
+      rgba(255, 255, 255, 0.48);
+  
+    box-shadow:
+      inset 0 0 0 14px
+        rgba(255, 255, 255, 0.2);
+  
+    span {
+      font-size: 3.5rem;
+    }
+  }
+  
+  .discover-dna-note {
+    display: grid;
+    grid-template-columns:
+      auto minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+  
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+  
+    border: 1px solid
+      rgba(124, 88, 207, 0.16);
+  
+    border-radius: 1.25rem;
+  
+    background:
+      linear-gradient(
+        135deg,
+        rgba(246, 241, 255, 0.95),
+        rgba(255, 255, 255, 0.94)
+      );
+  
+    strong {
+      color: #372b68;
+    }
+  
+    p {
+      margin:
+        0.25rem
+        0
+        0;
+  
+      color: #746b8f;
+  
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+  
+    button {
+      padding:
+        0.65rem
+        0.9rem;
+  
+      border: 1px solid
+        rgba(104, 75, 180, 0.18);
+  
+      border-radius: 999px;
+  
+      color: #6848b8;
+  
+      cursor: pointer;
+      background: white;
+  
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+  }
+  
+  .discover-dna-icon {
+    display: grid;
+  
+    width: 44px;
+    height: 44px;
+  
+    place-items: center;
+  
+    border-radius: 14px;
+  
+    background: #eee7ff;
+  
+    font-size: 1.25rem;
+  }
+  
+  .discover-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  
+    margin-top: 2rem;
+  
+    > div > p {
+      margin: 0 0 0.2rem;
+  
+      color: #2e6ae3;
+  
+      font-size: 0.7rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  
+    h2 {
+      margin: 0;
+  
+      color: #14243f;
+      font-size:
+        clamp(
+          1.35rem,
+          3vw,
+          2rem
+        );
+  
+      letter-spacing: -0.035em;
+    }
+  }
+  
+  .discover-filters {
+    display: flex;
+    gap: 0.5rem;
+  
+    overflow-x: auto;
+    padding: 0.2rem;
+  
+    button {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+  
+      min-width: max-content;
+      padding:
+        0.67rem
+        0.9rem;
+  
+      border: 1px solid
+        rgba(148, 163, 184, 0.25);
+  
+      border-radius: 999px;
+  
+      color: #65738c;
+  
+      cursor: pointer;
+      background:
+        rgba(255, 255, 255, 0.84);
+  
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 760;
+  
+      transition:
+        transform 180ms ease,
+        color 180ms ease,
+        background 180ms ease;
+    }
+  
+    button:hover,
+    button.is-active {
+      color: #1f5fde;
+      transform: translateY(-1px);
+      background: #eaf1ff;
+    }
+  }
+  
+  .discover-message {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+  
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+  
+    border-radius: 1rem;
+  
+    font-size: 0.82rem;
+    font-weight: 700;
+  
+    button {
+      margin-left: auto;
+  
+      border: 0;
+  
+      color: inherit;
+      cursor: pointer;
+      background: transparent;
+  
+      font: inherit;
+      font-weight: 850;
+    }
+  }
+  
+  .discover-message--success {
+    color: #11694f;
+    background: #e5f8f1;
+  }
+  
+  .discover-message--error {
+    color: #a43131;
+    background: #fff0f0;
+  }
+  
+  .discover-results {
+    margin-top: 1.5rem;
+  }
+  
+  .discover-results-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  
+    margin-bottom: 1rem;
+  
+    p {
+      margin: 0 0 0.2rem;
+  
+      color: #2e6ae3;
+  
+      font-size: 0.68rem;
+      font-weight: 850;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+  
+    h2 {
+      margin: 0;
+  
+      color: #172842;
+      font-size: 1.35rem;
+    }
+  
+    > span {
+      color: #7b899d;
+      font-size: 0.78rem;
+    }
+  }
+  
+  .discover-grid {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(285px, 1fr)
+      );
+  
+    gap: 1.1rem;
+  }
+  
+  .destination-card {
+    overflow: hidden;
+  
+    border: 1px solid
+      rgba(148, 163, 184, 0.22);
+  
+    border-radius: 1.5rem;
+  
+    background:
+      rgba(255, 255, 255, 0.94);
+  
+    box-shadow:
+      0 18px 45px
+        rgba(15, 23, 42, 0.075);
+  
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease,
+      border-color 200ms ease;
+  }
+  
+  .destination-card:hover {
+    transform: translateY(-4px);
+  
+    border-color:
+      rgba(37, 99, 235, 0.25);
+  
+    box-shadow:
+      0 24px 55px
+        rgba(27, 61, 122, 0.13);
+  }
+  
+  .destination-card.is-saved {
+    border-color:
+      rgba(26, 159, 112, 0.28);
+  }
+  
+  .destination-visual {
+    position: relative;
+  
+    height: 190px;
+    overflow: hidden;
+  
+    img {
+      width: 100%;
+      height: 100%;
+  
+      display: block;
+      object-fit: cover;
+    }
+  }
+  
+  .destination-visual-fallback {
+    display: grid;
+  
+    width: 100%;
+    height: 100%;
+  
+    place-items: center;
+  
+    background:
+      radial-gradient(
+        circle at 30% 20%,
+        rgba(255, 255, 255, 0.76),
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        #dfeaff,
+        #dff8ef
+      );
+  
+    span {
+      font-size: 4.2rem;
+      filter:
+        drop-shadow(
+          0 12px 18px
+          rgba(42, 71, 120, 0.16)
+        );
+    }
+  
+    small {
+      position: absolute;
+      right: 1rem;
+      bottom: 0.8rem;
+  
+      color: #49627e;
+      font-weight: 800;
+    }
+  }
+  
+  .destination-match,
+  .destination-featured,
+  .destination-saved {
+    position: absolute;
+    top: 0.85rem;
+  
+    padding:
+      0.38rem
+      0.65rem;
+  
+    border-radius: 999px;
+  
+    color: white;
+    font-size: 0.66rem;
+    font-weight: 850;
+  
+    backdrop-filter:
+      blur(8px);
+  }
+  
+  .destination-match,
+  .destination-featured {
+    left: 0.85rem;
+  
+    background:
+      rgba(37, 99, 235, 0.82);
+  }
+  
+  .destination-saved {
+    right: 0.85rem;
+  
+    background:
+      rgba(13, 126, 88, 0.86);
+  }
+  
+  .destination-body {
+    padding: 1.2rem;
+  
+    > header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+  
+      p {
+        margin: 0 0 0.2rem;
+  
+        color: #718098;
+        font-size: 0.7rem;
+        font-weight: 700;
+      }
+  
+      h3 {
+        margin: 0;
+  
+        color: #142540;
+        font-size: 1.45rem;
+        letter-spacing: -0.035em;
+      }
+    }
+  }
+  
+  .destination-emoji {
+    font-size: 1.7rem;
+  }
+  
+  .destination-summary {
+    min-height: 4.2em;
+  
+    margin:
+      0.8rem
+      0;
+  
+    color: #66768d;
+  
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  
+  .destination-details,
+  .destination-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  
+    span {
+      padding:
+        0.35rem
+        0.55rem;
+  
+      border-radius: 999px;
+  
+      color: #596b83;
+      background: #f1f5fa;
+  
+      font-size: 0.67rem;
+      font-weight: 700;
+    }
+  }
+  
+  .destination-tags {
+    margin-top: 0.55rem;
+  
+    span {
+      color: #2862c9;
+      background: #ebf2ff;
+    }
+  }
+  
+  .destination-reasons {
+    margin-top: 1rem;
+    padding: 0.85rem;
+  
+    border-radius: 1rem;
+  
+    background:
+      linear-gradient(
+        135deg,
+        #f6f9ff,
+        #f5fbfa
+      );
+  
+    > strong {
+      color: #354967;
+      font-size: 0.72rem;
+    }
+  
+    ul {
+      display: grid;
+      gap: 0.35rem;
+  
+      margin:
+        0.55rem
+        0
+        0;
+      padding: 0;
+  
+      list-style: none;
+    }
+  
+    li {
+      display: flex;
+      gap: 0.45rem;
+  
+      color: #69788e;
+  
+      font-size: 0.72rem;
+      line-height: 1.4;
+  
+      span {
+        color: #2ca98b;
+      }
+    }
+  }
+  
+  .destination-action {
+    width: 100%;
+    min-height: 43px;
+  
+    margin-top: 1rem;
+  
+    border: 0;
+    border-radius: 0.85rem;
+  
+    color: white;
+  
+    cursor: pointer;
+  
+    background:
+      linear-gradient(
+        135deg,
+        #2867df,
+        #5487ef
+      );
+  
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 850;
+  
+    &:disabled {
+      cursor: wait;
+      opacity: 0.68;
+    }
+  
+    &.is-saved {
+      color: #157455;
+      background: #e3f7ef;
+    }
+  }
+  
+  .discover-loading {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+      );
+  
+    gap: 1rem;
+  
+    margin-top: 1.5rem;
+  }
+  
+  .discover-skeleton {
+    height: 470px;
+    padding: 1rem;
+  
+    border-radius: 1.5rem;
+  
+    background: white;
+  
+    div,
+    span {
+      display: block;
+  
+      border-radius: 0.75rem;
+  
+      background:
+        linear-gradient(
+          90deg,
+          #edf2f7,
+          #f8fafc,
+          #edf2f7
+        );
+  
+      background-size: 200% 100%;
+  
+      animation:
+        discover-shimmer
+        1.4s
+        infinite;
+    }
+  
+    div {
+      height: 190px;
+    }
+  
+    span {
+      height: 16px;
+      margin-top: 1rem;
+    }
+  
+    span:nth-child(3) {
+      width: 75%;
+    }
+  
+    span:nth-child(4) {
+      width: 55%;
+    }
+  }
+  
+  .discover-empty {
+    margin-top: 1.5rem;
+    padding: 4rem 1.5rem;
+  
+    text-align: center;
+  
+    border: 1px dashed
+      rgba(100, 116, 139, 0.3);
+  
+    border-radius: 1.5rem;
+  
+    background:
+      rgba(255, 255, 255, 0.72);
+  
+    > span {
+      font-size: 3rem;
+    }
+  
+    h2 {
+      margin:
+        0.8rem
+        0
+        0.35rem;
+  
+      color: #233650;
+    }
+  
+    p {
+      color: #748298;
+    }
+  
+    button {
+      padding:
+        0.7rem
+        1rem;
+  
+      border: 0;
+      border-radius: 999px;
+  
+      color: white;
+      cursor: pointer;
+      background: #2867df;
+  
+      font: inherit;
+      font-weight: 800;
+    }
+  }
+  
+  @keyframes discover-shimmer {
+    from {
+      background-position:
+        200% 0;
+    }
+  
+    to {
+      background-position:
+        -200% 0;
+    }
+  }
+  
+  @media (
+    max-width: 760px
+  ) {
+    .discover-page {
+      width:
+        min(
+          100% - 1rem,
+          1500px
+        );
+  
+      padding-top: 0.75rem;
+    }
+  
+    .discover-hero {
+      min-height: 230px;
+      padding: 1.4rem;
+    }
+  
+    .discover-compass {
+      display: none;
+    }
+  
+    .discover-dna-note {
+      grid-template-columns:
+        auto minmax(0, 1fr);
+  
+      button {
+        grid-column:
+          1 / -1;
+  
+        width: 100%;
+      }
+    }
+  
+    .discover-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .discover-results-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  
+    .discover-grid {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -265,3 +265,8 @@
       display: none;
     }
   }
+  .profile-tab:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+    transform: none;
+  }

@@ -16,8 +16,20 @@ const chatRoutes =
 const authRoutes =
   require('./routes/auth.routes');
 
+const journeyRoutes =
+  require('./routes/journey.routes');
+
 const errorMiddleware =
   require('./middleware/error.middleware');
+
+const journeyMediaRoutes =
+  require('./routes/journey-media.routes');  
+
+const discoverRoutes =
+  require('./routes/discover.routes');  
+
+const travelerProfileRoutes =
+  require('./routes/traveler-profile.routes');  
 
 const app =
   express();
@@ -90,8 +102,37 @@ app.use(
 );
 
 app.use(
+    '/api/journeys',
+    journeyRoutes
+  );
+
+app.use(
   errorMiddleware
 );
+
+app.use(
+    '/api/journeys',
+    journeyRoutes
+  );
+  
+app.use(
+    '/api/journeys',
+    journeyMediaRoutes
+  );
+
+app.use(
+    '/api/discover',
+    discoverRoutes
+  ); 
+
+app.use(
+    '/api/traveler-profile',
+    travelerProfileRoutes
+  );  
+  
+app.use(
+    errorMiddleware
+  );
 
 module.exports =
   app;

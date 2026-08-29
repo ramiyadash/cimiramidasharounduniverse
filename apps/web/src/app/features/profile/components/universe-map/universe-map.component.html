@@ -122,15 +122,18 @@
         </button>
       </nav>
   
-      <button
+    <button
         type="button"
-        class="universe-add-place">
+        class="universe-add-place"
+        [disabled]="isPlaceFormOpen"
+        (click)="openAddPlace()">
+
         <span aria-hidden="true">
-          ＋
+            ＋
         </span>
-  
+
         Add a place
-      </button>
+    </button>
     </div>
   
     <div class="universe-explorer">
@@ -148,6 +151,18 @@
           "
           aria-label="Interactive journey map">
         </div>
+
+        @if (isPlaceFormOpen) {
+            <div class="universe-map-pick-hint">
+              <span>◎</span>
+          
+              @if (editingPlace) {
+                Drag or move the destination pin
+              } @else {
+                Drop a pin on your destination
+              }
+            </div>
+          }
   
         @if (
           viewMode === 'list'
@@ -233,16 +248,30 @@
           </div>
         }
       </section>
-  
-      @if (selectedPlace) {
+      
+      @if (isPlaceFormOpen) {
+        <app-add-place-form
+          [coordinates]="draftCoordinates"
+          (placeSaved)="handlePlaceSaved($event)"
+          (cancelRequested)="cancelAddPlace()">
+        </app-add-place-form>
+      } @else if (selectedPlace) {
         <article class="universe-place-card">
-          <button
-            type="button"
-            class="universe-card-close"
-            aria-label="Close destination details"
-            (click)="closePlace()">
-            ×
-          </button>
+            <button
+                type="button"
+                class="universe-card-edit"
+                aria-label="Edit destination"
+                title="Edit destination"
+                (click)="openEditPlace(selectedPlace)">
+                ✎
+            </button>
+            <button
+                type="button"
+                class="universe-card-close"
+                aria-label="Close destination details"
+                (click)="closePlace()">
+                ×
+            </button>
   
           <div
             [class]="
@@ -334,9 +363,10 @@
             @if (
               selectedPlace.status === 'visited'
             ) {
-              <button
+                <button
                 type="button"
-                class="universe-primary-action">
+                class="universe-primary-action"
+                (click)="openMemories()">
                 View memories
               </button>
   
@@ -435,4 +465,24 @@
         </small>
       </div>
     </section>
-  </section>
+
+    @if (
+  isViewingMemories &&
+  selectedPlace
+) {
+  <app-journey-memories
+    [journeyId]="
+      selectedPlace.journeyId
+    "
+    [placeTitle]="
+      selectedPlace.country
+    "
+    (photoUploaded)="
+      handlePhotoUploaded()
+    "
+    (closeRequested)="
+      closeMemories()
+    ">
+  </app-journey-memories>
+}
+</section>

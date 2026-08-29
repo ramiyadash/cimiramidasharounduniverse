@@ -32,49 +32,80 @@
     </section>
   
     <nav
-      class="profile-tabs"
-      aria-label="Profile sections">
+    class="profile-tabs"
+    aria-label="Profile sections">
   
-      <button
-        type="button"
-        class="profile-tab is-active">
-        <span aria-hidden="true">
-          🌎
-        </span>
+    <button
+      type="button"
+      class="profile-tab"
+      [class.is-active]="
+        activeSection() ===
+        'universe'
+      "
+      (click)="
+        showSection('universe')
+      ">
   
-        My Universe
-      </button>
+      <span aria-hidden="true">
+        🌎
+      </span>
   
-      <button
-        type="button"
-        class="profile-tab">
-        <span aria-hidden="true">
-          🧬
-        </span>
+      My Universe
+    </button>
   
-        Traveler DNA
-      </button>
+    <button
+      type="button"
+      class="profile-tab"
+      [class.is-active]="
+        activeSection() ===
+        'dna'
+      "
+      (click)="
+        showSection('dna')
+      ">
   
-      <button
-        type="button"
-        class="profile-tab">
-        <span aria-hidden="true">
-          🏆
-        </span>
+      <span aria-hidden="true">
+        🧬
+      </span>
   
-        Achievements
-      </button>
+      Traveler DNA
+    </button>
   
-      <button
-        type="button"
-        class="profile-tab">
-        <span aria-hidden="true">
-          💫
-        </span>
+    <button
+      type="button"
+      class="profile-tab"
+      title="Coming later"
+      disabled>
   
-        Next Horizons
-      </button>
-    </nav>
+      <span aria-hidden="true">
+        🏆
+      </span>
+  
+      Achievements
+    </button>
+  
+    <button
+      type="button"
+      class="profile-tab"
+      title="Coming later"
+      disabled>
+  
+      <span aria-hidden="true">
+        💫
+      </span>
+  
+      Next Horizons
+    </button>
+  </nav>
+  
+  @if (
+    activeSection() ===
+    'universe'
+  ) {
+    <app-universe-map />
+  } @else {
+    <app-traveler-dna />
+  }
   
     <app-universe-map />
   </main>

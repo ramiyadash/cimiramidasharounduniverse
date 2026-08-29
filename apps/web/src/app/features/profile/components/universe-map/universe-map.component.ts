@@ -4,9 +4,14 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  OnInit,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import {
+  HttpErrorResponse
+} from '@angular/common/http';
 
 import {
   Map as MapLibreMap,
@@ -14,10 +19,19 @@ import {
   NavigationControl
 } from 'maplibre-gl';
 
-type UniverseStatus =
-  | 'visited'
-  | 'planned'
-  | 'dreaming';
+import {
+  JourneyService,
+  UniversePlace,
+  UniverseStatus
+} from '../../../../core/services/journey.service';
+
+import {
+  AddPlaceFormComponent
+} from '../add-place-form/add-place-form.component';
+
+import {
+  JourneyMemoriesComponent
+} from '../journey-memories/journey-memories.component';
 
 type UniverseFilter =
   | UniverseStatus
@@ -27,25 +41,11 @@ type UniverseView =
   | 'map'
   | 'list';
 
-interface UniversePlace {
-  id: string;
-  country: string;
-  region: string;
-  locations: string;
-  date: string;
-  description: string;
-  status: UniverseStatus;
-  coordinates: [number, number];
-  emoji: string;
-  journeys: number;
-  photos: number;
-  stories: number;
-}
-
 @Component({
   selector: 'app-universe-map',
 
-  imports: [],
+  imports: [AddPlaceFormComponent,
+    JourneyMemoriesComponent],
 
   templateUrl:
     './universe-map.component.html',
@@ -62,7 +62,7 @@ interface UniversePlace {
     ViewEncapsulation.None
 })
 export class UniverseMapComponent
-  implements AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(
     'mapContainer',
@@ -77,6 +77,8 @@ export class UniverseMapComponent
   private markers =
     new Map<string, Marker>();
 
+  private draftMarker?: Marker;
+
   activeFilter: UniverseFilter =
     'all';
 
@@ -85,115 +87,37 @@ export class UniverseMapComponent
 
   selectedPlace?: UniversePlace;
 
-  /**
-   * Temporary development data.
-   *
-   * This will eventually come from MongoDB journeys,
-   * stories and the traveler profile.
-   */
-  readonly places: UniversePlace[] = [
-    {
-      id: 'peru-2025',
-      country: 'Peru',
-      region: 'South America',
-      locations:
-        'Cusco · Machu Picchu · Lima',
-      date: 'July 2025',
-      description:
-        'Ancient cities, mountain landscapes and unforgettable discoveries across Peru.',
-      status: 'visited',
-      coordinates: [
-        -75.0152,
-        -9.19
-      ],
-      emoji: '🇵🇪',
-      journeys: 1,
-      photos: 87,
-      stories: 3
-    },
-    {
-      id: 'india-2026',
-      country: 'India',
-      region: 'Asia',
-      locations:
-        'Mumbai · Andaman · Bhubaneswar · Meghalaya',
-      date: 'Apr–May 2026',
-      description:
-        'A journey filled with culture, food, coastlines and remarkable landscapes.',
-      status: 'visited',
-      coordinates: [
-        78.9629,
-        20.5937
-      ],
-      emoji: '🇮🇳',
-      journeys: 1,
-      photos: 134,
-      stories: 5
-    },
-    {
-      id: 'guatemala-2026',
-      country: 'Guatemala',
-      region: 'Central America',
-      locations:
-        'Antigua · Lake Atitlán · Tikal',
-      date: 'July 2026',
-      description:
-        'Colorful towns, volcanic lakes and the ancient stories of the Maya world.',
-      status: 'visited',
-      coordinates: [
-        -90.2308,
-        15.7835
-      ],
-      emoji: '🇬🇹',
-      journeys: 1,
-      photos: 62,
-      stories: 3
-    },
-    {
-      id: 'japan-2027',
-      country: 'Japan',
-      region: 'Asia',
-      locations:
-        'Tokyo · Kyoto · Osaka',
-      date: 'Planned for 2027',
-      description:
-        'A future journey through modern cities, historic neighborhoods and local flavors.',
-      status: 'planned',
-      coordinates: [
-        138.2529,
-        36.2048
-      ],
-      emoji: '🇯🇵',
-      journeys: 1,
-      photos: 0,
-      stories: 0
-    },
-    {
-      id: 'iceland-dream',
-      country: 'Iceland',
-      region: 'Europe',
-      locations:
-        'Reykjavík · South Coast',
-      date: 'Someday',
-      description:
-        'A dream of waterfalls, glaciers, northern lights and dramatic open landscapes.',
-      status: 'dreaming',
-      coordinates: [
-        -19.0208,
-        64.9631
-      ],
-      emoji: '🇮🇸',
-      journeys: 0,
-      photos: 0,
-      stories: 0
-    }
-  ];
+  places: UniversePlace[] = [];
+
+  isLoading = true;
+
+  errorMessage: string | null =
+    null;
+
+  isAddingPlace = false;
+
+  isViewingMemories = false;
+
+  editingPlace:
+  UniversePlace | null =
+  null;
+
+  draftCoordinates:
+    [number, number] | null =
+    null;  
+
+  private mapReady = false;
 
   constructor(
-    private readonly zone: NgZone
-  ) {
-    this.selectedPlace =
-      this.places[0];
+    private readonly zone:
+      NgZone,
+  
+    private readonly journeyService:
+      JourneyService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadUniverseJourneys();
   }
 
   ngAfterViewInit(): void {
@@ -201,8 +125,51 @@ export class UniverseMapComponent
   }
 
   ngOnDestroy(): void {
+
+    this.draftMarker?.remove();
+    this.draftMarker = undefined;
+
     this.markers.clear();
     this.map?.remove();
+  }
+
+  private loadUniverseJourneys(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+  
+    this.journeyService
+      .getUniverseJourneys()
+      .subscribe({
+        next: response => {
+          this.places =
+            response.places;
+  
+          this.selectedPlace =
+            this.places[0];
+  
+          this.isLoading = false;
+  
+          if (this.mapReady) {
+            this.synchronizeMarkers();
+            this.resetMapView(0);
+          }
+        },
+  
+        error: (
+          error: HttpErrorResponse
+        ) => {
+          this.isLoading = false;
+  
+          this.errorMessage =
+            error.error?.message ||
+            'Your universe could not be loaded.';
+  
+          console.error(
+            'Unable to load My Universe:',
+            error
+          );
+        }
+      });
   }
 
   get visitedCount(): number {
@@ -237,6 +204,13 @@ export class UniverseMapComponent
     );
   }
 
+  get isPlaceFormOpen(): boolean {
+    return (
+      this.isAddingPlace ||
+      this.editingPlace !== null
+    );
+  }
+
   get visiblePlaces(): UniversePlace[] {
     if (this.activeFilter === 'all') {
       return this.places;
@@ -266,6 +240,171 @@ export class UniverseMapComponent
         0
       );
     }
+  }
+
+  openAddPlace(): void {
+    this.draftMarker?.remove();
+    this.draftMarker = undefined;
+    
+    this.editingPlace = null;
+    this.isAddingPlace = true;
+    this.selectedPlace = undefined;
+    this.draftCoordinates = null;
+    this.viewMode = 'map';
+  
+    if (this.map) {
+      this.map
+        .getCanvas()
+        .style.cursor =
+          'crosshair';
+  
+      setTimeout(
+        () => {
+          this.map?.resize();
+        },
+        0
+      );
+    }
+  }
+
+  openEditPlace(
+    place: UniversePlace
+  ): void {
+    this.draftMarker?.remove();
+    this.draftMarker = undefined;
+  
+    this.isAddingPlace = false;
+    this.editingPlace = place;
+    this.selectedPlace = undefined;
+    this.viewMode = 'map';
+  
+    /**
+     * Hide the permanent marker while the temporary,
+     * draggable edit marker is visible.
+     */
+    const existingMarker =
+      this.markers.get(
+        place.id
+      );
+  
+    if (existingMarker) {
+      existingMarker
+        .getElement()
+        .style.display =
+          'none';
+    }
+  
+    if (this.map) {
+      this.map
+        .getCanvas()
+        .style.cursor =
+          'crosshair';
+  
+      setTimeout(
+        () => {
+          this.map?.resize();
+        },
+        0
+      );
+    }
+  
+    /**
+     * Place the draggable marker at the journey's
+     * currently saved coordinates.
+     */
+    this.setDraftLocation(
+      place.coordinates[0],
+      place.coordinates[1]
+    );
+  }
+  
+  cancelAddPlace(): void {
+    const previouslyEditedPlace =
+      this.editingPlace;
+  
+    this.draftMarker?.remove();
+    this.draftMarker = undefined;
+  
+    this.isAddingPlace = false;
+    this.editingPlace = null;
+    this.draftCoordinates = null;
+  
+    if (this.map) {
+      this.map
+        .getCanvas()
+        .style.cursor =
+          '';
+    }
+  
+    /**
+     * Restore any permanent marker hidden during edit.
+     */
+    this.updateMarkerVisibility();
+  
+    this.selectedPlace =
+      previouslyEditedPlace ||
+      this.visiblePlaces[0];
+  }
+  
+  handlePlaceSaved(
+    place: UniversePlace
+  ): void {
+    this.draftMarker?.remove();
+    this.draftMarker = undefined;
+  
+    this.isAddingPlace = false;
+    this.editingPlace = null;
+    this.draftCoordinates = null;
+    this.activeFilter = 'all';
+  
+    const existingPlace =
+      this.places.some(
+        currentPlace =>
+          currentPlace.id ===
+          place.id
+      );
+  
+    if (existingPlace) {
+      /**
+       * Replace the updated place without creating a
+       * duplicate card or map marker.
+       */
+      this.places =
+        this.places.map(
+          currentPlace =>
+            currentPlace.id ===
+            place.id
+              ? place
+              : currentPlace
+        );
+    } else {
+      this.places = [
+        place,
+        ...this.places
+      ];
+    }
+  
+    this.selectedPlace = place;
+  
+    if (this.map) {
+      this.map
+        .getCanvas()
+        .style.cursor =
+          '';
+    }
+  
+    this.synchronizeMarkers();
+  
+    this.map?.flyTo({
+      center:
+        place.coordinates,
+  
+      zoom: 4,
+  
+      duration: 1100,
+  
+      essential: true
+    });
   }
 
   setFilter(
@@ -357,12 +496,28 @@ export class UniverseMapComponent
     this.map.on(
       'load',
       () => {
-        /**
-         * Wait until the map canvas and style are ready
-         * before attaching the destination markers.
-         */
-        this.addMarkers();
+        this.mapReady = true;
+    
+        this.synchronizeMarkers();
         this.resetMapView(0);
+      }
+    );
+
+    this.map.on(
+      'click',
+      event => {
+        if (!this.isPlaceFormOpen) {
+          return;
+        }
+    
+        this.zone.run(
+          () => {
+            this.setDraftLocation(
+              event.lngLat.lng,
+              event.lngLat.lat
+            );
+          }
+        );
       }
     );
 
@@ -375,6 +530,102 @@ export class UniverseMapComponent
         );
       }
     );
+  }
+
+  private setDraftLocation(
+    longitude: number,
+    latitude: number
+  ): void {
+    const normalizedLongitude =
+      Number(
+        longitude.toFixed(6)
+      );
+  
+    const normalizedLatitude =
+      Number(
+        latitude.toFixed(6)
+      );
+  
+    this.draftCoordinates = [
+      normalizedLongitude,
+      normalizedLatitude
+    ];
+  
+    if (!this.map) {
+      return;
+    }
+  
+    /**
+     * Create the temporary pin after the first click.
+     */
+    if (!this.draftMarker) {
+      this.draftMarker =
+        new Marker({
+          color: '#08777c',
+          draggable: true
+        })
+          .setLngLat(
+            this.draftCoordinates
+          )
+          .addTo(
+            this.map
+          );
+  
+      /**
+       * Keep the form coordinates synchronized when
+       * the traveler drags the temporary pin.
+       */
+      this.draftMarker.on(
+        'dragend',
+        () => {
+          const position =
+            this.draftMarker
+              ?.getLngLat();
+  
+          if (!position) {
+            return;
+          }
+  
+          this.zone.run(
+            () => {
+              this.draftCoordinates = [
+                Number(
+                  position.lng
+                    .toFixed(6)
+                ),
+  
+                Number(
+                  position.lat
+                    .toFixed(6)
+                )
+              ];
+            }
+          );
+        }
+      );
+  
+      return;
+    }
+  
+    /**
+     * Subsequent map clicks move the existing pin.
+     */
+    this.draftMarker.setLngLat(
+      this.draftCoordinates
+    );
+  }
+
+  private synchronizeMarkers(): void {
+    for (
+      const marker
+      of this.markers.values()
+    ) {
+      marker.remove();
+    }
+  
+    this.markers.clear();
+    this.addMarkers();
+    this.updateMarkerVisibility();
   }
 
   private resetMapView(
@@ -433,7 +684,8 @@ export class UniverseMapComponent
     const markerElement =
       document.createElement('button');
   
-    markerElement.type = 'button';
+    markerElement.type =
+      'button';
   
     markerElement.className =
       `universe-marker ` +
@@ -448,25 +700,53 @@ export class UniverseMapComponent
       markerElement.title
     );
   
-    markerElement.innerHTML = `
-      <span
-        class="universe-marker__pulse">
-      </span>
+    const pulseElement =
+      document.createElement('span');
   
-      <span
-        class="universe-marker__pin">
+    pulseElement.className =
+      'universe-marker__pulse';
   
-        <span
-          class="universe-marker__emoji">
-          ${place.emoji}
-        </span>
+    const pinElement =
+      document.createElement('span');
   
-      </span>
-    `;
+    pinElement.className =
+      'universe-marker__pin';
+  
+    const emojiElement =
+      document.createElement('span');
+  
+    emojiElement.className =
+      'universe-marker__emoji';
+  
+    /**
+     * textContent prevents stored database values
+     * from being interpreted as executable HTML.
+     */
+    emojiElement.textContent =
+      place.emoji;
+  
+    pinElement.appendChild(
+      emojiElement
+    );
+  
+    markerElement.append(
+      pulseElement,
+      pinElement
+    );
   
     markerElement.addEventListener(
       'click',
-      () => {
+      event => {
+        event.stopPropagation();
+    
+        /**
+         * Existing destinations cannot be selected while
+         * the traveler is placing a new pin.
+         */
+        if (this.isPlaceFormOpen) {
+          return;
+        }
+    
         this.zone.run(
           () => {
             this.selectPlace(place);
@@ -499,5 +779,58 @@ export class UniverseMapComponent
             ? ''
             : 'none';
     }
+  }
+
+  openMemories(): void {
+    if (!this.selectedPlace) {
+      return;
+    }
+  
+    this.isViewingMemories =
+      true;
+  }
+  
+  closeMemories(): void {
+    this.isViewingMemories =
+      false;
+  }
+  
+  /**
+   * Updates the visible journey count immediately
+   * after MongoDB confirms the photo upload.
+   */
+  handlePhotoUploaded(): void {
+    const selectedPlaceId =
+      this.selectedPlace?.id;
+  
+    if (!selectedPlaceId) {
+      return;
+    }
+  
+    this.places =
+      this.places.map(
+        place => {
+          if (
+            place.id !==
+            selectedPlaceId
+          ) {
+            return place;
+          }
+  
+          return {
+            ...place,
+  
+            photos:
+              place.photos + 1
+          };
+        }
+      );
+  
+    this.selectedPlace =
+      this.places.find(
+        place =>
+          place.id ===
+          selectedPlaceId
+      );
   }
 }
