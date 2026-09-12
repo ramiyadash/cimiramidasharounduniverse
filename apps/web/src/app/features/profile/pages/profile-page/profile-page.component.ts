@@ -3,9 +3,6 @@ import {
   signal
 } from '@angular/core';
 
-import {
-  UniverseMapComponent
-} from '../../components/universe-map/universe-map.component';
 
 import {
   TravelerDnaComponent
@@ -22,7 +19,6 @@ type ProfileSection =
   standalone: true,
 
   imports: [
-    UniverseMapComponent,
     TravelerDnaComponent
   ],
 

@@ -1,79 +1,106 @@
-<div class="app-layout">
-
-  <app-sidebar></app-sidebar>
-
-  <main class="main-content">
-
-    <header
-      class="page-header"
-      [style.--header-accent]="selectedJourney.accentColor"
-      [style.--header-background]="selectedJourney.softBackground"
+<main class="main-content">
+  <!--
+    This planning prompt belongs specifically to
+    the Plan/Home page. It remains sticky beneath
+    the global application header.
+  -->
+  <section
+    class="sticky-planner-region"
+    aria-label="Start planning a journey"
+  >
+    <form
+      class="sticky-planner"
+      [style.--planner-accent]="
+        selectedJourney.accentColor
+      "
+      (ngSubmit)="submitStickyPlan()"
     >
-      <p>☀️ Good afternoon, Ramiya</p>
-
-      <div class="top-icons">
-        <span>🔍</span>
-        <span>🔔</span>
-        <span class="profile-dot">R</span>
-      </div>
-    </header>
-
-    <div
-      class="compact-hero-region"
-      [class.is-visible]="isHeroSticky"
-    >
-      <div
-        class="compact-hero-bar"
-        [style.--hero-accent]="selectedJourney.accentColor"
+      <span
+        class="sticky-planner-icon"
+        aria-hidden="true"
       >
-        <div class="compact-hero-copy">
-          <small>Selected journey</small>
+        {{ selectedJourney.icon }}
+      </span>
 
-          <strong>
-            {{ selectedJourney.title }}
-          </strong>
-        </div>
+      <div class="sticky-planner-copy">
+        <small>
+          Plan with Dash
+        </small>
 
-        <a
-          class="compact-hero-button"
-          href="#planning-session"
+        <strong>
+          Where should we escape next?
+        </strong>
+      </div>
+
+      <input
+        type="text"
+        name="stickyPlanningPrompt"
+        [(ngModel)]="
+          stickyPlanningPrompt
+        "
+        [placeholder]="
+          selectedJourney.inputPlaceholder
+        "
+        [disabled]="
+          planningSessionBusy
+        "
+        autocomplete="off"
+        aria-label="Describe the journey you want to plan"
+      />
+
+      <button
+        type="submit"
+        [disabled]="
+          !canSubmitStickyPlan
+        "
+      >
+        <span
+          class="sticky-planner-button-label"
         >
-          <span>Start planning</span>
+          Start planning
+        </span>
 
-          <span aria-hidden="true">
-            →
-          </span>
-        </a>
-      </div>
-    </div>
+        <span aria-hidden="true">
+          →
+        </span>
+      </button>
+    </form>
+  </section>
 
-      <section class="hero-stage">
-        <app-hero
-          [journey]="selectedJourney"
-          [isSticky]="isHeroSticky"
-        ></app-hero>
-      </section>
+  <section class="hero-stage">
+    <app-hero
+      [journey]="selectedJourney"
+      [isSticky]="isHeroSticky"
+    ></app-hero>
+  </section>
 
-      <app-journey-grid
-        [selectedJourney]="selectedJourney"
-        (journeySelected)="onJourneySelected($event)"
-      ></app-journey-grid>
+  <app-journey-grid
+    [selectedJourney]="
+      selectedJourney
+    "
+    (journeySelected)="
+      onJourneySelected($event)
+    "
+  ></app-journey-grid>
 
-      <app-continue-planning
-        [journey]="selectedJourney"
-      ></app-continue-planning>
+  <app-continue-planning
+    [journey]="
+      selectedJourney
+    "
+  ></app-continue-planning>
 
-      <section
-        id="planning-session"
-        class="lower-grid"
-      >
-        <app-planning-session
-          [journey]="selectedJourney"
-        ></app-planning-session>
+  <section
+    id="planning-session"
+    class="lower-grid"
+  >
+    <app-planning-session
+      [journey]="
+        selectedJourney
+      "
+    ></app-planning-session>
 
-        <app-stories></app-stories>
-      </section>
-
-  </main>
-
-</div>
+    <app-stories
+      id="stories"
+    ></app-stories>
+  </section>
+</main>

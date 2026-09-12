@@ -1,0 +1,400 @@
+<section
+  class="memories-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="memories-title"
+  (click)="handleBackdropClick($event)">
+
+  <article class="memories-panel">
+    <header class="memories-header">
+      <div>
+        <p>
+          JOURNEY MEMORIES
+        </p>
+
+        <h2 id="memories-title">
+          {{ placeTitle }}
+        </h2>
+
+        <span>
+          Preserve the moments that made this
+          journey unforgettable.
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="memories-close"
+        aria-label="Close memories"
+        [disabled]="isUploading()"
+        (click)="close()">
+        ×
+      </button>
+    </header>
+
+    <section class="memories-uploader">
+      <div class="memories-upload-heading">
+        <div>
+          <h3>
+            Add a memory
+          </h3>
+
+          <p>
+            Choose a photo from your device
+            or Google Photos.
+          </p>
+        </div>
+
+        <div class="memories-source-actions">
+          <label class="memories-file-button">
+            <input
+              #photoInput
+              type="file"
+              accept="
+                image/jpeg,
+                image/png,
+                image/webp,
+                image/heic,
+                image/heif
+              "
+              [disabled]="
+                isUploading() ||
+                isPreparingGooglePhoto()
+              "
+              (change)="
+                handleFileSelection($event)
+              "
+            >
+
+            From device
+          </label>
+
+          <button
+            type="button"
+            class="memories-google-button"
+            [disabled]="
+              isUploading() ||
+              isGoogleConnecting() ||
+              isGoogleWaiting()
+            "
+            (click)="connectGooglePhotos()"
+          >
+            @if (isGoogleConnecting()) {
+              Connecting…
+            } @else {
+              Google Photos
+            }
+          </button>
+        </div>
+      </div>
+
+      @if (googleSession(); as session) {
+        <section class="google-picker-card">
+          <div>
+            <strong>
+              Google Photos is ready
+            </strong>
+
+            <p>
+              Select memories from the dates of
+              this journey. Dash will organize
+              them after you return.
+            </p>
+          </div>
+
+          @if (!isGoogleWaiting()) {
+            <button
+              type="button"
+              class="google-picker-open"
+              (click)="openGooglePhotos()"
+            >
+              Open Google Photos
+            </button>
+          }
+
+          @if (isGoogleWaiting()) {
+            <p class="google-picker-waiting">
+              Waiting for your Google Photos
+              selection…
+            </p>
+          }
+
+          <button
+            type="button"
+            class="google-picker-cancel"
+            [disabled]="
+              isGoogleWaiting()
+            "
+            (click)="cancelGooglePhotos()"
+          >
+            Disconnect
+          </button>
+        </section>
+      }
+
+      @if (googleMediaItems().length) {
+        <section class="google-selected-media">
+          <header>
+            <div>
+              <h3>
+                Selected from Google Photos
+              </h3>
+
+              <p>
+                Photos matching the journey dates
+                appear first.
+              </p>
+            </div>
+
+            <span>
+              {{ googleMediaItems().length }}
+              selected
+            </span>
+          </header>
+
+          @if (googleVideoCount()) {
+            <p class="google-video-notice">
+              {{ googleVideoCount() }}
+              selected
+              {{
+                googleVideoCount() === 1
+                  ? 'video is'
+                  : 'videos are'
+              }}
+              waiting for our upcoming video
+              upload milestone.
+            </p>
+          }
+
+          <div class="google-media-list">
+            @for (
+              item of googleMediaItems();
+              track item.id
+            ) {
+              <article class="google-media-item">
+                <span class="google-media-type">
+                  {{
+                    item.type === 'VIDEO'
+                      ? '🎬'
+                      : '📷'
+                  }}
+                </span>
+
+                <div>
+                  <strong>
+                    {{
+                      item.mediaFile.filename
+                    }}
+                  </strong>
+
+                  <small>
+                    {{
+                      formatGoogleDate(
+                        item.createTime
+                      )
+                    }}
+                  </small>
+
+                  <span
+                    [class]="
+                      'google-date-status ' +
+                      'google-date-status--' +
+                      googleDateStatus(item)
+                    "
+                  >
+                    {{
+                      googleDateLabel(item)
+                    }}
+                  </span>
+                </div>
+
+                @if (item.type === 'PHOTO') {
+                  <button
+                    type="button"
+                    [disabled]="
+                      isPreparingGooglePhoto() ||
+                      isUploading()
+                    "
+                    (click)="
+                      prepareGooglePhoto(item)
+                    "
+                  >
+                    Use photo
+                  </button>
+                }
+              </article>
+            }
+          </div>
+        </section>
+      }
+
+      @if (selectedFile(); as file) {
+        <div class="memories-preview">
+          @if (previewUrl()) {
+            <img
+              [src]="previewUrl()"
+              alt="Selected journey memory preview">
+          }
+
+          <div class="memories-preview-details">
+            <strong>
+              {{ file.name }}
+            </strong>
+
+            <small>
+              {{
+                (
+                  file.size /
+                  1024 /
+                  1024
+                ).toFixed(2)
+              }}
+              MB
+            </small>
+
+            <label for="memory-caption">
+              Caption
+            </label>
+
+            <textarea
+              id="memory-caption"
+              rows="3"
+              maxlength="500"
+              placeholder="What made this moment special?"
+              [formControl]="captionControl">
+            </textarea>
+
+            <div class="memories-preview-actions">
+              <button
+                type="button"
+                class="memories-remove"
+                [disabled]="isUploading()"
+                (click)="removeSelectedFile()">
+                Remove
+              </button>
+
+              <button
+                type="button"
+                class="memories-upload"
+                [disabled]="isUploading()"
+                (click)="uploadPhoto()">
+
+                @if (isUploading()) {
+                  Uploading…
+                } @else {
+                  Save memory
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (isUploading()) {
+        <div
+          class="memories-progress"
+          role="progressbar"
+          aria-label="Photo upload progress"
+          [attr.aria-valuenow]="
+            uploadProgress()
+          "
+          aria-valuemin="0"
+          aria-valuemax="100">
+
+          <div
+            class="memories-progress-bar"
+            [style.width.%]="
+              uploadProgress()
+            ">
+          </div>
+
+          <span>
+            {{ uploadProgress() }}%
+          </span>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <p
+          class="memories-error"
+          role="alert">
+          {{ errorMessage() }}
+        </p>
+      }
+    </section>
+
+    <section class="memories-gallery">
+      <header>
+        <h3>
+          Your photos
+        </h3>
+
+        <span>
+          {{ photos().length }}
+          memories
+        </span>
+      </header>
+
+      @if (isLoading()) {
+        <div class="memories-loading">
+          Loading your memories…
+        </div>
+      } @else if (!photos().length) {
+        <div class="memories-empty">
+          <span>
+            📷
+          </span>
+
+          <h3>
+            No photos yet
+          </h3>
+
+          <p>
+            Add the first photo that tells the
+            story of this journey.
+          </p>
+        </div>
+      } @else {
+        <div class="memories-grid">
+          @for (
+            photo of photos();
+            track photo.id
+          ) {
+            <figure class="memory-card">
+              <img
+                [src]="photo.url"
+                [alt]="
+                  photo.caption ||
+                  photo.originalFileName
+                "
+                loading="lazy">
+
+              @if (photo.isCover) {
+                <span class="memory-cover">
+                  Cover
+                </span>
+              }
+
+              <figcaption>
+                <strong>
+                  {{
+                    photo.caption ||
+                    'Journey memory'
+                  }}
+                </strong>
+
+                <small>
+                  {{
+                    photo.takenAt
+                      ? formatGoogleDate(photo.takenAt)
+                      : 'Upload date'
+                  }}
+                </small>
+              </figcaption>
+            </figure>
+          }
+        </div>
+      }
+    </section>
+  </article>
+</section>

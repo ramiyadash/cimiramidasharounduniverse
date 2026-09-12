@@ -2,57 +2,57 @@
     <header class="universe-header">
       <div>
         <p class="universe-eyebrow">
-          My Universe ✨
+          Jounrye Map ✨
         </p>
-  
+
         <h1>
           Your world of journeys
         </h1>
-  
+
         <p class="universe-description">
           Everywhere you have been,
           plan to go, and dream about.
         </p>
       </div>
-  
+
       <div class="universe-summary">
         <div class="universe-stat">
           <strong>
             {{ visitedCount }}
           </strong>
-  
+
           <span>
             Visited
           </span>
         </div>
-  
+
         <div class="universe-stat">
           <strong>
             {{ plannedCount }}
           </strong>
-  
+
           <span>
             Planned
           </span>
         </div>
-  
+
         <div class="universe-stat">
           <strong>
             {{ dreamingCount }}
           </strong>
-  
+
           <span>
             Dreaming
           </span>
         </div>
       </div>
     </header>
-  
+
     <div class="universe-toolbar">
       <div
         class="universe-view-switch"
         aria-label="Universe view">
-  
+
         <button
           type="button"
           [class.is-active]="
@@ -61,7 +61,7 @@
           (click)="setViewMode('map')">
           🗺 Map
         </button>
-  
+
         <button
           type="button"
           [class.is-active]="
@@ -71,11 +71,11 @@
           ☰ List
         </button>
       </div>
-  
+
       <nav
         class="universe-filters"
         aria-label="Filter destinations">
-  
+
         <button
           type="button"
           [class.is-active]="
@@ -84,7 +84,7 @@
           (click)="setFilter('all')">
           All places
         </button>
-  
+
         <button
           type="button"
           class="filter-visited"
@@ -92,11 +92,11 @@
             activeFilter === 'visited'
           "
           (click)="setFilter('visited')">
-  
+
           <span class="filter-dot"></span>
           Visited
         </button>
-  
+
         <button
           type="button"
           class="filter-planned"
@@ -104,11 +104,11 @@
             activeFilter === 'planned'
           "
           (click)="setFilter('planned')">
-  
+
           <span class="filter-dot"></span>
           Planned
         </button>
-  
+
         <button
           type="button"
           class="filter-dreaming"
@@ -116,12 +116,12 @@
             activeFilter === 'dreaming'
           "
           (click)="setFilter('dreaming')">
-  
+
           <span class="filter-dot"></span>
           Dreaming
         </button>
       </nav>
-  
+
     <button
         type="button"
         class="universe-add-place"
@@ -135,14 +135,14 @@
         Add a place
     </button>
     </div>
-  
+
     <div class="universe-explorer">
       <section
         class="universe-stage"
         [class.is-list-view]="
           viewMode === 'list'
         ">
-  
+
         <div
           #mapContainer
           class="universe-map"
@@ -155,7 +155,7 @@
         @if (isPlaceFormOpen) {
             <div class="universe-map-pick-hint">
               <span>◎</span>
-          
+
               @if (editingPlace) {
                 Drag or move the destination pin
               } @else {
@@ -163,7 +163,7 @@
               }
             </div>
           }
-  
+
         @if (
           viewMode === 'list'
         ) {
@@ -179,25 +179,25 @@
                   selectedPlace?.id === place.id
                 "
                 (click)="selectPlace(place)">
-  
+
                 <span class="universe-list-flag">
                   {{ place.emoji }}
                 </span>
-  
+
                 <span class="universe-list-content">
                   <strong>
                     {{ place.country }}
                   </strong>
-  
+
                   <small>
                     {{ place.locations }}
                   </small>
-  
+
                   <span class="universe-list-date">
                     {{ place.date }}
                   </span>
                 </span>
-  
+
                 <span
                   [class]="
                     'universe-list-dot ' +
@@ -209,7 +209,7 @@
             }
           </div>
         }
-  
+
         @if (
           viewMode === 'map'
         ) {
@@ -225,16 +225,16 @@
                   selectedPlace?.id === place.id
                 "
                 (click)="selectPlace(place)">
-  
+
                 <span>
                   {{ place.emoji }}
                 </span>
-  
+
                 <span>
                   <strong>
                     {{ place.country }}
                   </strong>
-  
+
                   <small>
                     {{
                       statusLabel(
@@ -248,7 +248,7 @@
           </div>
         }
       </section>
-      
+
       @if (isPlaceFormOpen) {
         <app-add-place-form
           [coordinates]="draftCoordinates"
@@ -272,19 +272,19 @@
                 (click)="closePlace()">
                 ×
             </button>
-  
+
           <div
             [class]="
               'universe-place-visual ' +
               'universe-place-visual--' +
               selectedPlace.status
             ">
-  
+
             <span>
               {{ selectedPlace.emoji }}
             </span>
           </div>
-  
+
           <div class="universe-place-body">
             <span
               [class]="
@@ -292,91 +292,103 @@
                 'universe-status--' +
                 selectedPlace.status
               ">
-  
+
               <span class="universe-status-dot"></span>
-  
+
               {{
                 statusLabel(
                   selectedPlace.status
                 )
               }}
             </span>
-  
+
             <h2>
               {{ selectedPlace.country }}
             </h2>
-  
+
             <p class="universe-region">
               {{ selectedPlace.region }}
             </p>
-  
+
             <p class="universe-description-text">
               {{ selectedPlace.description }}
             </p>
-  
+
             <p class="universe-locations">
               {{ selectedPlace.locations }}
             </p>
-  
+
             <div class="universe-card-stats">
               <div>
                 <strong>
                   {{ selectedPlace.journeys }}
                 </strong>
-  
+
                 <span>
                   Journeys
                 </span>
               </div>
-  
+
               <div>
                 <strong>
                   {{ selectedPlace.photos }}
                 </strong>
-  
+
                 <span>
                   Photos
                 </span>
               </div>
-  
+
               <div>
                 <strong>
                   {{ selectedPlace.stories }}
                 </strong>
-  
+
                 <span>
                   Stories
                 </span>
               </div>
             </div>
-  
+
             <div class="universe-visit-date">
               <span>
                 Journey date
               </span>
-  
+
               <strong>
                 {{ selectedPlace.date }}
               </strong>
             </div>
-  
-            @if (
-              selectedPlace.status === 'visited'
-            ) {
-                <button
+
+            @if (selectedPlace.status === 'visited') {
+              <button
                 type="button"
                 class="universe-primary-action"
+                (click)="openStoryEditor()">
+
+                @if (
+                  selectedPlace.stories > 0
+                ) {
+                  Edit story
+                } @else {
+                  Create story
+                }
+              </button>
+
+              <button
+                type="button"
+                class="universe-secondary-action"
                 (click)="openMemories()">
                 View memories
               </button>
-  
+
               <button
                 type="button"
                 class="universe-secondary-action">
                 Plan a return trip
               </button>
             }
-  
+
             @if (
               selectedPlace.status === 'planned'
             ) {
@@ -386,7 +398,7 @@
                 Continue planning
               </button>
             }
-  
+
             @if (
               selectedPlace.status === 'dreaming'
             ) {
@@ -403,11 +415,11 @@
           <span class="universe-empty-icon">
             ✨
           </span>
-  
+
           <h2>
             Explore your universe
           </h2>
-  
+
           <p>
             Select a destination to see its
             journeys, stories, and memories.
@@ -415,51 +427,51 @@
         </aside>
       }
     </div>
-  
+
     <section class="universe-numbers">
       <div>
         <span>🌍</span>
-  
+
         <strong>
           {{ visitedCount }}
         </strong>
-  
+
         <small>
           Countries visited
         </small>
       </div>
-  
+
       <div>
         <span>🗺</span>
-  
+
         <strong>
           {{ places.length }}
         </strong>
-  
+
         <small>
           Destinations
         </small>
       </div>
-  
+
       <div>
         <span>✈️</span>
-  
+
         <strong>
           {{ plannedCount }}
         </strong>
-  
+
         <small>
           Planned journeys
         </small>
       </div>
-  
+
       <div>
         <span>📷</span>
-  
+
         <strong>
           {{ totalPhotos }}
         </strong>
-  
+
         <small>
           Travel photos
         </small>
@@ -475,7 +487,14 @@
       selectedPlace.journeyId
     "
     [placeTitle]="
+      selectedPlace.title ||
       selectedPlace.country
+    "
+    [journeyStartDate]="
+      selectedPlace.startDate
+    "
+    [journeyEndDate]="
+      selectedPlace.endDate
     "
     (photoUploaded)="
       handlePhotoUploaded()
@@ -485,4 +504,24 @@
     ">
   </app-journey-memories>
 }
-</section>
+
+@if (
+  isStoryEditorOpen &&
+  selectedPlace
+) {
+  <app-journey-story-editor
+    [journeyId]="
+      selectedPlace.journeyId
+    "
+    [placeTitle]="
+      selectedPlace.title ||
+      selectedPlace.country
+    "
+    (storySaved)="
+      handleStorySaved()
+    "
+    (closeRequested)="
+      closeStoryEditor()
+    ">
+  </app-journey-story-editor>
+}

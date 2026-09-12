@@ -215,10 +215,10 @@ export class AddPlaceFormComponent
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-    
+
       const invalidFields =
         this.getInvalidFieldLabels();
-    
+
       this.errorMessage.set(
         invalidFields.length
           ? `Please check: ${
@@ -226,7 +226,7 @@ export class AddPlaceFormComponent
             }.`
           : 'One or more values are invalid.'
       );
-    
+
       return;
     }
 

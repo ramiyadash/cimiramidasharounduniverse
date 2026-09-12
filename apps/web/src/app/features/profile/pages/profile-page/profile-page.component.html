@@ -3,38 +3,38 @@
       <div class="profile-avatar">
         R
       </div>
-  
+
       <div class="profile-identity">
         <p class="profile-eyebrow">
           Traveler Profile
         </p>
-  
+
         <h1>
           Ramiya’s Universe
         </h1>
-  
+
         <p>
           Your journeys, stories, dreams,
           and evolving Traveler DNA—all in
           one place.
         </p>
       </div>
-  
+
       <button
         type="button"
         class="profile-settings">
         <span aria-hidden="true">
           ⚙️
         </span>
-  
+
         Edit profile
       </button>
     </section>
-  
+
     <nav
     class="profile-tabs"
     aria-label="Profile sections">
-  
+
     <button
       type="button"
       class="profile-tab"
@@ -45,14 +45,14 @@
       (click)="
         showSection('universe')
       ">
-  
+
       <span aria-hidden="true">
         🌎
       </span>
-  
+
       My Universe
     </button>
-  
+
     <button
       type="button"
       class="profile-tab"
@@ -63,49 +63,39 @@
       (click)="
         showSection('dna')
       ">
-  
+
       <span aria-hidden="true">
         🧬
       </span>
-  
+
       Traveler DNA
     </button>
-  
+
     <button
       type="button"
       class="profile-tab"
       title="Coming later"
       disabled>
-  
+
       <span aria-hidden="true">
         🏆
       </span>
-  
+
       Achievements
     </button>
-  
+
     <button
       type="button"
       class="profile-tab"
       title="Coming later"
       disabled>
-  
+
       <span aria-hidden="true">
         💫
       </span>
-  
+
       Next Horizons
     </button>
   </nav>
-  
-  @if (
-    activeSection() ===
-    'universe'
-  ) {
-    <app-universe-map />
-  } @else {
-    <app-traveler-dna />
-  }
-  
-    <app-universe-map />
-  </main>
+  <app-traveler-dna />
+</main>

@@ -1,16 +1,18 @@
 import {
   Component,
-  HostListener
+  HostListener,
+  ViewChild
 } from '@angular/core';
+
+import {
+  FormsModule
+} from '@angular/forms';
 
 import {
   JourneyTheme,
   JOURNEY_THEMES
 } from '../../../../shared/models/journey-theme.model';
 
-import {
-  SidebarComponent
-} from '../../components/sidebar/sidebar.component';
 
 import {
   HeroComponent
@@ -34,42 +36,125 @@ import {
 
 @Component({
   selector: 'app-home-page',
+
   standalone: true,
+
   imports: [
-    SidebarComponent,
+    FormsModule,
     HeroComponent,
     JourneyGridComponent,
     ContinuePlanningComponent,
     PlanningSessionComponent,
     StoriesComponent
   ],
-  templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss'
+
+  templateUrl:
+    './home-page.component.html',
+
+  styleUrl:
+    './home-page.component.scss'
 })
 export class HomePageComponent {
+  /**
+   * Gives the sticky planner access to the same
+   * planning conversation displayed farther down.
+   */
+  @ViewChild(
+    PlanningSessionComponent
+  )
+  private planningSession?:
+    PlanningSessionComponent;
 
   selectedJourney: JourneyTheme =
     JOURNEY_THEMES[0];
 
-  isHeroSticky: boolean = false;
+  isHeroSticky: boolean =
+    false;
+
+  stickyPlanningPrompt: string =
+    '';
+
+  get planningSessionBusy(): boolean {
+    return (
+      this.planningSession
+        ?.isDashThinking === true
+    );
+  }
+
+  get canSubmitStickyPlan(): boolean {
+    return (
+      this.stickyPlanningPrompt
+        .trim()
+        .length > 0 &&
+      !this.planningSessionBusy
+    );
+  }
 
   onJourneySelected(
     journey: JourneyTheme
   ): void {
-    this.selectedJourney = journey;
+    this.selectedJourney =
+      journey;
   }
 
-  @HostListener('window:scroll')
+  /**
+   * Sends the sticky prompt through the existing
+   * PlanningSessionComponent conversation.
+   */
+  submitStickyPlan(): void {
+    const prompt: string =
+      this.stickyPlanningPrompt
+        .trim();
+
+    if (
+      !prompt ||
+      !this.planningSession
+    ) {
+      return;
+    }
+
+    const accepted: boolean =
+      this.planningSession
+        .submitExternalMessage(
+          prompt
+        );
+
+    if (!accepted) {
+      return;
+    }
+
+    this.stickyPlanningPrompt =
+      '';
+
+    window.requestAnimationFrame(
+      (): void => {
+        document
+          .getElementById(
+            'planning-session'
+          )
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+      }
+    );
+  }
+
+  @HostListener(
+    'window:scroll'
+  )
   onWindowScroll(): void {
     const sticky: boolean =
       window.scrollY > 120;
 
     if (
-      sticky === this.isHeroSticky
+      sticky ===
+      this.isHeroSticky
     ) {
       return;
     }
 
-    this.isHeroSticky = sticky;
+    this.isHeroSticky =
+      sticky;
   }
 }

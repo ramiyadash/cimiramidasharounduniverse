@@ -1,12 +1,12 @@
 app-universe-map {
     display: block;
   }
-  
+
   .universe-shell,
   .universe-shell * {
     box-sizing: border-box;
   }
-  
+
   .universe-shell {
     width: 100%;
     padding:
@@ -15,18 +15,18 @@ app-universe-map {
         2.5vw,
         2rem
       );
-  
+
     border: 1px solid #e3eaf2;
     border-radius: 1.8rem;
-  
+
     background: #f8fbfd;
-  
+
     box-shadow:
       0 24px 60px
         rgba(15, 42, 61, 0.1);
-  
+
     color: #102638;
-  
+
     font-family:
       Inter,
       -apple-system,
@@ -34,272 +34,272 @@ app-universe-map {
       'Segoe UI',
       sans-serif;
   }
-  
+
   .universe-header {
     display: flex;
     gap: 2rem;
     align-items: end;
     justify-content: space-between;
-  
+
     margin-bottom: 1.2rem;
   }
-  
+
   .universe-eyebrow {
     margin: 0 0 0.45rem;
-  
+
     color: #0b7b80;
-  
+
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  
+
   .universe-header h1 {
     margin: 0;
-  
+
     font-size:
       clamp(
         2rem,
         4vw,
         3.35rem
       );
-  
+
     letter-spacing: -0.055em;
   }
-  
+
   .universe-description {
     margin: 0.6rem 0 0;
-  
+
     color: #627585;
-  
+
     line-height: 1.5;
   }
-  
+
   .universe-summary {
     display: flex;
     gap: 0.65rem;
   }
-  
+
   .universe-stat {
     min-width: 88px;
     padding: 0.85rem;
-  
+
     border: 1px solid #dfe8ef;
     border-radius: 1rem;
-  
+
     background: #ffffff;
-  
+
     text-align: center;
   }
-  
+
   .universe-stat strong,
   .universe-stat span {
     display: block;
   }
-  
+
   .universe-stat strong {
     font-size: 1.25rem;
   }
-  
+
   .universe-stat span {
     margin-top: 0.15rem;
-  
+
     color: #728392;
-  
+
     font-size: 0.7rem;
   }
-  
+
   .universe-toolbar {
     display: flex;
     gap: 0.85rem;
     align-items: center;
-  
+
     margin-bottom: 1rem;
   }
-  
+
   .universe-view-switch {
     display: flex;
     padding: 0.25rem;
-  
+
     border: 1px solid #d9e5ea;
     border-radius: 0.85rem;
-  
+
     background: #ffffff;
   }
-  
+
   .universe-view-switch button {
     padding: 0.55rem 0.8rem;
-  
+
     border: 0;
     border-radius: 0.65rem;
-  
+
     background: transparent;
-  
+
     color: #677986;
-  
+
     cursor: pointer;
-  
+
     font: inherit;
     font-size: 0.76rem;
     font-weight: 750;
   }
-  
+
   .universe-view-switch button.is-active {
     background: #e8f4f4;
     color: #076e73;
   }
-  
+
   .universe-filters {
     display: flex;
     gap: 0.5rem;
     flex: 1;
     flex-wrap: wrap;
   }
-  
+
   .universe-filters button {
     display: inline-flex;
     gap: 0.4rem;
     align-items: center;
-  
+
     padding: 0.58rem 0.82rem;
-  
+
     border: 1px solid #dbe5ec;
     border-radius: 999px;
-  
+
     background: #ffffff;
-  
+
     color: #60727f;
-  
+
     cursor: pointer;
-  
+
     font: inherit;
     font-size: 0.75rem;
     font-weight: 700;
-  
+
     transition:
       border-color 180ms ease,
       background 180ms ease,
       transform 180ms ease;
   }
-  
+
   .universe-filters button:hover {
     border-color: #8fc7ca;
     transform: translateY(-1px);
   }
-  
+
   .universe-filters button.is-active {
     border-color: #58aeb2;
-  
+
     background: #e8f6f6;
-  
+
     color: #086f74;
   }
-  
+
   .filter-dot {
     width: 8px;
     height: 8px;
-  
+
     border-radius: 50%;
   }
-  
+
   .filter-visited .filter-dot {
     background: #2caf76;
   }
-  
+
   .filter-planned .filter-dot {
     background: #2688ea;
   }
-  
+
   .filter-dreaming .filter-dot {
     background: #ab4fd1;
   }
-  
+
   .universe-add-place {
     display: inline-flex;
     gap: 0.4rem;
     align-items: center;
-  
+
     padding: 0.68rem 0.95rem;
-  
+
     border: 0;
     border-radius: 0.75rem;
-  
+
     background:
       linear-gradient(
         135deg,
         #08777c,
         #0b666b
       );
-  
+
     box-shadow:
       0 8px 18px
         rgba(8, 119, 124, 0.2);
-  
+
     color: #ffffff;
-  
+
     cursor: pointer;
-  
+
     font: inherit;
     font-size: 0.77rem;
     font-weight: 800;
   }
-  
+
   .universe-explorer {
     display: grid;
-  
+
     grid-template-columns:
       minmax(0, 1fr)
       minmax(280px, 340px);
-  
+
     gap: 1rem;
     align-items: stretch;
   }
-  
+
   .universe-stage {
     position: relative;
-  
+
     min-height: 570px;
     overflow: hidden;
-  
+
     border: 1px solid #d8e4ea;
     border-radius: 1.35rem;
-  
+
     background: #ddecf5;
-  
+
     isolation: isolate;
   }
-  
+
   .universe-map {
     position: absolute;
     inset: 0;
-  
+
     transition:
       opacity 180ms ease;
   }
-  
+
   .universe-map.is-hidden {
     visibility: hidden;
     opacity: 0;
   }
-  
+
   .universe-map
   .maplibregl-canvas {
     outline: none;
   }
-  
+
   .universe-map
   .maplibregl-ctrl-group {
     overflow: hidden;
-  
+
     border: 1px solid
       rgba(58, 92, 111, 0.18);
-  
+
     border-radius: 0.75rem;
-  
+
     background:
       rgba(255, 255, 255, 0.94);
-  
+
     box-shadow:
       0 7px 18px
         rgba(27, 60, 78, 0.14);
@@ -317,85 +317,85 @@ app-universe-map {
     top: 0;
     left: 0;
     z-index: 6;
-  
+
     width: 54px;
     height: 62px;
     padding: 0;
-  
+
     overflow: visible;
-  
+
     border: 0;
-  
+
     background: transparent;
-  
+
     cursor: pointer;
   }
-  
+
   .universe-marker__pin {
     position: absolute;
     top: 0;
     left: 50%;
     z-index: 2;
-  
+
     display: grid;
-  
+
     width: 42px;
     height: 42px;
-  
+
     place-items: center;
-  
+
     border: 3px solid #ffffff;
-  
+
     border-radius:
       50%
       50%
       50%
       9px;
-  
+
     box-shadow:
       0 7px 18px
         rgba(12, 42, 58, 0.36);
-  
+
     transform:
       translateX(-50%)
       rotate(45deg);
-  
+
     transition:
       transform 180ms ease,
       box-shadow 180ms ease;
   }
-  
+
   .universe-marker__emoji {
     display: grid;
-  
+
     width: 100%;
     height: 100%;
-  
+
     place-items: center;
-  
+
     font-size: 1.05rem;
-  
+
     transform:
       rotate(-45deg);
   }
-  
+
   .universe-marker:hover
   .universe-marker__pin {
     box-shadow:
       0 10px 24px
         rgba(12, 42, 58, 0.42);
-  
+
     transform:
       translateX(-50%)
       translateY(-4px)
       rotate(45deg)
       scale(1.08);
   }
-  
+
   .universe-marker:focus-visible {
     outline: none;
   }
-  
+
   .universe-marker:focus-visible
   .universe-marker__pin {
     box-shadow:
@@ -404,25 +404,25 @@ app-universe-map {
       0 0 0 7px
         rgba(18, 119, 125, 0.48);
   }
-  
+
   .universe-marker__pulse {
     position: absolute;
     bottom: 1px;
     left: 50%;
     z-index: 1;
-  
+
     width: 38px;
     height: 17px;
-  
+
     border-radius: 50%;
-  
+
     animation:
       universe-marker-ground-pulse
       2s
       ease-out
       infinite;
   }
-  
+
   /* Visited — green */
   .universe-marker--visited
   .universe-marker__pin {
@@ -433,13 +433,13 @@ app-universe-map {
         #087a4d
       );
   }
-  
+
   .universe-marker--visited
   .universe-marker__pulse {
     background:
       rgba(15, 159, 100, 0.42);
   }
-  
+
   /* Planned — blue */
   .universe-marker--planned
   .universe-marker__pin {
@@ -450,13 +450,13 @@ app-universe-map {
         #1269c1
       );
   }
-  
+
   .universe-marker--planned
   .universe-marker__pulse {
     background:
       rgba(20, 126, 229, 0.42);
   }
-  
+
   /* Dreaming — purple */
   .universe-marker--dreaming
   .universe-marker__pin {
@@ -467,266 +467,266 @@ app-universe-map {
         #8730ad
       );
   }
-  
+
   .universe-marker--dreaming
   .universe-marker__pulse {
     background:
       rgba(155, 53, 200, 0.42);
   }
-  
+
   @keyframes universe-marker-ground-pulse {
     0% {
       opacity: 0.9;
-  
+
       transform:
         translateX(-50%)
         scale(0.45);
     }
-  
+
     75%,
     100% {
       opacity: 0;
-  
+
       transform:
         translateX(-50%)
         scale(1.35);
     }
   }
-  
+
   .universe-place-list {
     position: absolute;
     right: 0.85rem;
     bottom: 0.85rem;
     left: 0.85rem;
     z-index: 3;
-  
+
     display: flex;
     gap: 0.5rem;
-  
+
     overflow-x: auto;
     padding: 0.15rem;
   }
-  
+
   .universe-place-chip {
     display: flex;
     gap: 0.55rem;
     align-items: center;
-  
+
     min-width: max-content;
     padding: 0.58rem 0.72rem;
-  
+
     border: 1px solid
       rgba(66, 98, 113, 0.18);
-  
+
     border-radius: 0.85rem;
-  
+
     background:
       rgba(255, 255, 255, 0.92);
-  
+
     box-shadow:
       0 6px 18px
         rgba(26, 60, 78, 0.1);
-  
+
     color: #183348;
-  
+
     cursor: pointer;
     text-align: left;
-  
+
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter:
       blur(12px);
   }
-  
+
   .universe-place-chip.is-selected {
     border-color: #16878c;
     box-shadow:
       0 0 0 2px
         rgba(22, 135, 140, 0.13);
   }
-  
+
   .universe-place-chip > span:first-child {
     font-size: 1.15rem;
   }
-  
+
   .universe-place-chip strong,
   .universe-place-chip small {
     display: block;
   }
-  
+
   .universe-place-chip strong {
     font-size: 0.73rem;
   }
-  
+
   .universe-place-chip small {
     margin-top: 0.12rem;
-  
+
     color: #748591;
-  
+
     font-size: 0.62rem;
   }
-  
+
   .universe-list-view {
     position: absolute;
     inset: 0;
-  
+
     display: grid;
     gap: 0.7rem;
-  
+
     align-content: start;
     overflow-y: auto;
     padding: 1rem;
-  
+
     background: #f3f8fa;
   }
-  
+
   .universe-list-card {
     display: grid;
-  
+
     grid-template-columns:
       auto
       minmax(0, 1fr)
       auto;
-  
+
     gap: 0.85rem;
     align-items: center;
-  
+
     width: 100%;
     padding: 0.9rem;
-  
+
     border: 1px solid #dce6ec;
     border-radius: 1rem;
-  
+
     background: #ffffff;
-  
+
     color: #193348;
-  
+
     cursor: pointer;
     text-align: left;
-  
+
     font: inherit;
   }
-  
+
   .universe-list-card.is-selected {
     border-color: #3ba2a7;
-  
+
     box-shadow:
       0 0 0 3px
         rgba(59, 162, 167, 0.12);
   }
-  
+
   .universe-list-flag {
     font-size: 1.7rem;
   }
-  
+
   .universe-list-content strong,
   .universe-list-content small,
   .universe-list-date {
     display: block;
   }
-  
+
   .universe-list-content strong {
     font-size: 0.9rem;
   }
-  
+
   .universe-list-content small {
     margin-top: 0.25rem;
-  
+
     overflow: hidden;
-  
+
     color: #697c89;
-  
+
     font-size: 0.72rem;
-  
+
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  
+
   .universe-list-date {
     margin-top: 0.25rem;
-  
+
     color: #168087;
-  
+
     font-size: 0.67rem;
     font-weight: 700;
   }
-  
+
   .universe-list-dot {
     width: 11px;
     height: 11px;
-  
+
     border-radius: 50%;
   }
-  
+
   .universe-list-dot--visited {
     background: #2caf76;
   }
-  
+
   .universe-list-dot--planned {
     background: #2688ea;
   }
-  
+
   .universe-list-dot--dreaming {
     background: #ab4fd1;
   }
-  
+
   .universe-place-card,
   .universe-empty-card {
     min-height: 570px;
     overflow: hidden;
-  
+
     border: 1px solid #dce6ec;
     border-radius: 1.35rem;
-  
+
     background: #ffffff;
-  
+
     box-shadow:
       0 15px 36px
         rgba(22, 54, 72, 0.09);
   }
-  
+
   .universe-place-card {
     position: relative;
-  
+
     animation:
       universe-card-enter
       250ms
       ease-out;
   }
-  
+
   .universe-card-close {
     position: absolute;
     top: 0.7rem;
     right: 0.7rem;
     z-index: 2;
-  
+
     width: 32px;
     height: 32px;
-  
+
     border: 1px solid
       rgba(52, 77, 91, 0.15);
-  
+
     border-radius: 50%;
-  
+
     background:
       rgba(255, 255, 255, 0.92);
-  
+
     color: #263e4d;
-  
+
     cursor: pointer;
-  
+
     font-size: 1.15rem;
   }
-  
+
   .universe-place-visual {
     display: grid;
-  
+
     height: 170px;
-  
+
     place-items: center;
-  
+
     font-size: 4.2rem;
   }
-  
+
   .universe-place-visual--visited {
     background:
       linear-gradient(
@@ -735,7 +735,7 @@ app-universe-map {
         #a8ddc7
       );
   }
-  
+
   .universe-place-visual--planned {
     background:
       linear-gradient(
@@ -744,7 +744,7 @@ app-universe-map {
         #a9cdf5
       );
   }
-  
+
   .universe-place-visual--dreaming {
     background:
       linear-gradient(
@@ -753,304 +753,304 @@ app-universe-map {
         #d7b1eb
       );
   }
-  
+
   .universe-place-body {
     padding: 1.2rem;
   }
-  
+
   .universe-status {
     display: inline-flex;
     gap: 0.4rem;
     align-items: center;
-  
+
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
-  
+
   .universe-status-dot {
     width: 8px;
     height: 8px;
-  
+
     border-radius: 50%;
-  
+
     background: currentColor;
   }
-  
+
   .universe-status--visited {
     color: #219464;
   }
-  
+
   .universe-status--planned {
     color: #237dcc;
   }
-  
+
   .universe-status--dreaming {
     color: #9b43bf;
   }
-  
+
   .universe-place-card h2 {
     margin: 0.7rem 0 0.15rem;
-  
+
     font-size: 1.65rem;
     letter-spacing: -0.035em;
   }
-  
+
   .universe-region {
     margin: 0;
-  
+
     color: #748591;
-  
+
     font-size: 0.75rem;
   }
-  
+
   .universe-description-text {
     margin: 1rem 0 0;
-  
+
     color: #4f6573;
-  
+
     font-size: 0.8rem;
     line-height: 1.6;
   }
-  
+
   .universe-locations {
     margin: 0.75rem 0 0;
-  
+
     color: #176f75;
-  
+
     font-size: 0.75rem;
     font-weight: 700;
     line-height: 1.45;
   }
-  
+
   .universe-card-stats {
     display: grid;
-  
+
     grid-template-columns:
       repeat(
         3,
         1fr
       );
-  
+
     margin: 1.1rem 0;
     padding: 0.85rem 0;
-  
+
     border-top: 1px solid #e5ecef;
     border-bottom: 1px solid #e5ecef;
   }
-  
+
   .universe-card-stats div {
     text-align: center;
   }
-  
+
   .universe-card-stats div + div {
     border-left: 1px solid #e5ecef;
   }
-  
+
   .universe-card-stats strong,
   .universe-card-stats span {
     display: block;
   }
-  
+
   .universe-card-stats strong {
     font-size: 1rem;
   }
-  
+
   .universe-card-stats span {
     margin-top: 0.15rem;
-  
+
     color: #7a8994;
-  
+
     font-size: 0.62rem;
   }
-  
+
   .universe-visit-date {
     margin-bottom: 1rem;
   }
-  
+
   .universe-visit-date span,
   .universe-visit-date strong {
     display: block;
   }
-  
+
   .universe-visit-date span {
     color: #81909a;
-  
+
     font-size: 0.66rem;
   }
-  
+
   .universe-visit-date strong {
     margin-top: 0.25rem;
-  
+
     color: #294455;
-  
+
     font-size: 0.78rem;
   }
-  
+
   .universe-primary-action,
   .universe-secondary-action {
     width: 100%;
     padding: 0.75rem 0.9rem;
-  
+
     border-radius: 0.7rem;
-  
+
     cursor: pointer;
-  
+
     font: inherit;
     font-size: 0.75rem;
     font-weight: 800;
   }
-  
+
   .universe-primary-action {
     border: 0;
-  
+
     background:
       linear-gradient(
         135deg,
         #08777c,
         #0b666b
       );
-  
+
     color: #ffffff;
   }
-  
+
   .universe-secondary-action {
     margin-top: 0.55rem;
-  
+
     border: 1px solid #b9cbd3;
-  
+
     background: #ffffff;
-  
+
     color: #31515f;
   }
-  
+
   .universe-empty-card {
     display: grid;
-  
+
     align-content: center;
     justify-items: center;
-  
+
     padding: 2rem;
-  
+
     color: #687c88;
     text-align: center;
   }
-  
+
   .universe-empty-icon {
     font-size: 2.4rem;
   }
-  
+
   .universe-empty-card h2 {
     margin: 0.8rem 0 0.4rem;
-  
+
     color: #183348;
-  
+
     font-size: 1.2rem;
   }
-  
+
   .universe-empty-card p {
     max-width: 220px;
     margin: 0;
-  
+
     font-size: 0.78rem;
     line-height: 1.55;
   }
-  
+
   .universe-numbers {
     display: grid;
-  
+
     grid-template-columns:
       repeat(
         4,
         1fr
       );
-  
+
     gap: 0.75rem;
-  
+
     margin-top: 1rem;
   }
-  
+
   .universe-numbers > div {
     display: grid;
-  
+
     grid-template-columns:
       auto
       1fr;
-  
+
     column-gap: 0.65rem;
     align-items: center;
-  
+
     padding: 0.9rem;
-  
+
     border: 1px solid #dfe8ed;
     border-radius: 1rem;
-  
+
     background: #ffffff;
   }
-  
+
   .universe-numbers > div > span {
     grid-row:
       1 /
       span 2;
-  
+
     font-size: 1.4rem;
   }
-  
+
   .universe-numbers strong,
   .universe-numbers small {
     display: block;
   }
-  
+
   .universe-numbers strong {
     font-size: 1.1rem;
   }
-  
+
   .universe-numbers small {
     color: #758792;
     font-size: 0.66rem;
   }
-  
+
   @keyframes universe-card-enter {
     from {
       opacity: 0;
       transform:
         translateY(8px);
     }
-  
+
     to {
       opacity: 1;
       transform:
         translateY(0);
     }
   }
-  
+
   @media (
     max-width: 980px
   ) {
     .universe-explorer {
       grid-template-columns: 1fr;
     }
-  
+
     .universe-place-card,
     .universe-empty-card {
       min-height: auto;
     }
-  
+
     .universe-place-card {
       display: grid;
-  
+
       grid-template-columns:
         minmax(180px, 32%)
         minmax(0, 1fr);
     }
-  
+
     .universe-place-visual {
       height: 100%;
       min-height: 330px;
     }
   }
-  
+
   @media (
     max-width: 720px
   ) {
@@ -1058,48 +1058,48 @@ app-universe-map {
       padding: 0.8rem;
       border-radius: 1.25rem;
     }
-  
+
     .universe-header {
       display: block;
     }
-  
+
     .universe-summary {
       margin-top: 1rem;
     }
-  
+
     .universe-stat {
       flex: 1;
       min-width: 0;
     }
-  
+
     .universe-toolbar {
       align-items: stretch;
       flex-wrap: wrap;
     }
-  
+
     .universe-filters {
       order: 3;
       width: 100%;
       flex-basis: 100%;
     }
-  
+
     .universe-add-place {
       margin-left: auto;
     }
-  
+
     .universe-stage {
       min-height: 480px;
     }
-  
+
     .universe-place-card {
       display: block;
     }
-  
+
     .universe-place-visual {
       height: 150px;
       min-height: 0;
     }
-  
+
     .universe-numbers {
       grid-template-columns:
         repeat(
@@ -1113,41 +1113,41 @@ app-universe-map {
     opacity: 0.62;
     cursor: default;
   }
-  
+
   .universe-map-pick-hint {
     position: absolute;
     top: 0.85rem;
     left: 50%;
     z-index: 4;
-  
+
     display: inline-flex;
     gap: 0.45rem;
     align-items: center;
-  
+
     padding: 0.65rem 0.85rem;
-  
+
     border: 1px solid
       rgba(8, 119, 124, 0.2);
-  
+
     border-radius: 999px;
-  
+
     background:
       rgba(255, 255, 255, 0.94);
-  
+
     box-shadow:
       0 8px 22px
       rgba(22, 54, 72, 0.14);
-  
+
     color: #08777c;
-  
+
     font-size: 0.72rem;
     font-weight: 800;
-  
+
     pointer-events: none;
-  
+
     transform:
       translateX(-50%);
-  
+
     backdrop-filter:
       blur(10px);
   }
@@ -1157,23 +1157,23 @@ app-universe-map {
     top: 0.7rem;
     right: 3.2rem;
     z-index: 2;
-  
+
     width: 32px;
     height: 32px;
-  
+
     border: 1px solid
       rgba(52, 77, 91, 0.15);
-  
+
     border-radius: 50%;
-  
+
     background:
       rgba(255, 255, 255, 0.92);
-  
+
     color: #08777c;
-  
+
     cursor: pointer;
     font-size: 1rem;
-  
+
     &:hover {
       background: #e8f6f6;
     }

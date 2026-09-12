@@ -11,6 +11,13 @@ const {
 } =
   require('../controllers/journey.controller');
 
+const {
+    getJourneyStory,
+    saveJourneyStory,
+    deleteJourneyStory
+  } =
+    require('../controllers/journey-story.controller');
+
 const router =
   express.Router();
 
@@ -37,6 +44,34 @@ router.patch(
     requireAuth,
     updateJourney
   );
+
+/**
+ * Loads the private story belonging to the
+ * authenticated user's journey.
+ */
+router.get(
+  '/:journeyId/story',
+  requireAuth,
+  getJourneyStory
+);
+
+/**
+ * Creates or replaces the journey's private story.
+ */
+router.put(
+  '/:journeyId/story',
+  requireAuth,
+  saveJourneyStory
+);
+
+/**
+ * Deletes the story without deleting its memories.
+ */
+router.delete(
+  '/:journeyId/story',
+  requireAuth,
+  deleteJourneyStory
+);
 
 module.exports =
   router;

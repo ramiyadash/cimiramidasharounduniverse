@@ -33,6 +33,10 @@ import {
   JourneyMemoriesComponent
 } from '../journey-memories/journey-memories.component';
 
+import {
+  JourneyStoryEditorComponent
+} from '../journey-story-editor/journey-story-editor.component';
+
 type UniverseFilter =
   | UniverseStatus
   | 'all';
@@ -44,8 +48,11 @@ type UniverseView =
 @Component({
   selector: 'app-universe-map',
 
-  imports: [AddPlaceFormComponent,
-    JourneyMemoriesComponent],
+  imports: [
+    AddPlaceFormComponent,
+    JourneyMemoriesComponent,
+    JourneyStoryEditorComponent
+  ],
 
   templateUrl:
     './universe-map.component.html',
@@ -104,14 +111,59 @@ export class UniverseMapComponent
 
   draftCoordinates:
     [number, number] | null =
-    null;  
+    null;
 
   private mapReady = false;
+
+  isStoryEditorOpen =
+  false;
+
+openStoryEditor(): void {
+  if (!this.selectedPlace) {
+    return;
+  }
+
+  this.isStoryEditorOpen =
+    true;
+}
+
+closeStoryEditor(): void {
+  this.isStoryEditorOpen =
+    false;
+}
+
+handleStorySaved(): void {
+  const selectedPlace =
+    this.selectedPlace;
+
+  if (!selectedPlace) {
+    return;
+  }
+
+  this.places =
+    this.places.map(
+      place =>
+        place.id ===
+          selectedPlace.id
+          ? {
+              ...place,
+              stories: 1
+            }
+          : place
+    );
+
+  this.selectedPlace =
+    this.places.find(
+      place =>
+        place.id ===
+        selectedPlace.id
+    );
+}
 
   constructor(
     private readonly zone:
       NgZone,
-  
+
     private readonly journeyService:
       JourneyService
   ) {}
@@ -136,34 +188,34 @@ export class UniverseMapComponent
   private loadUniverseJourneys(): void {
     this.isLoading = true;
     this.errorMessage = null;
-  
+
     this.journeyService
       .getUniverseJourneys()
       .subscribe({
         next: response => {
           this.places =
             response.places;
-  
+
           this.selectedPlace =
             this.places[0];
-  
+
           this.isLoading = false;
-  
+
           if (this.mapReady) {
             this.synchronizeMarkers();
             this.resetMapView(0);
           }
         },
-  
+
         error: (
           error: HttpErrorResponse
         ) => {
           this.isLoading = false;
-  
+
           this.errorMessage =
             error.error?.message ||
             'Your universe could not be loaded.';
-  
+
           console.error(
             'Unable to load My Universe:',
             error
@@ -245,19 +297,19 @@ export class UniverseMapComponent
   openAddPlace(): void {
     this.draftMarker?.remove();
     this.draftMarker = undefined;
-    
+
     this.editingPlace = null;
     this.isAddingPlace = true;
     this.selectedPlace = undefined;
     this.draftCoordinates = null;
     this.viewMode = 'map';
-  
+
     if (this.map) {
       this.map
         .getCanvas()
         .style.cursor =
           'crosshair';
-  
+
       setTimeout(
         () => {
           this.map?.resize();
@@ -272,12 +324,12 @@ export class UniverseMapComponent
   ): void {
     this.draftMarker?.remove();
     this.draftMarker = undefined;
-  
+
     this.isAddingPlace = false;
     this.editingPlace = place;
     this.selectedPlace = undefined;
     this.viewMode = 'map';
-  
+
     /**
      * Hide the permanent marker while the temporary,
      * draggable edit marker is visible.
@@ -286,20 +338,20 @@ export class UniverseMapComponent
       this.markers.get(
         place.id
       );
-  
+
     if (existingMarker) {
       existingMarker
         .getElement()
         .style.display =
           'none';
     }
-  
+
     if (this.map) {
       this.map
         .getCanvas()
         .style.cursor =
           'crosshair';
-  
+
       setTimeout(
         () => {
           this.map?.resize();
@@ -307,7 +359,7 @@ export class UniverseMapComponent
         0
       );
     }
-  
+
     /**
      * Place the draggable marker at the journey's
      * currently saved coordinates.
@@ -317,53 +369,53 @@ export class UniverseMapComponent
       place.coordinates[1]
     );
   }
-  
+
   cancelAddPlace(): void {
     const previouslyEditedPlace =
       this.editingPlace;
-  
+
     this.draftMarker?.remove();
     this.draftMarker = undefined;
-  
+
     this.isAddingPlace = false;
     this.editingPlace = null;
     this.draftCoordinates = null;
-  
+
     if (this.map) {
       this.map
         .getCanvas()
         .style.cursor =
           '';
     }
-  
+
     /**
      * Restore any permanent marker hidden during edit.
      */
     this.updateMarkerVisibility();
-  
+
     this.selectedPlace =
       previouslyEditedPlace ||
       this.visiblePlaces[0];
   }
-  
+
   handlePlaceSaved(
     place: UniversePlace
   ): void {
     this.draftMarker?.remove();
     this.draftMarker = undefined;
-  
+
     this.isAddingPlace = false;
     this.editingPlace = null;
     this.draftCoordinates = null;
     this.activeFilter = 'all';
-  
+
     const existingPlace =
       this.places.some(
         currentPlace =>
           currentPlace.id ===
           place.id
       );
-  
+
     if (existingPlace) {
       /**
        * Replace the updated place without creating a
@@ -383,26 +435,26 @@ export class UniverseMapComponent
         ...this.places
       ];
     }
-  
+
     this.selectedPlace = place;
-  
+
     if (this.map) {
       this.map
         .getCanvas()
         .style.cursor =
           '';
     }
-  
+
     this.synchronizeMarkers();
-  
+
     this.map?.flyTo({
       center:
         place.coordinates,
-  
+
       zoom: 4,
-  
+
       duration: 1100,
-  
+
       essential: true
     });
   }
@@ -497,7 +549,7 @@ export class UniverseMapComponent
       'load',
       () => {
         this.mapReady = true;
-    
+
         this.synchronizeMarkers();
         this.resetMapView(0);
       }
@@ -509,7 +561,7 @@ export class UniverseMapComponent
         if (!this.isPlaceFormOpen) {
           return;
         }
-    
+
         this.zone.run(
           () => {
             this.setDraftLocation(
@@ -540,21 +592,21 @@ export class UniverseMapComponent
       Number(
         longitude.toFixed(6)
       );
-  
+
     const normalizedLatitude =
       Number(
         latitude.toFixed(6)
       );
-  
+
     this.draftCoordinates = [
       normalizedLongitude,
       normalizedLatitude
     ];
-  
+
     if (!this.map) {
       return;
     }
-  
+
     /**
      * Create the temporary pin after the first click.
      */
@@ -570,7 +622,7 @@ export class UniverseMapComponent
           .addTo(
             this.map
           );
-  
+
       /**
        * Keep the form coordinates synchronized when
        * the traveler drags the temporary pin.
@@ -581,11 +633,11 @@ export class UniverseMapComponent
           const position =
             this.draftMarker
               ?.getLngLat();
-  
+
           if (!position) {
             return;
           }
-  
+
           this.zone.run(
             () => {
               this.draftCoordinates = [
@@ -593,7 +645,7 @@ export class UniverseMapComponent
                   position.lng
                     .toFixed(6)
                 ),
-  
+
                 Number(
                   position.lat
                     .toFixed(6)
@@ -603,10 +655,10 @@ export class UniverseMapComponent
           );
         }
       );
-  
+
       return;
     }
-  
+
     /**
      * Subsequent map clicks move the existing pin.
      */
@@ -622,7 +674,7 @@ export class UniverseMapComponent
     ) {
       marker.remove();
     }
-  
+
     this.markers.clear();
     this.addMarkers();
     this.updateMarkerVisibility();
@@ -683,62 +735,62 @@ export class UniverseMapComponent
   ): HTMLButtonElement {
     const markerElement =
       document.createElement('button');
-  
+
     markerElement.type =
       'button';
-  
+
     markerElement.className =
       `universe-marker ` +
       `universe-marker--${place.status}`;
-  
+
     markerElement.title =
       `${place.country} — ` +
       `${this.statusLabel(place.status)}`;
-  
+
     markerElement.setAttribute(
       'aria-label',
       markerElement.title
     );
-  
+
     const pulseElement =
       document.createElement('span');
-  
+
     pulseElement.className =
       'universe-marker__pulse';
-  
+
     const pinElement =
       document.createElement('span');
-  
+
     pinElement.className =
       'universe-marker__pin';
-  
+
     const emojiElement =
       document.createElement('span');
-  
+
     emojiElement.className =
       'universe-marker__emoji';
-  
+
     /**
      * textContent prevents stored database values
      * from being interpreted as executable HTML.
      */
     emojiElement.textContent =
       place.emoji;
-  
+
     pinElement.appendChild(
       emojiElement
     );
-  
+
     markerElement.append(
       pulseElement,
       pinElement
     );
-  
+
     markerElement.addEventListener(
       'click',
       event => {
         event.stopPropagation();
-    
+
         /**
          * Existing destinations cannot be selected while
          * the traveler is placing a new pin.
@@ -746,7 +798,7 @@ export class UniverseMapComponent
         if (this.isPlaceFormOpen) {
           return;
         }
-    
+
         this.zone.run(
           () => {
             this.selectPlace(place);
@@ -754,7 +806,7 @@ export class UniverseMapComponent
         );
       }
     );
-  
+
     return markerElement;
   }
 
@@ -785,16 +837,16 @@ export class UniverseMapComponent
     if (!this.selectedPlace) {
       return;
     }
-  
+
     this.isViewingMemories =
       true;
   }
-  
+
   closeMemories(): void {
     this.isViewingMemories =
       false;
   }
-  
+
   /**
    * Updates the visible journey count immediately
    * after MongoDB confirms the photo upload.
@@ -802,11 +854,11 @@ export class UniverseMapComponent
   handlePhotoUploaded(): void {
     const selectedPlaceId =
       this.selectedPlace?.id;
-  
+
     if (!selectedPlaceId) {
       return;
     }
-  
+
     this.places =
       this.places.map(
         place => {
@@ -816,16 +868,16 @@ export class UniverseMapComponent
           ) {
             return place;
           }
-  
+
           return {
             ...place,
-  
+
             photos:
               place.photos + 1
           };
         }
       );
-  
+
     this.selectedPlace =
       this.places.find(
         place =>

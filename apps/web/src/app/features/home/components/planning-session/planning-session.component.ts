@@ -83,6 +83,34 @@ export class PlanningSessionComponent implements OnChanges {
     return this.messageInput.trim().length > 0;
   }
 
+  /**
+ * Accepts a planning idea entered through the
+ * persistent planner on the Home page.
+ *
+ * It uses the existing sendMessage() method so both
+ * composers share one conversation and AI workflow.
+ */
+submitExternalMessage(
+  message: string
+): boolean {
+  const normalizedMessage: string =
+    message.trim();
+
+  if (
+    !normalizedMessage ||
+    this.isDashThinking
+  ) {
+    return false;
+  }
+
+  this.messageInput =
+    normalizedMessage;
+
+  this.sendMessage();
+
+  return true;
+}
+
   // NEW: Prevents Dash from repeating the reflection
   // after every additional selection.
   private hasShownContextReflection: boolean = false;
@@ -98,7 +126,7 @@ export class PlanningSessionComponent implements OnChanges {
   constructor(
     private readonly destinationMatcher:
       DestinationMatcherService,
-  
+
     private readonly travelChatService:
       DashApiService
   ) {}
@@ -129,14 +157,14 @@ export class PlanningSessionComponent implements OnChanges {
     // NEW:
   // A new journey should generate a new trip direction.
   this.hasShownTripDirection = false;
-  
+
     this.context = {
       journeyType: this.journey.type,
       activities: [],
       interests: [],
       cuisines: []
     };
-  
+
     this.conversation = [
       {
         sender: 'dash',
@@ -155,21 +183,21 @@ export class PlanningSessionComponent implements OnChanges {
     choice: CompanionChoice
   ): void {
     this.removePreviousChoices();
-  
+
     // Dash first learns from the selected option.
     this.learn(choice);
-  
+
     // Add the user's selection to the timeline.
     this.conversation.push({
       sender: 'user',
       text: choice.title,
       icon: choice.icon
     });
-  
+
     // NEW: Dash may briefly summarize what it has learned.
     const contextReflection: string | null =
       this.getContextReflection();
-  
+
     if (contextReflection) {
       this.conversation.push({
         sender: 'dash',
@@ -177,10 +205,10 @@ export class PlanningSessionComponent implements OnChanges {
         icon: this.journey.icon
       });
     }
-  
+
     const reply: CompanionReply =
       this.getCompanionReply(choice);
-  
+
     // Continue with Dash's normal follow-up question.
     this.conversation.push({
       sender: 'dash',
@@ -197,29 +225,29 @@ export class PlanningSessionComponent implements OnChanges {
     sendMessage(): void {
       const message: string =
         this.messageInput.trim();
-    
+
       if (
         !message ||
         this.isDashThinking
       ) {
         return;
       }
-    
+
       this.removePreviousChoices();
-    
+
       this.conversation.push({
         sender: 'user',
         text: message
       });
-    
+
       // Keep Dash's existing local learning.
       const learnedDetails: string[] =
         this.learnFromMessage(message);
-    
+
       this.messageInput = '';
       this.aiErrorMessage = '';
       this.isDashThinking = true;
-    
+
       this.travelChatService
         .sendMessage({
           conversationId:
@@ -241,7 +269,7 @@ export class PlanningSessionComponent implements OnChanges {
               icon: this.journey.icon
             });
           },
-    
+
           error: (
             error: unknown
           ): void => {
@@ -249,10 +277,10 @@ export class PlanningSessionComponent implements OnChanges {
               'Dash AI request failed:',
               error
             );
-    
+
             this.aiErrorMessage =
               'Dash could not reach the AI service. Please try again.';
-    
+
             // Local fallback keeps the companion usable.
             this.conversation.push({
               sender: 'dash',
@@ -276,95 +304,107 @@ export class PlanningSessionComponent implements OnChanges {
     ): string[] {
       const normalizedMessage: string =
         message.toLowerCase();
-    
+
       const learnedDetails: string[] = [];
-    
+
       this.learnBudgetFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       this.learnDurationFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       this.learnDistanceFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       // NEW: Learn destinations such as mountains,
       // beaches, cities, and nature.
       this.learnTerrainFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       // NEW: Learn climate preferences such as
       // cold, warm, snowy, or tropical weather.
       this.learnWeatherFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       this.learnAtmosphereFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       this.learnActivitiesFromMessage(
         normalizedMessage,
         learnedDetails
       );
-    
+
       return learnedDetails;
     }
 
-  /**
- * Learns budgets written in several natural formats:
+/**
+ * Learns a monetary budget from natural-language messages.
  *
- * "under $500"
- * "under 500"
- * "less than 500"
- * "500 budget"
- * "budget of 500"
+ * Supported examples:
+ * - "$500"
+ * - "under $500"
+ * - "less than 500 budget"
+ * - "budget of 500"
+ * - "500 dollar budget"
+ *
+ * Important:
+ * A number followed by a time unit must not be treated
+ * as money. For example, "less than 4 hours" is distance,
+ * not a four-dollar budget.
  */
 private learnBudgetFromMessage(
   message: string,
   learnedDetails: string[]
 ): void {
   const budgetPatterns: RegExp[] = [
-    // Examples:
-    // "$500"
-    // "under $500"
-    // "less than $500"
-    /\$(\d+(?:,\d{3})*(?:\.\d{1,2})?)/,
+    // Explicit currency:
+    // "$500", "under $500", "less than $500"
+    /(?:under|below|less\s+than|up\s+to|maximum|max|around|about)?\s*\$\s*(\d+(?:,\d{3})*(?:\.\d{1,2})?)/,
 
-    // Examples:
-    // "under 500"
-    // "less than 500"
-    // "budget of 500"
-    // "maximum 500"
-    /(?:budget(?:\s+of)?|under|below|less\s+than|up\s+to|maximum|max|around|about)\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d{1,2})?)/,
+    // Budget phrase before the amount:
+    // "budget 500", "budget of 500"
+    /\bbudget(?:\s+of)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d{1,2})?)\b/,
 
-    // Examples:
-    // "500 budget"
-    // "500 dollar budget"
-    // "500 dollars budget"
-    /(\d+(?:,\d{3})*(?:\.\d{1,2})?)\s*(?:dollar|dollars|\$)?\s*budget/
+    // Amount followed by budget wording:
+    // "500 budget", "500 dollar budget"
+    /\b(\d+(?:,\d{3})*(?:\.\d{1,2})?)\s*(?:dollar|dollars|\$)?\s+budget\b/,
+
+    // Natural upper-limit phrase:
+    // "under 500", "less than 500"
+    // Reject when followed by hours, days, nights, etc.
+    /\b(?:under|below|less\s+than|up\s+to|maximum|max)\s+(\d+(?:,\d{3})*(?:\.\d{1,2})?)\b(?!\s*(?:hour|hours|hr|hrs|day|days|night|nights|week|weeks|mile|miles))/
   ];
 
   let amount: string | null = null;
 
-  for (const pattern of budgetPatterns) {
-    const match: RegExpMatchArray | null =
+  for (
+    const pattern of budgetPatterns
+  ) {
+    const match:
+      | RegExpMatchArray
+      | null =
       message.match(pattern);
 
-    if (match) {
-      amount = match[1].replace(/,/g, '');
-      break;
+    if (!match) {
+      continue;
     }
+
+    amount =
+      match[1].replace(/,/g, '');
+
+    break;
   }
 
   if (!amount) {
@@ -387,14 +427,14 @@ private learnBudgetFromMessage(
       message.match(
         /(\d+)\s*(day|days|night|nights|week|weeks)/
       );
-  
+
     if (!durationMatch) {
       return;
     }
-  
+
     this.context.duration =
       `${durationMatch[1]} ${durationMatch[2]}`;
-  
+
     learnedDetails.push(
       this.context.duration
     );
@@ -410,35 +450,35 @@ private learnBudgetFromMessage(
       message.match(
         /(?:within|under|less than|no more than)?\s*(\d+)\s*(hour|hours|hr|hrs)(?:\s*(?:away|drive|driving))?/
       );
-  
+
     if (drivingTimeMatch) {
       this.context.distancePreference =
         `within ${drivingTimeMatch[1]} hours`;
-  
+
       learnedDetails.push(
         this.context.distancePreference
       );
-  
+
       return;
     }
-  
+
     if (
       message.includes('nearby') ||
       message.includes('close to home')
     ) {
       this.context.distancePreference =
         'nearby';
-  
+
       learnedDetails.push('nearby');
     }
-  
+
     if (
       message.includes('far away') ||
       message.includes('farther away')
     ) {
       this.context.distancePreference =
         'farther away';
-  
+
       learnedDetails.push('farther away');
     }
   }
@@ -456,19 +496,19 @@ private learnBudgetFromMessage(
       'adventurous',
       'family-friendly'
     ];
-  
+
     const atmosphere: string | undefined =
       atmosphereOptions.find(
         (option: string): boolean =>
           message.includes(option)
       );
-  
+
     if (!atmosphere) {
       return;
     }
-  
+
     this.context.atmosphere = atmosphere;
-  
+
     learnedDetails.push(
       `${atmosphere} atmosphere`
     );
@@ -529,7 +569,7 @@ private learnBudgetFromMessage(
         value: 'beach activities'
       }
     ];
-  
+
     activityRules.forEach(
       (
         rule: {
@@ -542,16 +582,16 @@ private learnBudgetFromMessage(
             (keyword: string): boolean =>
               message.includes(keyword)
           );
-  
+
         if (!matches) {
           return;
         }
-  
+
         this.addUnique(
           this.context.activities,
           rule.value
         );
-  
+
         this.addUnique(
           learnedDetails,
           rule.value
@@ -1434,15 +1474,15 @@ private learnBudgetFromMessage(
     choice: CompanionChoice
   ): void {
     switch (choice.title) {
-  
+
       case 'Mountains':
         this.context.terrain = 'mountains';
         break;
-  
+
       case 'Water':
         this.context.terrain = 'water';
         break;
-  
+
       case 'City':
         this.context.destinationStyle = 'city';
         break;
@@ -1452,18 +1492,18 @@ private learnBudgetFromMessage(
             this.context.activities,
             'nightlife'
           );
-          break;  
-  
+          break;
+
       // NEW: Family journey choices
       case 'Beach':
         this.context.terrain = 'beach';
         this.context.destinationStyle = 'coastal';
         break;
-  
+
       case 'Nature':
         this.context.destinationStyle = 'nature';
         break;
-  
+
       case 'Theme Parks':
         this.context.destinationStyle = 'theme parks';
         this.addUnique(
@@ -1471,49 +1511,49 @@ private learnBudgetFromMessage(
           'family attractions'
         );
         break;
-  
+
       case 'Quiet Cabin':
         this.context.atmosphere = 'quiet';
         this.context.destinationStyle = 'cabin';
         break;
-  
+
       case 'Scenic Hiking':
         this.addUnique(
           this.context.activities,
           'hiking'
         );
         break;
-  
+
       case 'Scenic Drives':
         this.addUnique(
           this.context.activities,
           'scenic drives'
         );
         break;
-  
+
       case 'Coffee':
         this.addUnique(
           this.context.cuisines,
           'coffee'
         );
         break;
-  
+
       case 'Street Food':
         this.addUnique(
           this.context.cuisines,
           'street food'
         );
         break;
-  
+
       // NEW: Distance choices
       case 'Nearby':
         this.context.distancePreference = 'nearby';
         break;
-  
+
       case 'Farther Away':
         this.context.distancePreference = 'farther away';
         break;
-  
+
       case 'Surprise Me':
         this.context.destinationStyle = 'surprise';
         break;
@@ -1524,20 +1564,20 @@ private learnBudgetFromMessage(
             'live music'
           );
           break;
-        
+
       case 'Museums':
           this.addUnique(
             this.context.activities,
             'museums'
           );
           break;
-        
+
       case 'Shopping':
           this.addUnique(
             this.context.activities,
             'shopping'
           );
-          break;  
+          break;
     }
   }
 

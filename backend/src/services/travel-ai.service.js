@@ -1,55 +1,66 @@
-const ollamaService =
-  require("./ai/ollama.service");
+const aiRouter =
+  require(
+    './ai/ai-router.service'
+  );
 
 const conversationService =
   require(
-    "./conversation/conversation.service"
+    './conversation/conversation.service'
   );
 
 const {
   buildTravelPrompt
-} = require("../prompts/travel.prompt");
+} =
+  require(
+    '../prompts/travel.prompt'
+  );
 
 exports.generateTravelResponse =
-  async function ({
+  async function generateTravelResponse({
+    userId,
     conversationId,
     message
   }) {
-    // Store the latest traveler message.
-    conversationService.addMessage(
-      conversationId,
-      "user",
-      message
-    );
-
-    // Retrieve recent conversation history so Dash
-    // can respond with context instead of treating
-    // every message as a new conversation.
-    const recentMessages =
-      conversationService.getRecentMessages(
-        conversationId
+    conversationService
+      .addMessage(
+        userId,
+        conversationId,
+        'user',
+        message
       );
 
-    // Convert the conversation history into the
-    // prompt sent to the local AI model.
+    const recentMessages =
+      conversationService
+        .getRecentMessages(
+          userId,
+          conversationId
+        );
+
     const prompt =
       buildTravelPrompt(
         recentMessages
       );
 
-    // Ask Ollama to generate Dash's response.
-    const reply =
-      await ollamaService.generate(
-        prompt
+    const result =
+      await aiRouter.generate({
+        task:
+          aiRouter
+            .AI_TASKS
+            .TRAVEL_PLANNING,
+
+        prompt,
+
+        temperature:
+          0.7
+      });
+
+    conversationService
+      .addMessage(
+        userId,
+        conversationId,
+        'assistant',
+        result.text
       );
 
-    // Store Dash's response so it becomes part of
-    // the context for the next message.
-    conversationService.addMessage(
-      conversationId,
-      "assistant",
-      reply
-    );
-
-    return reply;
+    return result;
   };

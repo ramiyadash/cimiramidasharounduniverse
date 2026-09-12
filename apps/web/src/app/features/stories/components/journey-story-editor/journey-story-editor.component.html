@@ -1,0 +1,483 @@
+<section
+  class="story-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="story-editor-title"
+  (click)="handleBackdropClick($event)">
+
+  <article class="story-editor">
+    <header class="story-header">
+      <div>
+        <p class="story-eyebrow">
+          PRIVATE JOURNEY STORY
+        </p>
+
+        <h2 id="story-editor-title">
+          {{ placeTitle }}
+        </h2>
+
+        <span>
+          Arrange your memories and preserve
+          the story behind this journey.
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="story-close"
+        aria-label="Close story editor"
+        [disabled]="isSaving()"
+        (click)="close()">
+        ×
+      </button>
+    </header>
+
+    @if (isLoading()) {
+      <div class="story-loading">
+        <span>✨</span>
+
+        <p>
+          Preparing your journey story…
+        </p>
+      </div>
+    } @else {
+      <form
+        class="story-form"
+        (ngSubmit)="saveStory()">
+
+        <section class="story-details">
+          <div class="story-field">
+            <label for="story-title">
+              Story title
+            </label>
+
+            <input
+              id="story-title"
+              name="storyTitle"
+              type="text"
+              maxlength="160"
+              [(ngModel)]="title"
+              placeholder="Give this journey a title">
+          </div>
+
+          <div class="story-field">
+            <label for="story-introduction">
+              Introduction
+            </label>
+
+            <textarea
+              id="story-introduction"
+              name="storyIntroduction"
+              rows="4"
+              maxlength="2000"
+              [(ngModel)]="introduction"
+              placeholder="How did this journey begin?">
+            </textarea>
+          </div>
+
+          <div class="story-status-row">
+            <label for="story-status">
+              Story status
+            </label>
+
+            <select
+              id="story-status"
+              name="storyStatus"
+              [(ngModel)]="status">
+
+              <option value="draft">
+                Draft
+              </option>
+
+              <option value="completed">
+                Completed
+              </option>
+            </select>
+
+            <span class="story-private">
+              🔒 Private
+            </span>
+          </div>
+        </section>
+
+        @if (coverMediaId) {
+          @if (
+            getPhoto(
+              coverMediaId
+            );
+            as coverPhoto
+          ) {
+            <section class="story-cover">
+              <img
+                [src]="coverPhoto.url"
+                [alt]="
+                  coverPhoto.caption ||
+                  'Story cover photo'
+                ">
+
+              <div>
+                <small>
+                  STORY COVER
+                </small>
+
+                <strong>
+                  {{
+                    coverPhoto.caption ||
+                    placeTitle
+                  }}
+                </strong>
+              </div>
+            </section>
+          }
+        }
+
+        <section class="story-sections">
+          <header class="story-section-heading">
+            <div>
+              <p class="story-eyebrow">
+                YOUR TIMELINE
+              </p>
+
+              <h3>
+                Story chapters
+              </h3>
+            </div>
+
+            <button
+              type="button"
+              class="story-add-section"
+              (click)="addSection()">
+              ＋ Add chapter
+            </button>
+          </header>
+
+          @for (
+            section of sections;
+            track $index;
+            let sectionIndex = $index
+          ) {
+            <article class="story-section">
+              <header>
+                <span class="story-section-number">
+                  {{ sectionIndex + 1 }}
+                </span>
+
+                <strong>
+                  Chapter
+                  {{ sectionIndex + 1 }}
+                </strong>
+
+                <button
+                  type="button"
+                  class="story-remove-section"
+                  aria-label="Remove chapter"
+                  (click)="
+                    removeSection(
+                      sectionIndex
+                    )
+                  ">
+                  Remove
+                </button>
+              </header>
+
+              <div class="story-section-fields">
+                <div class="story-field">
+                  <label
+                    [for]="
+                      'section-heading-' +
+                      sectionIndex
+                    ">
+                    Chapter heading
+                  </label>
+
+                  <input
+                    [id]="
+                      'section-heading-' +
+                      sectionIndex
+                    "
+                    [name]="
+                      'sectionHeading-' +
+                      sectionIndex
+                    "
+                    type="text"
+                    maxlength="160"
+                    [(ngModel)]="
+                      section.heading
+                    "
+                    placeholder="A memorable day">
+                </div>
+
+                <div class="story-field story-date-field">
+                  <label
+                    [for]="
+                      'section-date-' +
+                      sectionIndex
+                    ">
+                    Date
+                  </label>
+
+                  <input
+                    [id]="
+                      'section-date-' +
+                      sectionIndex
+                    "
+                    [name]="
+                      'sectionDate-' +
+                      sectionIndex
+                    "
+                    type="date"
+                    [(ngModel)]="
+                      section.date
+                    ">
+                </div>
+              </div>
+
+              <div class="story-field">
+                <label
+                  [for]="
+                    'section-narrative-' +
+                    sectionIndex
+                  ">
+                  What happened?
+                </label>
+
+                <textarea
+                  [id]="
+                    'section-narrative-' +
+                    sectionIndex
+                  "
+                  [name]="
+                    'sectionNarrative-' +
+                    sectionIndex
+                  "
+                  rows="4"
+                  maxlength="5000"
+                  [(ngModel)]="
+                    section.narrative
+                  "
+                  placeholder="Write about the moments, people and feelings that made this chapter special.">
+                </textarea>
+              </div>
+
+              @if (
+                section.mediaIds.length
+              ) {
+                <div class="story-photo-grid">
+                  @for (
+                    mediaId of section.mediaIds;
+                    track mediaId;
+                    let photoIndex = $index
+                  ) {
+                    @if (
+                      getPhoto(mediaId);
+                      as photo
+                    ) {
+                      <figure class="story-photo">
+                        <img
+                          [src]="photo.url"
+                          [alt]="
+                            photo.caption ||
+                            photo.originalFileName
+                          "
+                          loading="lazy">
+
+                        @if (
+                          coverMediaId ===
+                          photo.id
+                        ) {
+                          <span class="story-cover-label">
+                            Cover
+                          </span>
+                        }
+
+                        <figcaption>
+                          <strong>
+                            {{
+                              photo.caption ||
+                              'Journey memory'
+                            }}
+                          </strong>
+
+                          <div class="story-photo-actions">
+                            <button
+                              type="button"
+                              aria-label="Move photo earlier"
+                              [disabled]="
+                                photoIndex === 0
+                              "
+                              (click)="
+                                movePhoto(
+                                  sectionIndex,
+                                  photoIndex,
+                                  -1
+                                )
+                              ">
+                              ←
+                            </button>
+
+                            <button
+                              type="button"
+                              aria-label="Move photo later"
+                              [disabled]="
+                                photoIndex ===
+                                section.mediaIds
+                                  .length - 1
+                              "
+                              (click)="
+                                movePhoto(
+                                  sectionIndex,
+                                  photoIndex,
+                                  1
+                                )
+                              ">
+                              →
+                            </button>
+
+                            <button
+                              type="button"
+                              class="story-set-cover"
+                              (click)="
+                                setCoverPhoto(
+                                  photo.id
+                                )
+                              ">
+                              Cover
+                            </button>
+
+                            <button
+                              type="button"
+                              class="story-remove-photo"
+                              (click)="
+                                removePhotoFromSection(
+                                  sectionIndex,
+                                  photo.id
+                                )
+                              ">
+                              Remove
+                            </button>
+                          </div>
+                        </figcaption>
+                      </figure>
+                    }
+                  }
+                </div>
+              } @else {
+                <div class="story-section-empty">
+                  Add a memory to this chapter.
+                </div>
+              }
+            </article>
+          }
+        </section>
+
+        @if (unassignedPhotos.length) {
+          <section class="story-unassigned">
+            <header>
+              <div>
+                <p class="story-eyebrow">
+                  AVAILABLE MEMORIES
+                </p>
+
+                <h3>
+                  Photos not currently in the story
+                </h3>
+              </div>
+
+              <span>
+                {{ unassignedPhotos.length }}
+              </span>
+            </header>
+
+            <div class="story-unassigned-grid">
+              @for (
+                photo of unassignedPhotos;
+                track photo.id
+              ) {
+                <figure>
+                  <img
+                    [src]="photo.url"
+                    [alt]="
+                      photo.caption ||
+                      photo.originalFileName
+                    "
+                    loading="lazy">
+
+                  <figcaption>
+                    <strong>
+                      {{
+                        photo.caption ||
+                        'Journey memory'
+                      }}
+                    </strong>
+
+                    <button
+                      type="button"
+                      [disabled]="
+                        !sections.length
+                      "
+                      (click)="
+                        addPhotoToSection(
+                          photo.id,
+                          sections.length - 1
+                        )
+                      ">
+                      Add to story
+                    </button>
+                  </figcaption>
+                </figure>
+              }
+            </div>
+          </section>
+        }
+
+        @if (errorMessage()) {
+          <p
+            class="story-message story-error"
+            role="alert">
+            {{ errorMessage() }}
+          </p>
+        }
+
+        @if (successMessage()) {
+          <p
+            class="story-message story-success"
+            role="status">
+            {{ successMessage() }}
+          </p>
+        }
+
+        <footer class="story-footer">
+          <div>
+            <strong>
+              Your story is private
+            </strong>
+
+            <small>
+              Only you can access it.
+            </small>
+          </div>
+
+          <button
+            type="button"
+            class="story-cancel"
+            [disabled]="isSaving()"
+            (click)="close()">
+            Close
+          </button>
+
+          <button
+            type="submit"
+            class="story-save"
+            [disabled]="isSaving()">
+
+            @if (isSaving()) {
+              Saving…
+            } @else {
+              Save story
+            }
+          </button>
+        </footer>
+      </form>
+    }
+  </article>
+</section>

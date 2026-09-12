@@ -1,0 +1,92 @@
+<div class="authenticated-shell">
+    <header class="application-header">
+      <button
+        type="button"
+        class="mobile-menu-button"
+        aria-label="Open navigation menu"
+        [attr.aria-expanded]="
+          isMobileMenuOpen
+        "
+        (click)="toggleMobileMenu()"
+      >
+        ☰
+      </button>
+
+      <a
+        class="application-brand"
+        href="/"
+        aria-label="Dash Around Universe home"
+      >
+        <span class="application-brand-icon">
+          ✨
+        </span>
+
+        <span class="application-brand-copy">
+          <strong>
+            Dash Around Universe
+          </strong>
+
+          <small>
+            Your travel companion
+          </small>
+        </span>
+      </a>
+
+      <app-sidebar
+        class="
+          top-navigation
+          desktop-top-navigation
+        "
+      ></app-sidebar>
+    </header>
+
+    <section class="application-content">
+      <router-outlet />
+    </section>
+
+    @if (isMobileMenuOpen) {
+      <button
+        type="button"
+        class="mobile-menu-backdrop"
+        aria-label="Close navigation menu"
+        (click)="closeMobileMenu()"
+      ></button>
+    }
+
+    <aside
+      class="mobile-menu-drawer"
+      [class.is-open]="
+        isMobileMenuOpen
+      "
+      [attr.aria-hidden]="
+        !isMobileMenuOpen
+      "
+    >
+      <div class="mobile-menu-header">
+        <div>
+          <strong>
+            Dash Around Universe
+          </strong>
+
+          <small>
+            Your travel companion
+          </small>
+        </div>
+
+        <button
+          type="button"
+          class="mobile-menu-close"
+          aria-label="Close navigation menu"
+          (click)="closeMobileMenu()"
+        >
+          ✕
+        </button>
+      </div>
+
+      <app-sidebar
+        (navigationSelected)="
+          closeMobileMenu()
+        "
+      ></app-sidebar>
+    </aside>
+  </div>

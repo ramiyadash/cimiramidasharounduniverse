@@ -4,7 +4,7 @@
         <p>
           New destination
         </p>
-  
+
         <h2>
             @if (place) {
               Edit your destination
@@ -13,7 +13,7 @@
             }
         </h2>
       </div>
-  
+
       <button
         type="button"
         aria-label="Cancel adding place"
@@ -22,39 +22,39 @@
         ×
       </button>
     </header>
-  
+
     <form
       [formGroup]="form"
       (ngSubmit)="save()">
-  
+
       <label class="add-place-field">
         <span>
           Journey name *
         </span>
-  
+
         <input
           type="text"
           formControlName="title"
           placeholder="My Guatemala adventure">
       </label>
-  
+
       <div class="add-place-row">
         <label class="add-place-field">
           <span>
             Country *
           </span>
-  
+
           <input
             type="text"
             formControlName="country"
             placeholder="Guatemala">
         </label>
-  
+
         <label class="add-place-field add-place-code">
           <span>
             Code
           </span>
-  
+
           <input
             type="text"
             formControlName="countryCode"
@@ -62,136 +62,136 @@
             placeholder="GT">
         </label>
       </div>
-  
+
       <label class="add-place-field">
         <span>
           Region
         </span>
-  
+
         <input
           type="text"
           formControlName="region"
           placeholder="Central America">
       </label>
-  
+
       <label class="add-place-field">
         <span>
           Cities or locations *
         </span>
-  
+
         <input
           type="text"
           formControlName="locations"
           placeholder="Antigua, Lake Atitlán, Tikal">
-  
+
         <small>
           Separate multiple places with commas.
         </small>
       </label>
-  
+
       <div class="add-place-row">
         <label class="add-place-field">
           <span>
             Universe status *
           </span>
-  
+
           <select formControlName="status">
             <option value="visited">
               Visited
             </option>
-  
+
             <option value="planned">
               Planned
             </option>
-  
+
             <option value="dreaming">
               Dreaming
             </option>
           </select>
         </label>
-  
+
         <label class="add-place-field">
           <span>
             Journey style *
           </span>
-  
+
           <select formControlName="journeyType">
             <option value="adventure">
               Adventure
             </option>
-  
+
             <option value="weekend">
               Weekend
             </option>
-  
+
             <option value="family">
               Family
             </option>
-  
+
             <option value="food">
               Food
             </option>
           </select>
         </label>
       </div>
-  
+
       <div class="add-place-row">
         <label class="add-place-field">
           <span>
             Start date
           </span>
-  
+
           <input
             type="date"
             formControlName="startDate">
         </label>
-  
+
         <label class="add-place-field">
           <span>
             End date
           </span>
-  
+
           <input
             type="date"
             formControlName="endDate">
         </label>
       </div>
-  
+
       <label class="add-place-field">
         <span>
           Date label *
         </span>
-  
+
         <input
           type="text"
           formControlName="dateLabel"
           placeholder="July 2026 or Someday">
       </label>
-  
+
       <label class="add-place-field">
         <span>
           Marker emoji
         </span>
-  
+
         <input
           type="text"
           formControlName="emoji"
           maxlength="16"
           placeholder="📍">
       </label>
-  
+
       <label class="add-place-field">
         <span>
           Description *
         </span>
-  
+
         <textarea
           rows="4"
           formControlName="description"
           placeholder="What makes this journey meaningful?">
         </textarea>
       </label>
-  
+
     <section
         class="add-place-coordinate"
         [class.is-selected]="coordinates">
@@ -229,7 +229,7 @@
             </small>
         </div>
     </section>
-  
+
       @if (errorMessage()) {
         <p
           class="add-place-error"
@@ -237,7 +237,7 @@
           {{ errorMessage() }}
         </p>
       }
-  
+
       <div class="add-place-actions">
         <button
           type="button"
@@ -246,7 +246,7 @@
           (click)="cancel()">
           Cancel
         </button>
-  
+
         <button
           type="submit"
           class="add-place-save"
